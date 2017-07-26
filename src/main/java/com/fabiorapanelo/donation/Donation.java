@@ -1,5 +1,7 @@
 package com.fabiorapanelo.donation;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,10 +13,11 @@ import javax.validation.constraints.NotNull;
 public class Donation {
 
 	private Long id;
-	private String name;
-	private User createdBy;
-	private String latitude;
-	private String longitude;
+	private User origin;
+	private User destination;
+	private Date date;
+	private String donationType;
+	private String quantity;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -26,41 +29,48 @@ public class Donation {
 		this.id = id;
 	}
 
+	@ManyToOne
 	@NotNull
-	public String getName() {
-		return name;
+	public User getOrigin() {
+		return origin;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setOrigin(User origin) {
+		this.origin = origin;
 	}
 
 	@ManyToOne
 	@NotNull
-	public User getCreatedBy() {
-		return createdBy;
+	public User getDestination() {
+		return destination;
 	}
 
-	public void setCreatedBy(User createdBy) {
-		this.createdBy = createdBy;
+	public void setDestination(User destination) {
+		this.destination = destination;
 	}
 
-	@NotNull
-	public String getLatitude() {
-		return latitude;
+	public Date getDate() {
+		return date;
 	}
 
-	public void setLatitude(String latitude) {
-		this.latitude = latitude;
+	public void setDate(Date date) {
+		this.date = date;
 	}
 
-	@NotNull
-	public String getLongitude() {
-		return longitude;
+	public String getDonationType() {
+		return donationType;
 	}
 
-	public void setLongitude(String longitude) {
-		this.longitude = longitude;
+	public void setDonationType(String donationType) {
+		this.donationType = donationType;
+	}
+
+	public String getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(String quantity) {
+		this.quantity = quantity;
 	}
 
 }
