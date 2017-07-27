@@ -1,0 +1,24 @@
+version: "3"
+
+services:
+  donation-backend:
+    build: .
+    networks:
+      - donation-network
+    ports:
+      - "80:8081"
+    entrypoint: ./wait-for-it.sh mysql:3306 -t 60 --
+    command: java -Dspring.profiles.active=container -jar /donation-backend.jar
+
+  mysql:
+    networks:
+      - donation-network
+    image: mysql:latest
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=donation"
+
+networks:
+  donation-network:
