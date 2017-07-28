@@ -1,17 +1,9 @@
 spring:
   application:
     name: donation-backend
-  cloud:
-    config:
-      uri: http://localhost:8888
   jpa:
     show-sql: true
     generate-ddl: true
-
-server:
-  port: 8081
-  contextPath: /donation-backend
-
 ---
 
 spring:
