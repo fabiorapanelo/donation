@@ -3,6 +3,7 @@ package com.fabiorapanelo.donation;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -10,11 +11,15 @@ import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 
 @Entity
+@EntityListeners(EncryptPasswordListener.class)
 public class User {
 
 	private Long id;
 	private String name;
+	private String username;
 	private String type;
+	private String password;
+	private String securePassword;
 	private List<Donation> myDonations;
 	private List<Donation> donationsForMe;
 	private List<Campaign> myCampaings;
@@ -38,12 +43,36 @@ public class User {
 		this.name = name;
 	}
 
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
 	public String getType() {
 		return type;
 	}
 
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getSecurePassword() {
+		return securePassword;
+	}
+
+	public void setSecurePassword(String securePassword) {
+		this.securePassword = securePassword;
 	}
 
 	@OneToMany(mappedBy = "origin")
