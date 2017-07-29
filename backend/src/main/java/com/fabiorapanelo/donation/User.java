@@ -63,7 +63,7 @@ public class User {
 		this.type = type;
 	}
 
-	@JsonInclude
+	@JsonInclude(JsonInclude.Include.NON_NULL)
 	@Transient
 	public String getPassword() {
 		return password;

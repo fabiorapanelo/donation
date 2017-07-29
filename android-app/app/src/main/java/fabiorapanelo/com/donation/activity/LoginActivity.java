@@ -7,15 +7,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import fabiorapanelo.com.donation.R;
+import fabiorapanelo.com.donation.model.Credentials;
+import fabiorapanelo.com.donation.services.ServiceListener;
+import fabiorapanelo.com.donation.services.UserService;
 
 public class LoginActivity extends AppCompatActivity {
 
-    @Bind(R.id.input_email)
-    EditText _emailText;
+    @Bind(R.id.input_username)
+    EditText _usernameText;
     @Bind(R.id.input_password)
     EditText _passwordText;
     @Bind(R.id.btn_login)
@@ -23,10 +27,14 @@ public class LoginActivity extends AppCompatActivity {
     @Bind(R.id.link_signup)
     TextView _signupLink;
 
+    protected UserService userService;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        userService = new UserService();
 
         ButterKnife.bind(this);
 
@@ -39,7 +47,29 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     protected void login(View view){
-        Intent intent = new Intent(this, ChooseUserTypeActivity.class);
-        startActivity(intent);
+
+        String username = _usernameText.getText().toString();
+        String password = _passwordText.getText().toString();
+
+        Credentials credentials = new Credentials();
+        credentials.setUsername(username);
+        credentials.setPassword(password);
+
+        userService.authenticate(this, new ServiceListener() {
+            @Override
+            public void onSuccess(Object object) {
+                Intent intent = new Intent(LoginActivity.this, ChooseUserTypeActivity.class);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onError(Exception ex) {
+                _passwordText.setText("");
+                Toast.makeText(LoginActivity.this, "Authenticação Falhou!", Toast.LENGTH_LONG).show();
+            }
+        }, credentials);
+
     }
+
+
 }
