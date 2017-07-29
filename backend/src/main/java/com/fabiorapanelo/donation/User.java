@@ -8,7 +8,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 @Entity
 @EntityListeners(EncryptPasswordListener.class)
@@ -43,6 +46,7 @@ public class User {
 		this.name = name;
 	}
 
+	@NotNull
 	public String getUsername() {
 		return username;
 	}
@@ -59,6 +63,8 @@ public class User {
 		this.type = type;
 	}
 
+	@JsonInclude
+	@Transient
 	public String getPassword() {
 		return password;
 	}
@@ -67,6 +73,7 @@ public class User {
 		this.password = password;
 	}
 
+	@NotNull
 	public String getSecurePassword() {
 		return securePassword;
 	}
