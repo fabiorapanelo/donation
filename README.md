@@ -7,5 +7,5 @@ This is a donation app consisted of following modules:
 
 Commands to run backend (Requires Maven and Docker):
  - cd backend
- - mvn clean install
+ - mvn clean install 
  - docker-compose up --build
