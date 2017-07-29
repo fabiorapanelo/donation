@@ -6,5 +6,5 @@ This is a donation app consisted of following modules:
  - Backend
 
 Docker commands(Backend):
-cd backend
-docker-compose up --build
+ - cd backend
+ - docker-compose up --build
