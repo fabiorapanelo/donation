@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Doe +</string>
+
+    <!-- Login Screen-->
+    <string name="button_login">Entrar</string>
+    <string name="button_subscribe">Criar uma nova conta</string>
+    <string name="hint_user">Usuário</string>
+    <string name="hint_password">Senha</string>
+
+    <!-- ChooseUserType -->
+    <string name="title_choose_user_type">Escolha tipo do usuário</string>
+
+    <!-- DonationList -->
+    <string name="title_donation_list">Doações perto de você</string>
+    <string name="hint_search"></string>
+    <string name="button_search">Pesquisar</string>
+
+
+</resources>

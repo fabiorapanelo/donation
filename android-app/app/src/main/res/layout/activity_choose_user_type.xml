@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <ImageView
+        android:id="@+id/image_donate"
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_weight="0.5"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="24dp"
+        android:background="@color/colorBackgroundImages"
+        android:src="@drawable/donate2" />
+
+    <ImageView
+        android:id="@+id/image_receive_donation"
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_weight="0.5"
+
+        android:layout_gravity="center_horizontal"
+        android:background="@color/colorBackgroundImages"
+        android:src="@drawable/receive_donation2" />
+
+</LinearLayout>
