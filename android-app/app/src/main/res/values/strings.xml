@@ -15,5 +15,9 @@
     <string name="hint_search"></string>
     <string name="button_search">Pesquisar</string>
 
+    <!-- Register -->
+    <string name="title_register">Cadastre-se</string>
+    <string name="hint_name"></string>
+    <string name="button_register">Cadastrar</string>
 
 </resources>

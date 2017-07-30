@@ -6,46 +6,42 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import fabiorapanelo.com.donation.R;
 import fabiorapanelo.com.donation.model.Credentials;
+import fabiorapanelo.com.donation.model.User;
 import fabiorapanelo.com.donation.services.ServiceListener;
 import fabiorapanelo.com.donation.services.UserService;
 
-public class LoginActivity extends AppCompatActivity {
+public class RegisterUserActivity extends AppCompatActivity {
+
+    @Bind(R.id.input_name)
+    EditText _nameText;
 
     @Bind(R.id.input_username)
     EditText _usernameText;
+
     @Bind(R.id.input_password)
     EditText _passwordText;
-    @Bind(R.id.btn_login)
-    Button _loginButton;
-    @Bind(R.id.link_signup)
-    TextView _signupLink;
+
+    @Bind(R.id.btn_register)
+    Button _registerButton;
 
     protected UserService userService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_register_user);
 
         userService = new UserService();
 
         ButterKnife.bind(this);
 
-        _loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                login(view);
-            }
-        });
-
-        _signupLink.setOnClickListener(new View.OnClickListener() {
+        _registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 register(view);
@@ -53,34 +49,33 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    protected void login(View view){
+    protected void register(View view){
 
+        String name = _nameText.getText().toString();
         String username = _usernameText.getText().toString();
         String password = _passwordText.getText().toString();
 
-        Credentials credentials = new Credentials();
-        credentials.setUsername(username);
-        credentials.setPassword(password);
+        //todo
+        String type = "person";
 
-        userService.authenticate(this, new ServiceListener() {
+        User user = new User();
+        user.setName(name);
+        user.setUsername(username);
+        user.setPassword(password);
+        user.setType(type);
+
+        userService.save(this, new ServiceListener() {
             @Override
             public void onSuccess(Object object) {
-                Intent intent = new Intent(LoginActivity.this, ChooseUserTypeActivity.class);
-                startActivity(intent);
+                finish();
             }
 
             @Override
             public void onError(Exception ex) {
                 _passwordText.setText("");
-                Toast.makeText(LoginActivity.this, "Authenticação Falhou!", Toast.LENGTH_LONG).show();
+                Toast.makeText(RegisterUserActivity.this, "Falha ao cadastrar o usuário!", Toast.LENGTH_LONG).show();
             }
-        }, credentials);
 
+        }, user);
     }
-
-    protected void register(View view){
-        Intent intent = new Intent(LoginActivity.this, RegisterUserActivity.class);
-        startActivity(intent);
-    }
-
 }
