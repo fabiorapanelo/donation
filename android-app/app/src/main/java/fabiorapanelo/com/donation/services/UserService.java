@@ -4,7 +4,6 @@ package fabiorapanelo.com.donation.services;
 import android.content.Context;
 
 import com.android.volley.NetworkResponse;
-import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -17,7 +16,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -177,24 +175,24 @@ public class UserService extends ServiceBase {
             RequestQueue queue = Volley.newRequestQueue(context);
 
             String url = this.getUrl(PATH);
-            if(user.getId() > 0){
+            if(user.getId() != null){
                 url += "/" + user.getId();
             }
 
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, jsonObject, new Response.Listener<JSONObject>() {
                 public void onResponse(JSONObject jsonObject) {
-                    try {
-                        User user = UserService.mapJsonToUser(jsonObject);
-                        serviceListener.onSuccess(user);
-                    } catch (JSONException ex) {
-                        serviceListener.onError(ex);
-                    }
+                    serviceListener.onSuccess(null);
                 }
             }, new Response.ErrorListener() {
                 public void onErrorResponse(VolleyError volleyError) {
                     serviceListener.onError(volleyError);
                 }
-            });
+            }) {
+                @Override
+                protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+                    return Response.success(null, HttpHeaderParser.parseCacheHeaders(response));
+                }
+            };
             queue.add(jsonObjectRequest);
         } catch (Exception ex) {
             serviceListener.onError(ex);
@@ -204,7 +202,7 @@ public class UserService extends ServiceBase {
 
     public static User mapJsonToUser(JSONObject jsonObject) throws JSONException{
         User user = new User();
-        user.setId(jsonObject.getLong(FIELD_ID));
+        //user.setId(jsonObject.getLong(FIELD_ID));
         user.setName(jsonObject.getString(FIELD_NAME));
         user.setUsername(jsonObject.getString(FIELD_USERNAME));
         user.setType(jsonObject.getString(FIELD_TYPE));
@@ -216,9 +214,10 @@ public class UserService extends ServiceBase {
     public static JSONObject mapUserToJson(User user) throws JSONException {
 
         JSONObject jsonObject = new JSONObject();
-        if(user.getId() > 0){
-            jsonObject.put(FIELD_ID, String.valueOf(user.getId()));
+        if(user.getId() != null){
+            //jsonObject.put(FIELD_ID, String.valueOf(user.getId()));
         }
+
         jsonObject.put(FIELD_NAME, user.getName());
         jsonObject.put(FIELD_USERNAME, user.getUsername());
         jsonObject.put(FIELD_TYPE, user.getType());

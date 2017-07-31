@@ -17,7 +17,7 @@
 
     <!-- Register -->
     <string name="title_register">Cadastre-se</string>
-    <string name="hint_name"></string>
+    <string name="hint_name">Nome</string>
     <string name="button_register">Cadastrar</string>
 
 </resources>

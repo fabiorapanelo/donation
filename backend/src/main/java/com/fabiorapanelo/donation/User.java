@@ -2,6 +2,7 @@ package com.fabiorapanelo.donation;
 
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
@@ -47,6 +48,7 @@ public class User {
 	}
 
 	@NotNull
+	@Column(unique=true)
 	public String getUsername() {
 		return username;
 	}

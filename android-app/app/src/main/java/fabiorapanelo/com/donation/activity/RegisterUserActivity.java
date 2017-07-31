@@ -16,7 +16,7 @@ import fabiorapanelo.com.donation.model.User;
 import fabiorapanelo.com.donation.services.ServiceListener;
 import fabiorapanelo.com.donation.services.UserService;
 
-public class RegisterUserActivity extends AppCompatActivity {
+public class RegisterUserActivity extends BaseActivity {
 
     @Bind(R.id.input_name)
     EditText _nameText;
@@ -44,12 +44,32 @@ public class RegisterUserActivity extends AppCompatActivity {
         _registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                register(view);
+                checkUsernameAndRegister();
             }
         });
     }
 
-    protected void register(View view){
+    protected void checkUsernameAndRegister(){
+
+        String username = _usernameText.getText().toString();
+
+        userService.findByUsername(this, new ServiceListener() {
+            @Override
+            public void onSuccess(Object object) {
+                Toast.makeText(RegisterUserActivity.this, "Usuário já existe!", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onError(Exception ex) {
+                //Return 404 - Not found if the user doesn't exists
+                register();
+            }
+
+        }, username);
+
+    }
+
+    protected void register(){
 
         String name = _nameText.getText().toString();
         String username = _usernameText.getText().toString();
