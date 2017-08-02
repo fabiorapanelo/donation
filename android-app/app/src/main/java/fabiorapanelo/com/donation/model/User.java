@@ -9,7 +9,8 @@ public class User {
     private Long id;
     private String name;
     private String username;
-    private String type;
+    private boolean receiveDonations;
+    private boolean verified;
     private String password;
     private String securePassword;
 
@@ -37,12 +38,20 @@ public class User {
         this.username = username;
     }
 
-    public String getType() {
-        return type;
+    public boolean isReceiveDonations() {
+        return receiveDonations;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setReceiveDonations(boolean receiveDonations) {
+        this.receiveDonations = receiveDonations;
+    }
+
+    public boolean isVerified() {
+        return verified;
+    }
+
+    public void setVerified(boolean verified) {
+        this.verified = verified;
     }
 
     public String getPassword() {

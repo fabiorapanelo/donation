@@ -18,6 +18,11 @@
     <!-- Register -->
     <string name="title_register">Cadastre-se</string>
     <string name="hint_name">Nome</string>
+    <string name="hint_user_type">Desejo receber doações</string>
     <string name="button_register">Cadastrar</string>
+    <string name="title_receive_donations">Receber doações</string>
+    <string name="message_receive_donations">Para receber doações será necessário confirmar suas informações</string>
+    <string name="button_cancel">Cancelar</string>
+    <string name="button_confirm">Confirmar</string>
 
 </resources>

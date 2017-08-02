@@ -35,7 +35,8 @@ public class UserService extends ServiceBase {
     private static final String FIELD_ID = "id";
     private static final String FIELD_NAME = "name";
     private static final String FIELD_USERNAME = "username";
-    private static final String FIELD_TYPE = "type";
+    private static final String FIELD_RECEIVE_DONATIONS = "receiveDonations";
+    private static final String FIELD_VERIFIED = "verified";
     private static final String FIELD_PASSWORD = "password";
     private static final String FIELD_SECURE_PASSWORD = "securePassword";
 
@@ -202,10 +203,11 @@ public class UserService extends ServiceBase {
 
     public static User mapJsonToUser(JSONObject jsonObject) throws JSONException{
         User user = new User();
-        //user.setId(jsonObject.getLong(FIELD_ID));
+
         user.setName(jsonObject.getString(FIELD_NAME));
         user.setUsername(jsonObject.getString(FIELD_USERNAME));
-        user.setType(jsonObject.getString(FIELD_TYPE));
+        user.setReceiveDonations(jsonObject.getBoolean(FIELD_RECEIVE_DONATIONS));
+        user.setVerified(jsonObject.getBoolean(FIELD_VERIFIED));
         user.setSecurePassword(jsonObject.getString(FIELD_SECURE_PASSWORD));
 
         return user;
@@ -214,13 +216,11 @@ public class UserService extends ServiceBase {
     public static JSONObject mapUserToJson(User user) throws JSONException {
 
         JSONObject jsonObject = new JSONObject();
-        if(user.getId() != null){
-            //jsonObject.put(FIELD_ID, String.valueOf(user.getId()));
-        }
 
         jsonObject.put(FIELD_NAME, user.getName());
         jsonObject.put(FIELD_USERNAME, user.getUsername());
-        jsonObject.put(FIELD_TYPE, user.getType());
+        jsonObject.put(FIELD_RECEIVE_DONATIONS, user.isReceiveDonations());
+        jsonObject.put(FIELD_VERIFIED, user.isVerified());
         jsonObject.put(FIELD_PASSWORD, user.getPassword());
         jsonObject.put(FIELD_SECURE_PASSWORD, user.getSecurePassword());
 
