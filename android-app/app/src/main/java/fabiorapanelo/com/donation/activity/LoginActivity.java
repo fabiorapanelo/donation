@@ -62,19 +62,19 @@ public class LoginActivity extends AppCompatActivity {
         credentials.setUsername(username);
         credentials.setPassword(password);
 
-        userService.authenticate(this, new ServiceListener() {
+        userService.authenticate(credentials, new ServiceListener() {
             @Override
             public void onSuccess(Object object) {
-                Intent intent = new Intent(LoginActivity.this, ChooseUserTypeActivity.class);
+                Intent intent = new Intent(LoginActivity.this, DonationListActivity.class);
                 startActivity(intent);
             }
 
             @Override
-            public void onError(Exception ex) {
+            public void onError(Throwable t) {
                 _passwordText.setText("");
                 Toast.makeText(LoginActivity.this, "Authenticação Falhou!", Toast.LENGTH_LONG).show();
             }
-        }, credentials);
+        });
 
     }
 

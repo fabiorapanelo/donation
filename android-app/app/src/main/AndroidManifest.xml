@@ -24,10 +24,6 @@
             android:name=".activity.DonationListActivity"
             android:label="@string/title_donation_list"
             android:theme="@style/AppTheme" />
-        <activity
-            android:name=".activity.ChooseUserTypeActivity"
-            android:label="@string/title_choose_user_type"
-            android:theme="@style/AppTheme" />
         <activity android:name=".activity.RegisterUserActivity"></activity>
     </application>
 

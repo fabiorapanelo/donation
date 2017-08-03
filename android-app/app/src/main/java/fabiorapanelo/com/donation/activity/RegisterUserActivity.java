@@ -98,19 +98,19 @@ public class RegisterUserActivity extends BaseActivity {
 
         String username = _usernameText.getText().toString();
 
-        userService.findByUsername(this, new ServiceListener() {
+        userService.findByUsername(username, new ServiceListener() {
             @Override
             public void onSuccess(Object object) {
                 Toast.makeText(RegisterUserActivity.this, "Usuário já existe!", Toast.LENGTH_LONG).show();
             }
 
             @Override
-            public void onError(Exception ex) {
+            public void onError(Throwable t) {
                 //Return 404 - Not found if the user doesn't exists
                 register();
             }
 
-        }, username);
+        });
 
     }
 
@@ -127,18 +127,17 @@ public class RegisterUserActivity extends BaseActivity {
         user.setPassword(password);
         user.setReceiveDonations(receiveDonations);
 
-        userService.save(this, new ServiceListener() {
+        userService.save(user, new ServiceListener() {
             @Override
             public void onSuccess(Object object) {
                 finish();
             }
 
             @Override
-            public void onError(Exception ex) {
+            public void onError(Throwable t) {
                 _passwordText.setText("");
                 Toast.makeText(RegisterUserActivity.this, "Falha ao cadastrar o usuário!", Toast.LENGTH_LONG).show();
             }
-
-        }, user);
+        });
     }
 }

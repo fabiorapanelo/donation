@@ -12,6 +12,7 @@ import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,6 +22,11 @@ import java.util.List;
 
 import fabiorapanelo.com.donation.model.Credentials;
 import fabiorapanelo.com.donation.model.User;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by fabio on 29/07/2017.
@@ -28,7 +34,7 @@ import fabiorapanelo.com.donation.model.User;
 
 public class UserService extends ServiceBase {
 
-    private static final String PATH = "/users";
+    private static final String PATH = "users";
 
     private static final String USERS_ROOT_OBJECT = "users";
 
@@ -40,164 +46,90 @@ public class UserService extends ServiceBase {
     private static final String FIELD_PASSWORD = "password";
     private static final String FIELD_SECURE_PASSWORD = "securePassword";
 
-    public void authenticate(final Context context, final ServiceListener serviceListener, Credentials credentials) {
+    protected UserRepository userRepository;
+
+    public UserService(){
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        userRepository = retrofit.create(UserRepository.class);
+    }
+    public void authenticate(Credentials credentials, final ServiceListener serviceListener) {
 
         if(credentials == null){
             serviceListener.onError(new NullPointerException());
             return;
         }
 
-        try {
-            JSONObject jsonObject = UserService.mapCredentialsToJson(credentials);
-            RequestQueue queue = Volley.newRequestQueue(context);
+        Call<ResponseBody> authenticate = userRepository.authenticate(credentials);
+        authenticate.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+                serviceListener.onSuccess(null);
+            }
 
-            String url = this.getUrl("/authentication");
-
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, jsonObject, new Response.Listener<JSONObject>() {
-                public void onResponse(JSONObject jsonObject) {
-                    serviceListener.onSuccess(null);
-                }
-            }, new Response.ErrorListener() {
-                public void onErrorResponse(VolleyError volleyError) {
-                    serviceListener.onError(volleyError);
-                }
-            }) {
-                @Override
-                protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
-                    return Response.success(null, HttpHeaderParser.parseCacheHeaders(response));
-                }
-            };
-            queue.add(jsonObjectRequest);
-        } catch (Exception ex) {
-            serviceListener.onError(ex);
-        }
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                serviceListener.onError(t);
+            }
+        });
     }
 
-    public void findById(final Context context, final ServiceListener serviceListener, Long id) {
+    public void findByUsername(final String username, final ServiceListener serviceListener) {
 
-        RequestQueue queue = Volley.newRequestQueue(context);
-        try {
-            String url = this.getUrl(PATH + "/" + id);
-
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-                public void onResponse(JSONObject jsonObject) {
-                    try {
-                        User user = UserService.mapJsonToUser(jsonObject);
-                        serviceListener.onSuccess(user);
-                    } catch (JSONException ex) {
-                        serviceListener.onError(ex);
-                    }
-                }
-            }, new Response.ErrorListener() {
-                public void onErrorResponse(VolleyError volleyError) {
-                    serviceListener.onError(volleyError);
-                }
-            });
-            queue.add(jsonObjectRequest);
-        } catch (Exception ex) {
-            serviceListener.onError(ex);
-        }
-    }
-
-    public void findAll(final Context context, final ServiceListener serviceListener) {
-
-        RequestQueue queue = Volley.newRequestQueue(context);
-        try {
-            String url = this.getUrl(PATH);
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-                public void onResponse(JSONObject s) {
-                    List<User> users = new ArrayList<>();
-
-                    try {
-
-                        JSONArray jsonArray = s.getJSONObject("_embedded").getJSONArray(USERS_ROOT_OBJECT);
-
-                        for (int index = 0; index < jsonArray.length(); index++) {
-                            JSONObject jsonObject = jsonArray.getJSONObject(index);
-                            User user = UserService.mapJsonToUser(jsonObject);
-                            users.add(user);
-                        }
-
-                        serviceListener.onSuccess(users);
-                    } catch (JSONException ex) {
-                        serviceListener.onError(ex);
-                    }
-                }
-            }, new Response.ErrorListener() {
-                public void onErrorResponse(VolleyError volleyError) {
-                    serviceListener.onError(volleyError);
-                }
-            });
-            queue.add(jsonObjectRequest);
-        } catch (Exception ex) {
-            serviceListener.onError(ex);
-        }
-    }
-
-    public void findByUsername(final Context context, final ServiceListener serviceListener, final String username) {
-
-        if(username == null){
+        if(StringUtils.isEmpty(username)){
             serviceListener.onError(new NullPointerException());
             return;
         }
 
-        RequestQueue queue = Volley.newRequestQueue(context);
-        try {
-            String url = this.getUrl(PATH + "/search/findOneByUsernameIgnoreCase?name=" + username);
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-                public void onResponse(JSONObject jsonObject) {
-                    try {
-                        User user = UserService.mapJsonToUser(jsonObject);
-                        serviceListener.onSuccess(user);
-                    } catch (JSONException ex) {
-                        serviceListener.onError(ex);
-                    }
+        Call<User> findByUsername = userRepository.findByUsername(username);
+        findByUsername.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, retrofit2.Response<User> response) {
+
+                if(response.isSuccessful()){
+                    serviceListener.onSuccess(response.body());
+                } else {
+                    serviceListener.onError(null);
                 }
-            }, new Response.ErrorListener() {
-                public void onErrorResponse(VolleyError volleyError) {
-                    serviceListener.onError(volleyError);
-                }
-            });
-            queue.add(jsonObjectRequest);
-        } catch (Exception ex) {
-            serviceListener.onError(ex);
-        }
+
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                serviceListener.onError(t);
+            }
+        });
     }
 
-    public void save(final Context context, final ServiceListener serviceListener, User user) {
+    public void save(User user, final ServiceListener serviceListener) {
 
         if(user == null){
             serviceListener.onError(new NullPointerException());
             return;
         }
 
-        try {
-            JSONObject jsonObject = mapUserToJson(user);
-            RequestQueue queue = Volley.newRequestQueue(context);
+        Call<ResponseBody> call;
+        if(user.getId() != null){
+            call = userRepository.update(user.getId().toString(), user);
+        } else {
+            call = userRepository.create(user);
+        }
 
-            String url = this.getUrl(PATH);
-            if(user.getId() != null){
-                url += "/" + user.getId();
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+                serviceListener.onSuccess(null);
             }
 
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, jsonObject, new Response.Listener<JSONObject>() {
-                public void onResponse(JSONObject jsonObject) {
-                    serviceListener.onSuccess(null);
-                }
-            }, new Response.ErrorListener() {
-                public void onErrorResponse(VolleyError volleyError) {
-                    serviceListener.onError(volleyError);
-                }
-            }) {
-                @Override
-                protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
-                    return Response.success(null, HttpHeaderParser.parseCacheHeaders(response));
-                }
-            };
-            queue.add(jsonObjectRequest);
-        } catch (Exception ex) {
-            serviceListener.onError(ex);
-        }
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                serviceListener.onError(t);
+            }
+        });
 
     }
 

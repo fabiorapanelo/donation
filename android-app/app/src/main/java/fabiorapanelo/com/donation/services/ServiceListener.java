@@ -7,6 +7,6 @@ package fabiorapanelo.com.donation.services;
 public interface ServiceListener {
     public void onSuccess(Object object);
 
-    public void onError(Exception ex);
+    public void onError(Throwable t);
 }
 
