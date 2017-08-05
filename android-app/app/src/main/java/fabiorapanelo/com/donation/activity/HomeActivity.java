@@ -16,14 +16,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.ncapdevi.fragnav.FragNavController;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import fabiorapanelo.com.donation.R;
 import fabiorapanelo.com.donation.fragment.DonationListFragment;
-import fabiorapanelo.com.donation.fragment.FragNavController;
 import fabiorapanelo.com.donation.utils.Utils;
 
 //Inspired from https://github.com/f22labs/InstaLikeFragmentTransaction/
+//https://github.com/ncapdevi/FragNav
 
 public class HomeActivity extends BaseActivity implements
         FragNavController.RootFragmentListener{
