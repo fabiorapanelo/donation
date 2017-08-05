@@ -65,7 +65,7 @@ public class LoginActivity extends AppCompatActivity {
         userService.authenticate(credentials, new ServiceListener() {
             @Override
             public void onSuccess(Object object) {
-                Intent intent = new Intent(LoginActivity.this, DonationListActivity.class);
+                Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                 startActivity(intent);
             }
 

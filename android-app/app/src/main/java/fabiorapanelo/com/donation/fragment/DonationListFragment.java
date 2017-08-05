@@ -1,10 +1,10 @@
-package fabiorapanelo.com.donation.activity;
+package fabiorapanelo.com.donation.fragment;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -15,29 +15,34 @@ import butterknife.ButterKnife;
 import fabiorapanelo.com.donation.R;
 import fabiorapanelo.com.donation.adapter.DonationListAdapter;
 import fabiorapanelo.com.donation.model.Donation;
+import android.support.v4.app.Fragment;
 
-public class DonationListActivity extends BaseActivity {
+
+public class DonationListFragment extends Fragment  {
 
     @Bind(R.id.list_view_donations)
     protected ListView listViewDonations;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_donation_list);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
 
-        ButterKnife.bind(this);
+        View view = inflater.inflate(R.layout.fragment_donation_list, container, false);
+
+        ButterKnife.bind(this, view);
 
         listViewDonations.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                DonationListActivity.this.listViewDonationsOnItemClick(adapterView, view, i, l);
+                DonationListFragment.this.listViewDonationsOnItemClick(adapterView, view, i, l);
             }
         });
 
-        List<Donation> donations = DonationListActivity.this.createDummyDonations();
-        DonationListAdapter adapter = new DonationListAdapter(DonationListActivity.this, donations);
+        List<Donation> donations = DonationListFragment.this.createDummyDonations();
+        DonationListAdapter adapter = new DonationListAdapter(getActivity(), donations);
         listViewDonations.setAdapter(adapter);
+
+        return view;
 
     }
 

@@ -42,9 +42,11 @@ public class RegisterUserActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_user);
 
-        userService = new UserService();
-
         ButterKnife.bind(this);
+
+        this.setupToolbar();
+
+        userService = new UserService();
 
         _registerButton.setOnClickListener(new View.OnClickListener() {
             @Override

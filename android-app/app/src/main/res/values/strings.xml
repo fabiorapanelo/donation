@@ -25,4 +25,12 @@
     <string name="button_cancel">Cancelar</string>
     <string name="button_confirm">Confirmar</string>
 
+    <!-- Tab -->
+
+    <string name="tab_home">Home</string>
+    <string name="tab_search">Search</string>
+    <string name="tab_share">Share</string>
+    <string name="tab_news">News</string>
+    <string name="tab_profile">Profile</string>
+
 </resources>
