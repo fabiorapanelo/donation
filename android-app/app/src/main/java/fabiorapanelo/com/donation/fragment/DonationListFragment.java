@@ -23,6 +23,11 @@ public class DonationListFragment extends Fragment  {
     @Bind(R.id.list_view_donations)
     protected ListView listViewDonations;
 
+    public static DonationListFragment newInstance() {
+        DonationListFragment fragment = new DonationListFragment();
+        return fragment;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

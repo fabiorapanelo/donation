@@ -1,34 +1,32 @@
 package fabiorapanelo.com.donation.activity;
 
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.StateListDrawable;
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.ncapdevi.fragnav.FragNavController;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import fabiorapanelo.com.donation.R;
+import fabiorapanelo.com.donation.fragment.CreateCampaignFragment;
 import fabiorapanelo.com.donation.fragment.DonationListFragment;
+import fabiorapanelo.com.donation.fragment.FavoritesFragment;
+import fabiorapanelo.com.donation.fragment.ProfileFragment;
+import fabiorapanelo.com.donation.fragment.SearchFragment;
 import fabiorapanelo.com.donation.utils.Utils;
 
-//Inspired from https://github.com/f22labs/InstaLikeFragmentTransaction/
-//https://github.com/ncapdevi/FragNav
+//Inspiration: https://github.com/f22labs/InstaLikeFragmentTransaction/
+//Using: https://github.com/ncapdevi/FragNav
+//Improvement to be done: https://github.com/roughike/BottomBar
 
-public class HomeActivity extends BaseActivity implements
-        FragNavController.RootFragmentListener{
+public class HomeActivity extends BaseActivity implements TabLayout.OnTabSelectedListener {
 
     @Bind(R.id.bottom_tab_layout)
     protected TabLayout bottomTabLayout;
@@ -42,22 +40,24 @@ public class HomeActivity extends BaseActivity implements
 
         ButterKnife.bind(this);
 
-        this.initTab();
+        this.initTabs();
 
         mNavController = FragNavController.newBuilder(savedInstanceState, getSupportFragmentManager(), R.id.content_frame)
-                .rootFragmentListener(this, 5)
+                .rootFragments(this.createFragmentList())
                 .build();
+
+        bottomTabLayout.addOnTabSelectedListener(this);
+
+        mNavController.switchTab(0);
 
     }
 
-    protected void initTab() {
-
+    protected void initTabs() {
         this.addTab(R.drawable.tab_home);
         this.addTab(R.drawable.tab_search);
         this.addTab(R.drawable.tab_share);
         this.addTab(R.drawable.tab_news);
         this.addTab(R.drawable.tab_profile);
-
     }
 
     protected void addTab(int iconId) {
@@ -74,23 +74,34 @@ public class HomeActivity extends BaseActivity implements
         bottomTabLayout.addTab(tab);
     }
 
-    @Override
-    public Fragment getRootFragment(int index) {
-        switch (index) {
+    public List<Fragment> createFragmentList() {
 
-            case FragNavController.TAB1:
-                return new DonationListFragment();
-            case FragNavController.TAB2:
-                return new DonationListFragment();
-            case FragNavController.TAB3:
-                return new DonationListFragment();
-            case FragNavController.TAB4:
-                return new DonationListFragment();
-            case FragNavController.TAB5:
-                return new DonationListFragment();
+        List<Fragment> fragments = new ArrayList<>(5);
 
-        }
-        throw new IllegalStateException("Need to send an index that we know");
+        fragments.add(DonationListFragment.newInstance());
+        fragments.add(SearchFragment.newInstance());
+        fragments.add(CreateCampaignFragment.newInstance());
+        fragments.add(FavoritesFragment.newInstance());
+        fragments.add(ProfileFragment.newInstance());
+
+        return fragments;
     }
 
+    @Override
+    public void onTabSelected(TabLayout.Tab tab) {
+        mNavController.switchTab(tab.getPosition());
+    }
+
+    @Override
+    public void onTabUnselected(TabLayout.Tab tab) {
+
+    }
+
+    @Override
+    public void onTabReselected(TabLayout.Tab tab) {
+
+        mNavController.clearStack();
+        mNavController.switchTab(tab.getPosition());
+
+    }
 }
