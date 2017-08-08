@@ -13,8 +13,10 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import fabiorapanelo.com.donation.R;
 import fabiorapanelo.com.donation.model.Credentials;
-import fabiorapanelo.com.donation.services.ServiceListener;
 import fabiorapanelo.com.donation.services.UserService;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -62,15 +64,15 @@ public class LoginActivity extends AppCompatActivity {
         credentials.setUsername(username);
         credentials.setPassword(password);
 
-        userService.authenticate(credentials, new ServiceListener() {
+        userService.authenticate(credentials, new Callback<ResponseBody>() {
             @Override
-            public void onSuccess(Object object) {
+            public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
                 Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                 startActivity(intent);
             }
 
             @Override
-            public void onError(Throwable t) {
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
                 _passwordText.setText("");
                 Toast.makeText(LoginActivity.this, "Authenticação Falhou!", Toast.LENGTH_LONG).show();
             }

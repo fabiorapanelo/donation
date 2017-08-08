@@ -15,8 +15,10 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import fabiorapanelo.com.donation.R;
 import fabiorapanelo.com.donation.model.User;
-import fabiorapanelo.com.donation.services.ServiceListener;
 import fabiorapanelo.com.donation.services.UserService;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
 
 public class RegisterUserActivity extends BaseActivity {
 
@@ -100,18 +102,21 @@ public class RegisterUserActivity extends BaseActivity {
 
         String username = _usernameText.getText().toString();
 
-        userService.findByUsername(username, new ServiceListener() {
+        userService.findByUsername(username, new Callback<User>() {
             @Override
-            public void onSuccess(Object object) {
-                Toast.makeText(RegisterUserActivity.this, "Usuário já existe!", Toast.LENGTH_LONG).show();
+            public void onResponse(Call<User> call, retrofit2.Response<User> response) {
+                if(response.isSuccessful()){
+                    Toast.makeText(RegisterUserActivity.this, "Usuário já existe!", Toast.LENGTH_LONG).show();
+                } else {
+                    //Return 404 - Not found if the user doesn't exists
+                    register();
+                }
             }
 
             @Override
-            public void onError(Throwable t) {
-                //Return 404 - Not found if the user doesn't exists
-                register();
+            public void onFailure(Call<User> call, Throwable t) {
+                //TODO: Handle this scenario
             }
-
         });
 
     }
@@ -129,14 +134,14 @@ public class RegisterUserActivity extends BaseActivity {
         user.setPassword(password);
         user.setReceiveDonations(receiveDonations);
 
-        userService.save(user, new ServiceListener() {
+        userService.save(user, new Callback<ResponseBody>() {
             @Override
-            public void onSuccess(Object object) {
+            public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
                 finish();
             }
 
             @Override
-            public void onError(Throwable t) {
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
                 _passwordText.setText("");
                 Toast.makeText(RegisterUserActivity.this, "Falha ao cadastrar o usuário!", Toast.LENGTH_LONG).show();
             }

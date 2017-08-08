@@ -38,4 +38,9 @@ public class CreateCampaignFragment extends Fragment {
         super.onDetach();
     }
 
+    protected void createCampaign(View view){
+
+
+
+    }
 }

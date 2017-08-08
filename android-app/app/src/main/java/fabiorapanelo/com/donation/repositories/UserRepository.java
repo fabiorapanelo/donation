@@ -1,4 +1,4 @@
-package fabiorapanelo.com.donation.services;
+package fabiorapanelo.com.donation.repositories;
 
 import fabiorapanelo.com.donation.model.Credentials;
 import fabiorapanelo.com.donation.model.User;
@@ -8,6 +8,7 @@ import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.QueryName;
@@ -30,7 +31,7 @@ public interface UserRepository {
     @GET("users/{userId}")
     Call<User> find(@Path("userId") String userId);
 
-    @POST("users/{userId}")
+    @PUT("users/{userId}")
     Call<ResponseBody> update(@Path("userId") String userId, @Body User user);
 
     @DELETE("users/{userId}")
