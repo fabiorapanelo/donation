@@ -12,7 +12,6 @@ public class User {
     private boolean receiveDonations;
     private boolean verified;
     private String password;
-    private String securePassword;
 
     public Long getId() {
         return id;
@@ -62,11 +61,4 @@ public class User {
         this.password = password;
     }
 
-    public String getSecurePassword() {
-        return securePassword;
-    }
-
-    public void setSecurePassword(String securePassword) {
-        this.securePassword = securePassword;
-    }
 }

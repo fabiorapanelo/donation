@@ -19,8 +19,8 @@ import retrofit2.http.QueryName;
 
 public interface UserRepository {
 
-    @POST("authenticate")
-    Call<ResponseBody> authenticate(@Body Credentials credentials);
+    @POST("authentication")
+    Call<User> authenticate(@Body Credentials credentials);
 
     @GET("users")
     Call<ResponseBody> find();

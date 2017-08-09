@@ -6,7 +6,9 @@ import org.apache.commons.lang3.StringUtils;
 import fabiorapanelo.com.donation.model.Credentials;
 import fabiorapanelo.com.donation.model.User;
 import fabiorapanelo.com.donation.repositories.UserRepository;
+import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
@@ -22,15 +24,21 @@ public class UserService extends ServiceBase {
 
     public UserService(){
 
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+        httpClient.addInterceptor(logging);
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
+                .client(httpClient.build())
                 .build();
 
         userRepository = retrofit.create(UserRepository.class);
     }
-    public void authenticate(Credentials credentials, final Callback<ResponseBody> callback) {
-        Call<ResponseBody> authenticate = userRepository.authenticate(credentials);
+    public void authenticate(Credentials credentials, final Callback<User> callback) {
+        Call<User> authenticate = userRepository.authenticate(credentials);
         authenticate.enqueue(callback);
     }
 

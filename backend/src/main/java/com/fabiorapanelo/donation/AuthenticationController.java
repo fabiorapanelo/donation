@@ -17,7 +17,7 @@ public class AuthenticationController {
 	}
 
 	@PostMapping("/authentication")
-	public ResponseEntity<Void> login(@RequestBody Credentials credentials) {
+	public ResponseEntity<User> login(@RequestBody Credentials credentials) {
 
 		User user = userRepository.findOneByUsernameIgnoreCase(credentials.getUsername());
 
@@ -27,13 +27,14 @@ public class AuthenticationController {
 					&& StringUtils.isNotEmpty(user.getSecurePassword())
 					&& StringUtils.isNotEmpty(credentials.getPassword())
 					&& EncryptionUtil.validatePassword(credentials.getPassword(), user.getSecurePassword())) {
-				return new ResponseEntity<Void>(HttpStatus.OK);
+				return new ResponseEntity<User>(user, HttpStatus.OK);
 			}
+			
 		} catch (Exception e) {
-			return new ResponseEntity<Void>(HttpStatus.FORBIDDEN);
+			return new ResponseEntity<User>(HttpStatus.FORBIDDEN);
 		}
 
-		return new ResponseEntity<Void>(HttpStatus.FORBIDDEN);
+		return new ResponseEntity<User>(HttpStatus.FORBIDDEN);
 
 	}
 }

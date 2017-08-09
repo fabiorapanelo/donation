@@ -12,7 +12,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 @Entity
 @EntityListeners(EncryptPasswordListener.class)
@@ -74,7 +75,7 @@ public class User {
 		this.verified = verified;
 	}
 
-	@JsonInclude(JsonInclude.Include.NON_NULL)
+	@JsonProperty(access = Access.WRITE_ONLY)
 	@Transient
 	public String getPassword() {
 		return password;
@@ -84,6 +85,7 @@ public class User {
 		this.password = password;
 	}
 
+	@JsonProperty(access = Access.WRITE_ONLY)
 	@NotNull
 	public String getSecurePassword() {
 		return securePassword;

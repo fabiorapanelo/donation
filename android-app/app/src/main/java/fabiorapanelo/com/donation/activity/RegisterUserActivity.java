@@ -137,7 +137,13 @@ public class RegisterUserActivity extends BaseActivity {
         userService.save(user, new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
-                finish();
+
+                if(response.isSuccessful()){
+                    finish();
+                } else {
+                    _passwordText.setText("");
+                    Toast.makeText(RegisterUserActivity.this, "Falha ao cadastrar o usuário!", Toast.LENGTH_LONG).show();
+                }
             }
 
             @Override

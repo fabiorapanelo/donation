@@ -8,11 +8,8 @@ public class RepositoryConfig extends RepositoryRestConfigurerAdapter {
 
 	@Override
 	public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config) {
-		
 		config.exposeIdsFor(User.class);
 		config.exposeIdsFor(Donation.class);
 		config.exposeIdsFor(Campaign.class);
-		
-		super.configureRepositoryRestConfiguration(config);
 	}
 }
