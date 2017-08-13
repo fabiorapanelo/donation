@@ -34,10 +34,12 @@
     <string name="tab_profile">Profile</string>
 
     <!-- Create campaign -->
-
     <string name="hint_campaign_name">Nome da campanha</string>
     <string name="hint_latitude">Latitude</string>
     <string name="hint_longitude">Longitude</string>
     <string name="button_create_campaign">Criar campanha</string>
+
+    <!-- Profile -->
+    <string name="button_editar">Editar</string>
 
 </resources>

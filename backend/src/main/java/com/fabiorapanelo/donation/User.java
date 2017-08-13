@@ -12,6 +12,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
@@ -95,6 +96,7 @@ public class User {
 		this.securePassword = securePassword;
 	}
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "origin")
 	public List<Donation> getMyDonations() {
 		return myDonations;
@@ -104,6 +106,7 @@ public class User {
 		this.myDonations = myDonations;
 	}
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "destination")
 	public List<Donation> getDonationsForMe() {
 		return donationsForMe;
@@ -113,6 +116,7 @@ public class User {
 		this.donationsForMe = donationsForMe;
 	}
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "createdBy")
 	public List<Campaign> getMyCampaings() {
 		return myCampaings;

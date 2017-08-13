@@ -40,4 +40,7 @@ public interface UserRepository {
     @GET("users/search/findOneByUsernameIgnoreCase")
     Call<User> findByUsername(@Query("name") String username);
 
+    @GET("users/{userId}/myCampaings")
+    Call<ResponseBody> findMyCampaigns(@Path("userId") Long userId);
+
 }

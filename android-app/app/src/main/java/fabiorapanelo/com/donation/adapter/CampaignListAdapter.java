@@ -11,18 +11,19 @@ import android.widget.TextView;
 import java.util.List;
 
 import fabiorapanelo.com.donation.R;
+import fabiorapanelo.com.donation.model.Campaign;
 import fabiorapanelo.com.donation.model.Donation;
 
 /**
  * Created by fabio on 15/07/2017.
  */
 
-public class DonationListAdapter  extends ArrayAdapter<Donation> {
+public class CampaignListAdapter extends ArrayAdapter<Campaign> {
 
     private LayoutInflater layoutInflater;
 
-    public DonationListAdapter(Activity activity, List<Donation> categories) {
-        super(activity, R.layout.item_donation, categories);
+    public CampaignListAdapter(Activity activity, List<Campaign> campaigns) {
+        super(activity, R.layout.item_campaign, campaigns);
         layoutInflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -30,13 +31,12 @@ public class DonationListAdapter  extends ArrayAdapter<Donation> {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         if(convertView == null){
-            convertView = layoutInflater.inflate(R.layout.item_donation, null);
+            convertView = layoutInflater.inflate(R.layout.item_campaign, null);
         }
-        Donation donation = getItem(position);
-        TextView textView = (TextView) convertView.findViewById(R.id.text_donation_name);
-        textView.setText(donation.getName());
+        Campaign campaign = getItem(position);
+        TextView textView = (TextView) convertView.findViewById(R.id.text_campaign_name);
+        textView.setText(campaign.getName());
 
         return convertView;
-
     }
 }

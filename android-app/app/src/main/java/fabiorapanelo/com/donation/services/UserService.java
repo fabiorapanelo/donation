@@ -73,4 +73,9 @@ public class UserService extends ServiceBase {
 
     }
 
+    public void findMyCampaigns(Long userId, final Callback<ResponseBody> callback){
+        Call<ResponseBody> call = userRepository.findMyCampaigns(userId);
+        call.enqueue(callback);
+    }
+
 }
