@@ -22,7 +22,9 @@ public class UserService extends ServiceBase {
 
     protected UserRepository userRepository;
 
-    public UserService(){
+    private static UserService instance = new UserService();
+
+    private UserService(){
 
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -36,6 +38,17 @@ public class UserService extends ServiceBase {
                 .build();
 
         userRepository = retrofit.create(UserRepository.class);
+    }
+
+    public static UserService getInstance(){
+        return instance;
+    }
+
+    public static String getUrlForUser(User user){
+
+        String url = BASE_URL + "users/" + user.getId();
+        return url;
+
     }
     public void authenticate(Credentials credentials, final Callback<User> callback) {
         Call<User> authenticate = userRepository.authenticate(credentials);

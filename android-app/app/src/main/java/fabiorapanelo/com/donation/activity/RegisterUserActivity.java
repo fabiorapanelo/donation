@@ -48,7 +48,7 @@ public class RegisterUserActivity extends BaseActivity {
 
         this.setupToolbar();
 
-        userService = new UserService();
+        userService = UserService.getInstance();
 
         _registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
