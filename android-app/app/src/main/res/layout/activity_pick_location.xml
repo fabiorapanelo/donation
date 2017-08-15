@@ -1,8 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<fragment xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/pick_location_map"
-    tools:context=".activity.PickLocationActivity"
-    android:name="com.google.android.gms.maps.SupportMapFragment" />
+    android:padding="16dp"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_weight="0.9"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
+        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/pick_location_map"
+            tools:context=".activity.PickLocationActivity"
+            android:name="com.google.android.gms.maps.SupportMapFragment" />
+
+    </LinearLayout>
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/btn_pick_location"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_weight="0.1"
+        android:layout_marginTop="8dp"
+        android:enabled="false"
+        android:text="@string/btn_pick_location"/>
+
+</LinearLayout>

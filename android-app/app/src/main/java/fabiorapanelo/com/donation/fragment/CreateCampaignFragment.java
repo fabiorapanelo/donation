@@ -29,7 +29,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static android.app.Activity.RESULT_OK;
+
 public class CreateCampaignFragment extends Fragment {
+
+    public static final int REQUEST_CODE_PICK_LOCATION = 1;
 
     @Bind(R.id.input_campaign_name)
     protected EditText campaignName;
@@ -45,6 +49,10 @@ public class CreateCampaignFragment extends Fragment {
 
     @Bind(R.id.btn_pick_location)
     protected Button pickLocation;
+
+    protected String mLatitude;
+    protected String mLongitude;
+    protected boolean mLocationSelected = false;
 
     protected CampaignService campaignService;
 
@@ -101,15 +109,16 @@ public class CreateCampaignFragment extends Fragment {
 
     protected void createCampaign(View view){
 
+        if(!mLocationSelected){
+            Toast.makeText(CreateCampaignFragment.this.getActivity(), "Localização deve ser selecionada!", Toast.LENGTH_SHORT).show();
+        }
         String name = campaignName.getText().toString();
-        //String latitude = campaignLatitude.getText().toString();
-        //String longitude = campaignLongitude.getText().toString();
         User user = userDao.find();
 
         Campaign campaign = new Campaign();
         campaign.setName(name);
-        //campaign.setLatitude(latitude);
-        //campaign.setLongitude(longitude);
+        campaign.setLatitude(mLatitude);
+        campaign.setLongitude(mLongitude);
         campaign.setCreatedBy(UserService.getUrlForUser(user));
 
         campaignService.save(campaign, new Callback<ResponseBody>() {
@@ -117,15 +126,15 @@ public class CreateCampaignFragment extends Fragment {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
 
                 if(response.isSuccessful()){
-                    Toast.makeText(CreateCampaignFragment.this.getActivity(), "Campanha cadastrada com sucesso!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(CreateCampaignFragment.this.getActivity(), "Campanha cadastrada com sucesso!", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(CreateCampaignFragment.this.getActivity(), "Falha ao cadastrar campanha!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(CreateCampaignFragment.this.getActivity(), "Falha ao cadastrar campanha!", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Toast.makeText(CreateCampaignFragment.this.getActivity(), "Falha ao cadastrar campanha!", Toast.LENGTH_LONG).show();
+                Toast.makeText(CreateCampaignFragment.this.getActivity(), "Falha ao cadastrar campanha!", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -133,6 +142,17 @@ public class CreateCampaignFragment extends Fragment {
 
     protected void pickLocation(View view){
         Intent intent = new Intent(this.getActivity(), PickLocationActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent, REQUEST_CODE_PICK_LOCATION);
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_CODE_PICK_LOCATION && resultCode == RESULT_OK) {
+
+            mLatitude = String.valueOf(data.getDoubleExtra("latitude", 0));
+            mLongitude = String.valueOf(data.getDoubleExtra("longitude", 0));
+            mLocationSelected = true;
+        }
+    }
+
 }

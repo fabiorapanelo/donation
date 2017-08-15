@@ -13,6 +13,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAI9CT3vHIkTi5R7SR5bHE1LTwD1diazPA" />
+
         <activity
             android:name=".activity.LoginActivity"
             android:theme="@style/AppTheme">
@@ -28,14 +33,10 @@
             android:theme="@style/AppTheme" />
         <activity android:name=".activity.HomeActivity" />
 
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyAI9CT3vHIkTi5R7SR5bHE1LTwD1diazPA" />
-
         <activity
             android:name=".activity.PickLocationActivity"
             android:label="@string/title_activity_pick_location"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme"/>
     </application>
 
 </manifest>

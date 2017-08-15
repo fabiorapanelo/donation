@@ -40,8 +40,11 @@
 
     <!-- Profile -->
     <string name="button_editar">Editar</string>
-    <string name="title_activity_pick_location">PickLocationActivity</string>
 
+
+    <!-- Pick Location -->
+    <string name="title_activity_pick_location">Selecionar Localização</string>
+    <string name="btn_pick_location">Selecionar</string>
 
     <!--    Permissions    -->
     <string name="permission_rationale_location">É necessário o acesso a sua localização atual</string>
