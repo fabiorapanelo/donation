@@ -3,6 +3,8 @@
     package="fabiorapanelo.com.donation">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -20,10 +22,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.RegisterUserActivity"
+        <activity
+            android:name=".activity.RegisterUserActivity"
             android:label="@string/title_register"
             android:theme="@style/AppTheme" />
-        <activity android:name=".activity.HomeActivity"></activity>
+        <activity android:name=".activity.HomeActivity" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAI9CT3vHIkTi5R7SR5bHE1LTwD1diazPA" />
+
+        <activity
+            android:name=".activity.PickLocationActivity"
+            android:label="@string/title_activity_pick_location"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

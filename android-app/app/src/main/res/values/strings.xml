@@ -26,7 +26,6 @@
     <string name="button_confirm">Confirmar</string>
 
     <!-- Tab -->
-
     <string name="tab_home">Home</string>
     <string name="tab_search">Search</string>
     <string name="tab_share">Share</string>
@@ -41,5 +40,13 @@
 
     <!-- Profile -->
     <string name="button_editar">Editar</string>
+    <string name="title_activity_pick_location">PickLocationActivity</string>
+
+
+    <!--    Permissions    -->
+    <string name="permission_rationale_location">É necessário o acesso a sua localização atual</string>
+    <string name="location_permission_denied">Para utilizar esta funcionalidade é necessário habilitar a permissão de localização.</string>
+    <string name="permission_required_toast">Sua localização é necessária para esta funcionalidade.</string>
+
 
 </resources>
