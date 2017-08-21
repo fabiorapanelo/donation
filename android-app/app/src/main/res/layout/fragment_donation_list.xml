@@ -33,7 +33,7 @@
         <!-- Search button -->
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/btn_search"
-            style="@style/Widget.AppCompat.Button.Colored"
+            style="@style/AppTheme.Button.Colored"
             android:layout_width="0dip"
             android:layout_height="match_parent"
             android:layout_weight="0.4"

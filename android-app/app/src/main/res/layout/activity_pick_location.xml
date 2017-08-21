@@ -27,7 +27,7 @@
 
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/btn_pick_location"
-        style="@style/Widget.AppCompat.Button.Colored"
+        style="@style/AppTheme.Button.Colored"
         android:layout_width="match_parent"
         android:layout_height="0dip"
         android:layout_weight="0.1"

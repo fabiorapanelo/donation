@@ -42,12 +42,11 @@ public abstract class PermissionUtils {
                                          String permission, boolean finishActivity) {
         if (ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)) {
             // Display a dialog with rationale.
-            PermissionUtils.RationaleDialog.newInstance(requestId, finishActivity)
+            PermissionUtils.RationaleDialog.newInstance(requestId, finishActivity, permission)
                     .show(activity.getSupportFragmentManager(), "dialog");
         } else {
             // Location permission has not been granted yet, request it.
             ActivityCompat.requestPermissions(activity, new String[]{permission}, requestId);
-
         }
     }
 
@@ -124,7 +123,11 @@ public abstract class PermissionUtils {
 
         private static final String ARGUMENT_FINISH_ACTIVITY = "finish";
 
+        private static final String ARGUMENT_PERMISSION = "permission";
+
         private boolean mFinishActivity = false;
+
+        private String mPermission;
 
         /**
          * Creates a new instance of a dialog displaying the rationale for the use of the location
@@ -138,10 +141,11 @@ public abstract class PermissionUtils {
          * @param finishActivity Whether the calling Activity should be finished if the dialog is
          *                       cancelled.
          */
-        public static RationaleDialog newInstance(int requestCode, boolean finishActivity) {
+        public static RationaleDialog newInstance(int requestCode, boolean finishActivity, String permission) {
             Bundle arguments = new Bundle();
             arguments.putInt(ARGUMENT_PERMISSION_REQUEST_CODE, requestCode);
             arguments.putBoolean(ARGUMENT_FINISH_ACTIVITY, finishActivity);
+            arguments.putString(ARGUMENT_PERMISSION, permission);
             RationaleDialog dialog = new RationaleDialog();
             dialog.setArguments(arguments);
             return dialog;
@@ -152,6 +156,7 @@ public abstract class PermissionUtils {
             Bundle arguments = getArguments();
             final int requestCode = arguments.getInt(ARGUMENT_PERMISSION_REQUEST_CODE);
             mFinishActivity = arguments.getBoolean(ARGUMENT_FINISH_ACTIVITY);
+            mPermission = arguments.getString(ARGUMENT_PERMISSION);
 
             return new AlertDialog.Builder(getActivity())
                     .setMessage(R.string.permission_rationale_location)
@@ -160,7 +165,7 @@ public abstract class PermissionUtils {
                         public void onClick(DialogInterface dialog, int which) {
                             // After click on Ok, request the permission.
                             ActivityCompat.requestPermissions(getActivity(),
-                                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                                    new String[]{mPermission},
                                     requestCode);
                             // Do not finish the Activity while requesting permission.
                             mFinishActivity = false;
