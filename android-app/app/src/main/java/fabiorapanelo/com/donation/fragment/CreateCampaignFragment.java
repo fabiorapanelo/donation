@@ -26,6 +26,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.apache.commons.lang3.StringUtils;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import fabiorapanelo.com.donation.R;
@@ -34,6 +36,7 @@ import fabiorapanelo.com.donation.database.UserDao;
 import fabiorapanelo.com.donation.model.Campaign;
 import fabiorapanelo.com.donation.model.User;
 import fabiorapanelo.com.donation.services.CampaignService;
+import fabiorapanelo.com.donation.services.ImageService;
 import fabiorapanelo.com.donation.services.UserService;
 import fabiorapanelo.com.donation.utils.PermissionUtils;
 import okhttp3.ResponseBody;
@@ -76,11 +79,17 @@ public class CreateCampaignFragment extends Fragment implements
     protected String mLongitude;
     protected boolean mLocationSelected = false;
 
+    protected String image1;
+    protected String image2;
+    protected String image3;
+
     protected CampaignService campaignService;
 
     protected UserDao userDao;
 
     protected AppCompatActivity mActivity;
+
+    protected ImageService imageService;
 
     public static CreateCampaignFragment newInstance() {
         CreateCampaignFragment fragment = new CreateCampaignFragment();
@@ -103,6 +112,7 @@ public class CreateCampaignFragment extends Fragment implements
         ButterKnife.bind(this, view);
 
         campaignService = CampaignService.getInstance();
+        imageService = ImageService.getInstance();
 
         userDao = new UserDao(mActivity);
 
@@ -221,10 +231,13 @@ public class CreateCampaignFragment extends Fragment implements
 
             if(requestCode == REQUEST_CODE_ADD_PHOTO1){
                 mImageViewPhoto1.setImageBitmap(photo);
+                image1 = picturePath;
             } else if(requestCode == REQUEST_CODE_ADD_PHOTO2){
                 mImageViewPhoto2.setImageBitmap(photo);
+                image2 = picturePath;
             } else if(requestCode == REQUEST_CODE_ADD_PHOTO3){
                 mImageViewPhoto3.setImageBitmap(photo);
+                image3 = picturePath;
             }
         }
 
@@ -234,32 +247,59 @@ public class CreateCampaignFragment extends Fragment implements
 
         if(!mLocationSelected){
             Toast.makeText(mActivity, "Localização deve ser selecionada!", Toast.LENGTH_SHORT).show();
+            return;
         }
-        String name = campaignName.getText().toString();
-        User user = userDao.find();
 
-        Campaign campaign = new Campaign();
-        campaign.setName(name);
-        campaign.setLatitude(mLatitude);
-        campaign.setLongitude(mLongitude);
-        campaign.setCreatedBy(UserService.getUrlForUser(user));
+        if(StringUtils.isEmpty(image1)){
+            Toast.makeText(mActivity, "Uma image deve ser selecionada!", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-        campaignService.save(campaign, new Callback<ResponseBody>() {
+        final User user = userDao.find();
+
+        imageService.upload(user, image1, new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
 
                 if(response.isSuccessful()){
-                    Toast.makeText(mActivity, "Campanha cadastrada com sucesso!", Toast.LENGTH_SHORT).show();
+
+                    Campaign campaign = new Campaign();
+
+                    String name = campaignName.getText().toString();
+                    campaign.setName(name);
+                    campaign.setLatitude(mLatitude);
+                    campaign.setLongitude(mLongitude);
+                    campaign.setCreatedBy(UserService.getUrlForUser(user));
+
+                    campaignService.save(campaign, new Callback<ResponseBody>() {
+                        @Override
+                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+                            if(response.isSuccessful()){
+                                Toast.makeText(mActivity, "Campanha cadastrada com sucesso!", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(mActivity, "Falha ao cadastrar campanha!", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<ResponseBody> call, Throwable t) {
+                            Toast.makeText(mActivity, "Falha ao cadastrar campanha!", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
                 } else {
-                    Toast.makeText(mActivity, "Falha ao cadastrar campanha!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mActivity, "Falha ao enviar imagem!", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Toast.makeText(mActivity, "Falha ao cadastrar campanha!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mActivity, "Falha ao enviar imagem!", Toast.LENGTH_SHORT).show();
             }
         });
+
+
 
     }
 
