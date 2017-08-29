@@ -1,6 +1,9 @@
 package fabiorapanelo.com.donation.services;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import fabiorapanelo.com.donation.model.Campaign;
 import fabiorapanelo.com.donation.model.User;
@@ -28,18 +31,7 @@ public class ImageService extends ServiceBase {
     private static ImageService instance = new ImageService();
 
     private ImageService(){
-
-        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
-        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-        httpClient.addInterceptor(logging);
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(httpClient.build())
-                .build();
-
+        super();
         imageRepository = retrofit.create(ImageRepository.class);
     }
 
@@ -47,15 +39,20 @@ public class ImageService extends ServiceBase {
         return instance;
     }
 
-    public void upload(User user, String filePath, final Callback<ResponseBody> callback) {
+    public void upload(User user, List<String> filePaths, final Callback<ResponseBody> callback) {
 
-        File file = new File(filePath);
+        List<MultipartBody.Part> parts = new ArrayList<>();
 
-        RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
-        MultipartBody.Part body = MultipartBody.Part.createFormData("image", file.getName(), reqFile);
-        RequestBody name = RequestBody.create(MediaType.parse("text/plain"), "image");
+        for(String filePath: filePaths){
+            File file = new File(filePath);
 
-        Call<ResponseBody> call = imageRepository.upload(user.getId().toString(), body, name);
+            RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), file);
+            MultipartBody.Part part = MultipartBody.Part.createFormData("images", file.getName(), requestBody);
+
+            parts.add(part);
+        }
+
+        Call<ResponseBody> call = imageRepository.upload(user.getId().toString(), parts);
 
         call.enqueue(callback);
 

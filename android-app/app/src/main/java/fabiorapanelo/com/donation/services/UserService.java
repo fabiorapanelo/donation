@@ -25,18 +25,7 @@ public class UserService extends ServiceBase {
     private static UserService instance = new UserService();
 
     private UserService(){
-
-        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
-        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-        httpClient.addInterceptor(logging);
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(httpClient.build())
-                .build();
-
+        super();
         userRepository = retrofit.create(UserRepository.class);
     }
 

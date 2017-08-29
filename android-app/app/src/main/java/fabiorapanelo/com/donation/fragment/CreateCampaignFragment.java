@@ -28,6 +28,9 @@ import android.widget.Toast;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import fabiorapanelo.com.donation.R;
@@ -250,14 +253,27 @@ public class CreateCampaignFragment extends Fragment implements
             return;
         }
 
-        if(StringUtils.isEmpty(image1)){
+        if(StringUtils.isEmpty(image1) && StringUtils.isEmpty(image2) && StringUtils.isEmpty(image3)){
             Toast.makeText(mActivity, "Uma image deve ser selecionada!", Toast.LENGTH_SHORT).show();
             return;
         }
 
+        List<String> images = new ArrayList<>();
+        if(StringUtils.isNotEmpty(image1)){
+            images.add(image1);
+        }
+
+        if(StringUtils.isNotEmpty(image2)){
+            images.add(image2);
+        }
+
+        if(StringUtils.isNotEmpty(image3)){
+            images.add(image3);
+        }
+
         final User user = userDao.find();
 
-        imageService.upload(user, image1, new Callback<ResponseBody>() {
+        imageService.upload(user, images, new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
 

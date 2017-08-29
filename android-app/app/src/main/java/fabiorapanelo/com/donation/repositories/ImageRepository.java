@@ -1,5 +1,7 @@
 package fabiorapanelo.com.donation.repositories;
 
+import java.util.List;
+
 import fabiorapanelo.com.donation.model.Campaign;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -20,9 +22,8 @@ import retrofit2.http.Path;
 public interface ImageRepository {
 
     @Multipart
-    @POST("users/{userId}/upload-image")
+    @POST("users/{userId}/upload-images")
     Call<ResponseBody> upload(@Path("userId") String userId,
-                              @Part MultipartBody.Part image,
-                              @Part("name") RequestBody name);
+                              @Part List<MultipartBody.Part> images);
 
 }
