@@ -4,12 +4,15 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
 import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.tomcat.util.http.fileupload.IOUtils;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,7 +20,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
 public class ImageController {
@@ -38,19 +40,38 @@ public class ImageController {
     	IOUtils.copy(in, response.getOutputStream());
     }
     
-	@SuppressWarnings("rawtypes")
-	@PostMapping("/users/{userId}/upload-image")
-    public ResponseEntity uploadImage(@PathVariable String userId, @RequestParam("image") MultipartFile image) throws IOException {
-		
-		String filename = userId + "-" + image.getOriginalFilename();
-		
-		File file = new File(uploadDir + filename);
-        image.transferTo(file);
+	@PostMapping("/users/{userId}/upload-images")
+    public ResponseEntity<ImageUpload> uploadingPost(@PathVariable String userId, @RequestParam("images") MultipartFile[] images) throws IOException {
         
-        URI location = ServletUriComponentsBuilder.fromCurrentContextPath()
-				.path("/images/{filename}/")
-				.buildAndExpand(filename).toUri();
-
-        return ResponseEntity.created(location).build();
+		ImageUpload imageUpload = new ImageUpload();
+		
+		List<String> filenames = new ArrayList<>();
+		
+		for(MultipartFile image : images) {
+			
+			String originalFileName = image.getOriginalFilename();
+			
+            String filename = userId + "-" + UUID.randomUUID() + getExtension(originalFileName);
+            
+    		File file = new File(uploadDir + filename);
+            image.transferTo(file);
+            
+            filenames.add(filename);
+        }
+        
+		imageUpload.setImages(filenames);
+		
+		return new ResponseEntity<ImageUpload>(imageUpload, HttpStatus.OK);
     }
+	
+	
+	public String getExtension(String filename){
+		
+		int i = filename.lastIndexOf('.');
+        if (i > 0) {
+            return filename.substring(i);
+        }
+        
+        return "";
+	}
 }
