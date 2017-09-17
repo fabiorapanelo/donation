@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 
 import fabiorapanelo.com.donation.R;
 
-public class FavoritesFragment extends Fragment {
+public class FavoritesFragment extends BaseFragment {
 
     public static FavoritesFragment newInstance() {
         FavoritesFragment fragment = new FavoritesFragment();

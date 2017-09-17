@@ -13,9 +13,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +21,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,11 +34,9 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import fabiorapanelo.com.donation.R;
 import fabiorapanelo.com.donation.activity.PickLocationActivity;
-import fabiorapanelo.com.donation.database.UserDao;
 import fabiorapanelo.com.donation.model.Campaign;
+import fabiorapanelo.com.donation.model.ImageUpload;
 import fabiorapanelo.com.donation.model.User;
-import fabiorapanelo.com.donation.services.CampaignService;
-import fabiorapanelo.com.donation.services.ImageService;
 import fabiorapanelo.com.donation.services.UserService;
 import fabiorapanelo.com.donation.utils.PermissionUtils;
 import okhttp3.ResponseBody;
@@ -48,8 +45,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static android.app.Activity.RESULT_OK;
+import static fabiorapanelo.com.donation.services.UserService.CACHE_KEY_USER_SERVICE_FIND;
 
-public class CreateCampaignFragment extends Fragment implements
+public class CreateCampaignFragment extends BaseFragment implements
         ActivityCompat.OnRequestPermissionsResultCallback {
 
     public static final int REQUEST_CODE_ADD_PHOTO1 = 1;
@@ -78,6 +76,16 @@ public class CreateCampaignFragment extends Fragment implements
     @Bind(R.id.text_selected_location)
     protected TextView mTxtSelectedLocation;
 
+    @Bind(R.id.create_campaign_message_layout)
+    protected LinearLayout mCreateCampaignMessageLayout;
+
+    @Bind(R.id.campaign_fields_layout)
+    protected LinearLayout mCampaignFieldsLayout;
+
+    @Bind(R.id.create_campaign_layout)
+    protected LinearLayout mCreateCampaignLayout;
+
+
     protected String mLatitude;
     protected String mLongitude;
     protected boolean mLocationSelected = false;
@@ -86,39 +94,28 @@ public class CreateCampaignFragment extends Fragment implements
     protected String image2;
     protected String image3;
 
-    protected CampaignService campaignService;
-
-    protected UserDao userDao;
-
-    protected AppCompatActivity mActivity;
-
-    protected ImageService imageService;
-
     public static CreateCampaignFragment newInstance() {
         CreateCampaignFragment fragment = new CreateCampaignFragment();
         return fragment;
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        mActivity = (AppCompatActivity) this.getActivity();
 
         View view = inflater.inflate(R.layout.fragment_create_campaign, container, false);
 
         ButterKnife.bind(this, view);
 
-        campaignService = CampaignService.getInstance();
-        imageService = ImageService.getInstance();
 
-        userDao = new UserDao(mActivity);
 
+        this.setupListeners();
+        this.reloadOnCreateView();
+
+        return view;
+    }
+
+    protected void setupListeners(){
         createCampaign.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -153,8 +150,29 @@ public class CreateCampaignFragment extends Fragment implements
                 CreateCampaignFragment.this.pickLocation(view);
             }
         });
+    }
 
-        return view;
+    protected void reloadOnCreateView(){
+
+        if(StringUtils.isNotEmpty(mLatitude) && StringUtils.isNotEmpty(mLongitude)){
+            this.setLocation(mLatitude, mLongitude);
+        }
+
+        if(StringUtils.isNotEmpty(image1)){
+            Bitmap photo = BitmapFactory.decodeFile(image1);
+            mImageViewPhoto1.setImageBitmap(photo);
+        }
+
+        if(StringUtils.isNotEmpty(image2)){
+            Bitmap photo = BitmapFactory.decodeFile(image2);
+            mImageViewPhoto1.setImageBitmap(photo);
+        }
+
+        if(StringUtils.isNotEmpty(image3)){
+            Bitmap photo = BitmapFactory.decodeFile(image3);
+            mImageViewPhoto1.setImageBitmap(photo);
+        }
+
     }
 
     @Override
@@ -211,10 +229,9 @@ public class CreateCampaignFragment extends Fragment implements
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CODE_PICK_LOCATION && resultCode == RESULT_OK) {
 
-            mLatitude = String.valueOf(data.getDoubleExtra("latitude", 0));
-            mLongitude = String.valueOf(data.getDoubleExtra("longitude", 0));
-            mTxtSelectedLocation.setText(mLatitude + ":" + mLongitude);
-            mLocationSelected = true;
+            String latitude = String.valueOf(data.getDoubleExtra("latitude", 0));
+            String longitude = String.valueOf(data.getDoubleExtra("longitude", 0));
+            this.setLocation(latitude, longitude);
 
         } else if((requestCode == REQUEST_CODE_ADD_PHOTO1 ||
                 requestCode == REQUEST_CODE_ADD_PHOTO2 ||
@@ -273,9 +290,9 @@ public class CreateCampaignFragment extends Fragment implements
 
         final User user = userDao.find();
 
-        imageService.upload(user, images, new Callback<ResponseBody>() {
+        imageService.upload(user, images, new Callback<ImageUpload>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            public void onResponse(Call<ImageUpload> call, Response<ImageUpload> response) {
 
                 if(response.isSuccessful()){
 
@@ -287,12 +304,22 @@ public class CreateCampaignFragment extends Fragment implements
                     campaign.setLongitude(mLongitude);
                     campaign.setCreatedBy(UserService.getUrlForUser(user));
 
+                    ImageUpload imageUpload = response.body();
+                    campaign.setImages(imageUpload.getImages());
+
                     campaignService.save(campaign, new Callback<ResponseBody>() {
                         @Override
                         public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
 
                             if(response.isSuccessful()){
-                                Toast.makeText(mActivity, "Campanha cadastrada com sucesso!", Toast.LENGTH_SHORT).show();
+
+                                mCreateCampaignMessageLayout.setVisibility(View.VISIBLE);
+                                mCampaignFieldsLayout.setVisibility(View.GONE);
+                                mCreateCampaignLayout.setVisibility(View.GONE);
+
+                                CreateCampaignFragment.this.resetFields();
+                                cacheManager.evict(CACHE_KEY_USER_SERVICE_FIND);
+
                             } else {
                                 Toast.makeText(mActivity, "Falha ao cadastrar campanha!", Toast.LENGTH_SHORT).show();
                             }
@@ -310,13 +337,28 @@ public class CreateCampaignFragment extends Fragment implements
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(Call<ImageUpload> call, Throwable t) {
                 Toast.makeText(mActivity, "Falha ao enviar imagem!", Toast.LENGTH_SHORT).show();
             }
         });
 
+    }
 
+    protected void setLocation(String latitude, String longitude){
+        mLatitude = latitude;
+        mLongitude = longitude;
+        mTxtSelectedLocation.setText(mLatitude + ":" + mLongitude);
+        mLocationSelected = true;
+    }
 
+    protected void resetFields(){
+        mLatitude = null;
+        mLongitude = null;
+        mLocationSelected = false;
+        String image1 = null;
+        String image2 = null;
+        String image3 = null;
+        campaignName.setText("");
     }
 
 }

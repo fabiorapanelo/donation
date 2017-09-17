@@ -15,8 +15,8 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import fabiorapanelo.com.donation.R;
+import fabiorapanelo.com.donation.fragment.CampaignsFragment;
 import fabiorapanelo.com.donation.fragment.CreateCampaignFragment;
-import fabiorapanelo.com.donation.fragment.DonationListFragment;
 import fabiorapanelo.com.donation.fragment.FavoritesFragment;
 import fabiorapanelo.com.donation.fragment.ProfileFragment;
 import fabiorapanelo.com.donation.fragment.SearchFragment;
@@ -78,7 +78,7 @@ public class HomeActivity extends BaseActivity implements TabLayout.OnTabSelecte
 
         List<Fragment> fragments = new ArrayList<>(5);
 
-        fragments.add(DonationListFragment.newInstance());
+        fragments.add(CampaignsFragment.newInstance());
         fragments.add(SearchFragment.newInstance());
         fragments.add(CreateCampaignFragment.newInstance());
         fragments.add(FavoritesFragment.newInstance());

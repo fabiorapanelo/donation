@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 
 import fabiorapanelo.com.donation.R;
 
-public class SearchFragment extends Fragment {
+public class SearchFragment extends BaseFragment {
 
     public SearchFragment() {
         // Required empty public constructor

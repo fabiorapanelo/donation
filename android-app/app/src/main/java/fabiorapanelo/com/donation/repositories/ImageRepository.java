@@ -3,6 +3,7 @@ package fabiorapanelo.com.donation.repositories;
 import java.util.List;
 
 import fabiorapanelo.com.donation.model.Campaign;
+import fabiorapanelo.com.donation.model.ImageUpload;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
@@ -23,7 +24,7 @@ public interface ImageRepository {
 
     @Multipart
     @POST("users/{userId}/upload-images")
-    Call<ResponseBody> upload(@Path("userId") String userId,
-                              @Part List<MultipartBody.Part> images);
+    Call<ImageUpload> upload(@Path("userId") String userId,
+                             @Part List<MultipartBody.Part> images);
 
 }

@@ -1,11 +1,16 @@
 package fabiorapanelo.com.donation.services;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import fabiorapanelo.com.donation.model.Campaign;
+import fabiorapanelo.com.donation.model.ImageUpload;
 import fabiorapanelo.com.donation.model.User;
 import fabiorapanelo.com.donation.repositories.CampaignRepository;
 import fabiorapanelo.com.donation.repositories.ImageRepository;
@@ -39,22 +44,44 @@ public class ImageService extends ServiceBase {
         return instance;
     }
 
-    public void upload(User user, List<String> filePaths, final Callback<ResponseBody> callback) {
+    public void upload(User user, List<String> filePaths, final Callback<ImageUpload> callback) {
 
         List<MultipartBody.Part> parts = new ArrayList<>();
 
         for(String filePath: filePaths){
-            File file = new File(filePath);
 
-            RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), file);
+            File file = new File(filePath);
+            String filename = file.getName();
+            String extension = ImageService.getExtension(filename);
+
+            Bitmap bmp = BitmapFactory.decodeFile(filePath);
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+
+            if(extension.equalsIgnoreCase("png")){
+                bmp.compress(Bitmap.CompressFormat.PNG, 50, bos);
+            } else {
+                bmp.compress(Bitmap.CompressFormat.JPEG, 50, bos);
+            }
+
+            RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), bos.toByteArray());
             MultipartBody.Part part = MultipartBody.Part.createFormData("images", file.getName(), requestBody);
 
             parts.add(part);
         }
 
-        Call<ResponseBody> call = imageRepository.upload(user.getId().toString(), parts);
+        Call<ImageUpload> call = imageRepository.upload(user.getId().toString(), parts);
 
         call.enqueue(callback);
 
+    }
+
+    public static String getExtension(String filename){
+
+        int i = filename.lastIndexOf('.');
+        if (i > 0) {
+            return filename.substring(i);
+        }
+
+        return "";
     }
 }

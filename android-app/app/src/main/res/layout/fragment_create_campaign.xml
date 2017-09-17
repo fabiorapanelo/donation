@@ -9,6 +9,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
+        android:id="@+id/create_campaign_message_layout"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/create_campaign_success_message"
+            android:textAlignment="center"/>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/campaign_fields_layout"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -88,6 +106,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/create_campaign_layout"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="0dip"

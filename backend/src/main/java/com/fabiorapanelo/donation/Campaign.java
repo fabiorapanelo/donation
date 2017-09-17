@@ -1,9 +1,15 @@
 package com.fabiorapanelo.donation;
 
+import java.util.List;
+
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
@@ -15,6 +21,7 @@ public class Campaign {
 	private User createdBy;
 	private String latitude;
 	private String longitude;
+	private List<String> images;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -61,6 +68,17 @@ public class Campaign {
 
 	public void setLongitude(String longitude) {
 		this.longitude = longitude;
+	}
+
+	@ElementCollection
+	@CollectionTable(name="campaign_images", joinColumns=@JoinColumn(name="campaign_id"))
+	@Column(name="image")
+	public List<String> getImages() {
+		return images;
+	}
+
+	public void setImages(List<String> images) {
+		this.images = images;
 	}
 
 }

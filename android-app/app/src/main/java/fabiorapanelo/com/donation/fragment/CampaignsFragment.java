@@ -1,15 +1,11 @@
 package fabiorapanelo.com.donation.fragment;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -33,53 +29,50 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static fabiorapanelo.com.donation.services.UserService.CACHE_KEY_USER_SERVICE_FIND;
-import static fabiorapanelo.com.donation.services.UserService.CACHE_TIMEOUT_USER_SERVICE_FIND;
+import static fabiorapanelo.com.donation.services.CampaignService.CACHE_KEY_CAMPAING_SERVICE_FIND;
+import static fabiorapanelo.com.donation.services.CampaignService.CACHE_TIMEOUT_CAMPAING_SERVICE_FIND;
 
-public class ProfileFragment extends BaseFragment {
-
-    @Bind(R.id.text_profile_name)
-    protected TextView profileName;
+//https://www.learn2crack.com/2016/02/image-loading-recyclerview-picasso.html
+public class CampaignsFragment extends BaseFragment  {
 
     @Bind(R.id.recycler_view_campaigns)
     protected RecyclerView recyclerViewCampaigns;
 
-    @Bind(R.id.btn_edit_profile)
-    protected Button editProfile;
-
-    public static ProfileFragment newInstance() {
-        ProfileFragment fragment = new ProfileFragment();
+    public static CampaignsFragment newInstance() {
+        CampaignsFragment fragment = new CampaignsFragment();
         return fragment;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_profile, container, false);
+
+        View view = inflater.inflate(R.layout.fragment_campaigns, container, false);
 
         ButterKnife.bind(this, view);
-
-        profileName.setText(user.getName());
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.getContext());
         recyclerViewCampaigns.setLayoutManager(layoutManager);
 
-        this.findMyCampaigns();
+        this.findCampaigns();
 
         return view;
     }
 
-    private void findMyCampaigns(){
+    private void findCampaigns(){
 
-        Object object = cacheManager.get(CACHE_KEY_USER_SERVICE_FIND);
+        Object object = cacheManager.get(CACHE_KEY_CAMPAING_SERVICE_FIND);
         if(object != null){
 
             List<Campaign> campaigns = (List<Campaign>) object;
+
             CampaignListAdapter adapter = new CampaignListAdapter(this.getContext(), campaigns);
             recyclerViewCampaigns.setAdapter(adapter);
 
         } else {
-            userService.findMyCampaigns(user.getId(), new Callback<ResponseBody>() {
+
+            campaignService.find(new Callback<ResponseBody>() {
+
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     if(response.isSuccessful()){
@@ -91,10 +84,9 @@ public class ProfileFragment extends BaseFragment {
                             Type listType = new TypeToken<ArrayList<Campaign>>(){}.getType();
                             List<Campaign> campaigns = new Gson().fromJson(campaignsArray, listType);
 
-                            cacheManager.put(CACHE_KEY_USER_SERVICE_FIND, campaigns, CACHE_TIMEOUT_USER_SERVICE_FIND);
-
+                            cacheManager.put(CACHE_KEY_CAMPAING_SERVICE_FIND, campaigns, CACHE_TIMEOUT_CAMPAING_SERVICE_FIND);
                             CampaignListAdapter adapter = new CampaignListAdapter(
-                                    ProfileFragment.this.getContext(), campaigns);
+                                    CampaignsFragment.this.getContext(), campaigns);
                             recyclerViewCampaigns.setAdapter(adapter);
 
                         } catch (IOException e) {
@@ -104,26 +96,18 @@ public class ProfileFragment extends BaseFragment {
                         }
 
                     } else {
-                        Toast.makeText(ProfileFragment.this.getActivity(), "Falha ao cadastrar campanha!", Toast.LENGTH_LONG).show();
+                        Toast.makeText(CampaignsFragment.this.getActivity(), "Falha ao recuperar as campanhas!", Toast.LENGTH_LONG).show();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
-                    Toast.makeText(ProfileFragment.this.getActivity(), "Falha ao recuperar suas campanhas!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(CampaignsFragment.this.getActivity(), "Falha ao recuperar as campanhas!", Toast.LENGTH_LONG).show();
                 }
             });
+
         }
 
-    }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
     }
 }

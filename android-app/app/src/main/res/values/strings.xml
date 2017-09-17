@@ -37,6 +37,7 @@
     <string name="hint_latitude">Latitude</string>
     <string name="hint_longitude">Longitude</string>
     <string name="button_create_campaign">Criar campanha</string>
+    <string name="create_campaign_success_message">Sua campanha foi criada com sucesso!</string>
 
     <!-- Profile -->
     <string name="button_editar">Editar</string>

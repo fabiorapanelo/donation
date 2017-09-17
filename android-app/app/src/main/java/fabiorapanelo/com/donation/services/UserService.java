@@ -1,24 +1,21 @@
 package fabiorapanelo.com.donation.services;
 
 
-import org.apache.commons.lang3.StringUtils;
-
 import fabiorapanelo.com.donation.model.Credentials;
 import fabiorapanelo.com.donation.model.User;
 import fabiorapanelo.com.donation.repositories.UserRepository;
-import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
-import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by fabio on 29/07/2017.
  */
 
 public class UserService extends ServiceBase {
+
+    public static final String CACHE_KEY_USER_SERVICE_FIND = "CampaingService.findMyCampaigns";
+    public static final int CACHE_TIMEOUT_USER_SERVICE_FIND = 30;
 
     protected UserRepository userRepository;
 
