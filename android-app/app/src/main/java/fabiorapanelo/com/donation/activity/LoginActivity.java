@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +32,9 @@ public class LoginActivity extends AppCompatActivity {
     @Bind(R.id.link_signup)
     TextView _signupLink;
 
+    @Bind(R.id.progress_bar)
+    ProgressBar progressBar;
+
     protected UserService userService;
 
     protected UserDao userDao;
@@ -44,6 +48,8 @@ public class LoginActivity extends AppCompatActivity {
         userDao = new UserDao(this);
 
         ButterKnife.bind(this);
+
+        progressBar.setVisibility(View.GONE);
 
         _loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,6 +77,8 @@ public class LoginActivity extends AppCompatActivity {
         credentials.setUsername(username);
         credentials.setPassword(password);
 
+        progressBar.setVisibility(View.VISIBLE);
+
         userService.authenticate(credentials, new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, retrofit2.Response<User> response) {
@@ -86,6 +94,7 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(LoginActivity.this, "Authenticação Falhou!", Toast.LENGTH_LONG).show();
                 }
                 _loginButton.setEnabled(true);
+                progressBar.setVisibility(View.GONE);
             }
 
             @Override

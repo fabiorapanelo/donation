@@ -36,6 +36,7 @@ public class UserService extends ServiceBase {
         return url;
 
     }
+
     public void authenticate(Credentials credentials, final Callback<User> callback) {
         Call<User> authenticate = userRepository.authenticate(credentials);
         authenticate.enqueue(callback);
@@ -57,11 +58,6 @@ public class UserService extends ServiceBase {
 
         call.enqueue(callback);
 
-    }
-
-    public void findMyCampaigns(Long userId, final Callback<ResponseBody> callback){
-        Call<ResponseBody> call = userRepository.findMyCampaigns(userId);
-        call.enqueue(callback);
     }
 
 }

@@ -75,11 +75,11 @@ public class ProfileFragment extends BaseFragment {
         if(object != null){
 
             List<Campaign> campaigns = (List<Campaign>) object;
-            CampaignListAdapter adapter = new CampaignListAdapter(this.getContext(), campaigns);
+            CampaignListAdapter adapter = new CampaignListAdapter(this.getContext(), campaigns, null);
             recyclerViewCampaigns.setAdapter(adapter);
 
         } else {
-            userService.findMyCampaigns(user.getId(), new Callback<ResponseBody>() {
+            campaignService.searchByUser(user.getId().toString(), new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     if(response.isSuccessful()){
@@ -87,19 +87,16 @@ public class ProfileFragment extends BaseFragment {
                         try {
 
                             String body = response.body().string();
-                            String campaignsArray = new JSONObject(body).getJSONObject("_embedded").getJSONArray("campaigns").toString();
                             Type listType = new TypeToken<ArrayList<Campaign>>(){}.getType();
-                            List<Campaign> campaigns = new Gson().fromJson(campaignsArray, listType);
+                            List<Campaign> campaigns = new Gson().fromJson(body, listType);
 
                             cacheManager.put(CACHE_KEY_USER_SERVICE_FIND, campaigns, CACHE_TIMEOUT_USER_SERVICE_FIND);
 
                             CampaignListAdapter adapter = new CampaignListAdapter(
-                                    ProfileFragment.this.getContext(), campaigns);
+                                    ProfileFragment.this.getContext(), campaigns, null);
                             recyclerViewCampaigns.setAdapter(adapter);
 
                         } catch (IOException e) {
-                            e.printStackTrace();
-                        } catch (JSONException e) {
                             e.printStackTrace();
                         }
 

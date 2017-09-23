@@ -1,11 +1,11 @@
 package com.fabiorapanelo.donation;
 
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import java.util.List;
 
-@RepositoryRestResource
-public interface CampaignRepository extends CrudRepository<Campaign, Long> {
+import org.springframework.data.mongodb.repository.MongoRepository;
 
-	public Iterable<Donation> findByNameContainingIgnoreCase(String name);
+public interface CampaignRepository extends MongoRepository<Campaign, String> {
+
+	List<Campaign> findByUserId(String userId);
 
 }

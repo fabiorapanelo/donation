@@ -10,8 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import com.jakewharton.picasso.OkHttp3Downloader;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
 
@@ -66,8 +68,20 @@ public class CampaignImagePageAdapter extends PagerAdapter {
         View view = inflater.inflate(R.layout.item_campaign_image, viewGroup, false);
         ImageView imageView = (ImageView) view.findViewById(R.id.image);
 
+        final ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.progress_bar);
+
         String imageUrl = ServiceBase.getUrl("images/" + images.get(position));
-        picasso.load(imageUrl).fit().centerCrop().into(imageView);
+        picasso.load(imageUrl).fit().centerCrop().into(imageView, new Callback() {
+            @Override
+            public void onSuccess() {
+                progressBar.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onError() {
+                progressBar.setVisibility(View.GONE);
+            }
+        });
 
         viewGroup.addView(view, 0);
 

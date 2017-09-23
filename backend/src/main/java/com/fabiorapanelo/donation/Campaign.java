@@ -1,39 +1,20 @@
 package com.fabiorapanelo.donation;
 
-import java.util.List;
+import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
+import org.springframework.data.mongodb.core.index.GeoSpatialIndexType;
+import org.springframework.data.mongodb.core.index.GeoSpatialIndexed;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.CollectionTable;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotNull;
-
-@Entity
+@Document(collection = "campaign")
 public class Campaign {
 
-	private Long id;
 	private String name;
-	private User createdBy;
-	private String latitude;
-	private String longitude;
-	private List<String> images;
+	private String userId;
+	
+	@GeoSpatialIndexed(type = GeoSpatialIndexType.GEO_2DSPHERE)
+	private GeoJsonPoint location;
+	private String[] images;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	@NotNull
 	public String getName() {
 		return name;
 	}
@@ -42,42 +23,27 @@ public class Campaign {
 		this.name = name;
 	}
 
-	@ManyToOne
-	@NotNull
-	public User getCreatedBy() {
-		return createdBy;
+	public String getUserId() {
+		return userId;
 	}
 
-	public void setCreatedBy(User createdBy) {
-		this.createdBy = createdBy;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 
-	@NotNull
-	public String getLatitude() {
-		return latitude;
+	public GeoJsonPoint getLocation() {
+		return location;
 	}
 
-	public void setLatitude(String latitude) {
-		this.latitude = latitude;
+	public void setLocation(GeoJsonPoint location) {
+		this.location = location;
 	}
 
-	@NotNull
-	public String getLongitude() {
-		return longitude;
-	}
-
-	public void setLongitude(String longitude) {
-		this.longitude = longitude;
-	}
-
-	@ElementCollection
-	@CollectionTable(name="campaign_images", joinColumns=@JoinColumn(name="campaign_id"))
-	@Column(name="image")
-	public List<String> getImages() {
+	public String[] getImages() {
 		return images;
 	}
 
-	public void setImages(List<String> images) {
+	public void setImages(String[] images) {
 		this.images = images;
 	}
 

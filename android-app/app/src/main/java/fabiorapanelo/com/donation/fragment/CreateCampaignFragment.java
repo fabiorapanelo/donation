@@ -35,9 +35,9 @@ import butterknife.ButterKnife;
 import fabiorapanelo.com.donation.R;
 import fabiorapanelo.com.donation.activity.PickLocationActivity;
 import fabiorapanelo.com.donation.model.Campaign;
+import fabiorapanelo.com.donation.model.GeoPointLocation;
 import fabiorapanelo.com.donation.model.ImageUpload;
 import fabiorapanelo.com.donation.model.User;
-import fabiorapanelo.com.donation.services.UserService;
 import fabiorapanelo.com.donation.utils.PermissionUtils;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -86,8 +86,8 @@ public class CreateCampaignFragment extends BaseFragment implements
     protected LinearLayout mCreateCampaignLayout;
 
 
-    protected String mLatitude;
-    protected String mLongitude;
+    protected Double mLatitude;
+    protected Double mLongitude;
     protected boolean mLocationSelected = false;
 
     protected String image1;
@@ -154,7 +154,7 @@ public class CreateCampaignFragment extends BaseFragment implements
 
     protected void reloadOnCreateView(){
 
-        if(StringUtils.isNotEmpty(mLatitude) && StringUtils.isNotEmpty(mLongitude)){
+        if(mLatitude != null && mLongitude != null){
             this.setLocation(mLatitude, mLongitude);
         }
 
@@ -229,8 +229,8 @@ public class CreateCampaignFragment extends BaseFragment implements
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CODE_PICK_LOCATION && resultCode == RESULT_OK) {
 
-            String latitude = String.valueOf(data.getDoubleExtra("latitude", 0));
-            String longitude = String.valueOf(data.getDoubleExtra("longitude", 0));
+            double latitude = data.getDoubleExtra("latitude", 0);
+            double longitude = data.getDoubleExtra("longitude", 0);
             this.setLocation(latitude, longitude);
 
         } else if((requestCode == REQUEST_CODE_ADD_PHOTO1 ||
@@ -300,9 +300,14 @@ public class CreateCampaignFragment extends BaseFragment implements
 
                     String name = campaignName.getText().toString();
                     campaign.setName(name);
-                    campaign.setLatitude(mLatitude);
-                    campaign.setLongitude(mLongitude);
-                    campaign.setCreatedBy(UserService.getUrlForUser(user));
+
+                    GeoPointLocation location = new GeoPointLocation();
+                    location.setType("Point");
+                    location.getCoordinates().add(mLongitude);
+                    location.getCoordinates().add(mLatitude);
+                    campaign.setLocation(location);
+
+                    campaign.setUserId(user.getId().toString());
 
                     ImageUpload imageUpload = response.body();
                     campaign.setImages(imageUpload.getImages());
@@ -344,7 +349,7 @@ public class CreateCampaignFragment extends BaseFragment implements
 
     }
 
-    protected void setLocation(String latitude, String longitude){
+    protected void setLocation(double latitude, double longitude){
         mLatitude = latitude;
         mLongitude = longitude;
         mTxtSelectedLocation.setText(mLatitude + ":" + mLongitude);
@@ -355,9 +360,9 @@ public class CreateCampaignFragment extends BaseFragment implements
         mLatitude = null;
         mLongitude = null;
         mLocationSelected = false;
-        String image1 = null;
-        String image2 = null;
-        String image3 = null;
+        image1 = null;
+        image2 = null;
+        image3 = null;
         campaignName.setText("");
     }
 

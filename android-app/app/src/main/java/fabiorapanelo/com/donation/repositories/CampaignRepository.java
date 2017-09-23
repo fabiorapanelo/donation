@@ -1,8 +1,6 @@
 package fabiorapanelo.com.donation.repositories;
 
 import fabiorapanelo.com.donation.model.Campaign;
-import fabiorapanelo.com.donation.model.Credentials;
-import fabiorapanelo.com.donation.model.User;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -18,19 +16,29 @@ import retrofit2.http.Query;
 
 public interface CampaignRepository {
 
-    @GET("campaigns")
-    Call<ResponseBody> find();
-
     @POST("campaigns")
     Call<ResponseBody> create(@Body Campaign campaign);
 
+    @GET("campaigns/near-location")
+    Call<ResponseBody> nearLocation(@Query("lat") double latitude,
+                                            @Query("long") double longitude,
+                                            @Query("distance") double distance);
+
+    @GET("campaigns/search-by-user/{userId}")
+    Call<ResponseBody> searchByUser(@Path("userId") String userId);
+
+
+    //Below are not implemented yet
+
+    @Deprecated
     @GET("campaigns/{campaignId}")
     Call<Campaign> find(@Path("campaignId") String campaignId);
 
+    @Deprecated
     @POST("campaigns/{campaignId}")
     Call<ResponseBody> update(@Path("campaignId") String campaignId, @Body Campaign campaign);
 
+    @Deprecated
     @DELETE("campaigns/{campaignId}")
     Call<ResponseBody> delete(@Path("campaignId") String campaignId);
-
 }

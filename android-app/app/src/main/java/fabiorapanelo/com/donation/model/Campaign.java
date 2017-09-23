@@ -6,9 +6,8 @@ public class Campaign {
 
     private Long id;
     private String name;
-    private String createdBy;
-    private String latitude;
-    private String longitude;
+    private String userId;
+    private GeoPointLocation location;
     private List<String> images;
 
     public Long getId() {
@@ -27,28 +26,20 @@ public class Campaign {
         this.name = name;
     }
 
-    public String getCreatedBy() {
-        return createdBy;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
-    public String getLatitude() {
-        return latitude;
+    public GeoPointLocation getLocation() {
+        return location;
     }
 
-    public void setLatitude(String latitude) {
-        this.latitude = latitude;
-    }
-
-    public String getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(String longitude) {
-        this.longitude = longitude;
+    public void setLocation(GeoPointLocation location) {
+        this.location = location;
     }
 
     public List<String> getImages() {

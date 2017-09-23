@@ -29,7 +29,6 @@ public class User {
 	private String securePassword;
 	private List<Donation> myDonations;
 	private List<Donation> donationsForMe;
-	private List<Campaign> myCampaings;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -114,15 +113,5 @@ public class User {
 
 	public void setDonationsForMe(List<Donation> donationsForMe) {
 		this.donationsForMe = donationsForMe;
-	}
-
-	@JsonIgnore
-	@OneToMany(mappedBy = "createdBy")
-	public List<Campaign> getMyCampaings() {
-		return myCampaings;
-	}
-
-	public void setMyCampaings(List<Campaign> myCampaings) {
-		this.myCampaings = myCampaings;
 	}
 }

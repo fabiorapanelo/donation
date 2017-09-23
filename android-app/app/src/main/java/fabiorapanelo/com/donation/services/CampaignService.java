@@ -5,6 +5,7 @@ import fabiorapanelo.com.donation.repositories.CampaignRepository;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.http.Query;
 
 /**
  * Created by fabio on 08/08/2017.
@@ -28,9 +29,16 @@ public class CampaignService extends ServiceBase {
         return instance;
     }
 
-    public void find(final Callback<ResponseBody> callback){
+    public void nearLocation(double latitude, double longitude,
+                             double distance, final Callback<ResponseBody> callback){
         Call<ResponseBody> call;
-        call = campaignRepository.find();
+        call = campaignRepository.nearLocation(latitude, longitude, distance);
+        call.enqueue(callback);
+    }
+
+    public void searchByUser(String userId, final Callback<ResponseBody> callback){
+        Call<ResponseBody> call;
+        call = campaignRepository.searchByUser(userId);
         call.enqueue(callback);
     }
 

@@ -186,7 +186,6 @@ public class PickLocationActivity extends BaseActivity implements
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(latLng);
         markerOptions.title(latLng.latitude + " : " + latLng.longitude);
-        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
         mMap.addMarker(markerOptions);
 
     }
