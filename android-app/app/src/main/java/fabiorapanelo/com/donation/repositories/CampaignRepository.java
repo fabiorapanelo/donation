@@ -22,7 +22,7 @@ public interface CampaignRepository {
     @GET("campaigns/near-location")
     Call<ResponseBody> nearLocation(@Query("lat") double latitude,
                                             @Query("long") double longitude,
-                                            @Query("distance") double distance);
+                                            @Query("distance") double distanceInMeters);
 
     @GET("campaigns/search-by-user/{userId}")
     Call<ResponseBody> searchByUser(@Path("userId") String userId);

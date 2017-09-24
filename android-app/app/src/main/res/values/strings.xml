@@ -26,11 +26,13 @@
     <string name="button_confirm">Confirmar</string>
 
     <!-- Tab -->
-    <string name="tab_home">Home</string>
-    <string name="tab_search">Search</string>
-    <string name="tab_share">Share</string>
-    <string name="tab_news">News</string>
-    <string name="tab_profile">Profile</string>
+    <string-array name="tabs">
+        <item name="tab_home">Página Inicial</item>
+        <item name="tab_search">Pesquisar</item>
+        <item name="tab_share">Criar Campanha</item>
+        <item name="tab_news">Favoritos</item>
+        <item name="tab_profile">Perfil</item>
+    </string-array>
 
     <!-- Create campaign -->
     <string name="hint_campaign_name">Nome da campanha</string>
@@ -47,10 +49,14 @@
     <string name="title_activity_pick_location">Selecionar Localização</string>
     <string name="btn_pick_location">Selecionar</string>
 
+    <!-- Campaign Details -->
+    <string name="title_activity_campaign_details">Detalhes da Campanha</string>
+
     <!--    Permissions    -->
     <string name="permission_rationale_location">É necessário o acesso a sua localização atual</string>
     <string name="location_permission_denied">Para utilizar esta funcionalidade é necessário habilitar a permissão de localização.</string>
     <string name="permission_required_toast">Sua localização é necessária para esta funcionalidade.</string>
+
 
 
 </resources>

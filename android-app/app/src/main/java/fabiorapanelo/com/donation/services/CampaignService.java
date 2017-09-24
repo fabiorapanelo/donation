@@ -30,9 +30,9 @@ public class CampaignService extends ServiceBase {
     }
 
     public void nearLocation(double latitude, double longitude,
-                             double distance, final Callback<ResponseBody> callback){
+                             double distanceInMeters, final Callback<ResponseBody> callback){
         Call<ResponseBody> call;
-        call = campaignRepository.nearLocation(latitude, longitude, distance);
+        call = campaignRepository.nearLocation(latitude, longitude, distanceInMeters);
         call.enqueue(callback);
     }
 

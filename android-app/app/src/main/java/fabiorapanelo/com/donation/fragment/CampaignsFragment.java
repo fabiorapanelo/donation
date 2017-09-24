@@ -78,7 +78,7 @@ public class CampaignsFragment extends BaseFragment {
 
             List<Campaign> campaigns = (List<Campaign>) object;
 
-            CampaignListAdapter adapter = new CampaignListAdapter(this.getContext(), campaigns, location);
+            CampaignListAdapter adapter = new CampaignListAdapter(this.getActivity(), campaigns, location);
             recyclerViewCampaigns.setAdapter(adapter);
 
         } else {
@@ -98,7 +98,7 @@ public class CampaignsFragment extends BaseFragment {
 
                             cacheManager.put(CACHE_KEY_CAMPAING_SERVICE_FIND, campaigns, CACHE_TIMEOUT_CAMPAING_SERVICE_FIND);
                             CampaignListAdapter adapter = new CampaignListAdapter(
-                                    CampaignsFragment.this.getContext(), campaigns, location);
+                                    CampaignsFragment.this.getActivity(), campaigns, location);
                             recyclerViewCampaigns.setAdapter(adapter);
 
                         } catch (IOException e) {

@@ -1,22 +1,36 @@
 package fabiorapanelo.com.donation.adapter;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.jakewharton.picasso.OkHttp3Downloader;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import fabiorapanelo.com.donation.R;
-import fabiorapanelo.com.donation.utils.HaversineAlgorithm;
+import fabiorapanelo.com.donation.activity.CampaignDetailsActivity;
+import fabiorapanelo.com.donation.activity.LoginActivity;
+import fabiorapanelo.com.donation.activity.RegisterUserActivity;
 import fabiorapanelo.com.donation.model.Campaign;
+import fabiorapanelo.com.donation.services.ServiceBase;
+import fabiorapanelo.com.donation.utils.HaversineAlgorithm;
 import me.relex.circleindicator.CircleIndicator;
+import okhttp3.logging.HttpLoggingInterceptor;
 
 /**
  * Created by fabio on 15/07/2017.
@@ -24,36 +38,78 @@ import me.relex.circleindicator.CircleIndicator;
 
 //https://www.androidtutorialpoint.com/basics/android-image-slider-tutorial/
 public class CampaignListAdapter  extends RecyclerView.Adapter<CampaignListAdapter.ViewHolder> {
-    private List<Campaign> campaigns;
-    private Context context;
-    private Location lastLocation;
 
-    public CampaignListAdapter(Context context, List<Campaign> campaigns, Location lastLocation) {
-        this.context = context;
+    private List<Campaign> campaigns;
+    private Activity activity;
+    private Location lastLocation;
+    private Picasso picasso;
+
+    private static final int REQUEST_CODE_CAMPAIGN_DETAILS = 1;
+
+    public CampaignListAdapter(Activity activity, List<Campaign> campaigns, Location lastLocation) {
+        this.activity = activity;
         this.campaigns = campaigns;
         this.lastLocation = lastLocation;
+
+
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+        okhttp3.OkHttpClient.Builder okHttp3Client = new okhttp3.OkHttpClient.Builder();
+        okHttp3Client.addInterceptor(logging);
+        okHttp3Client.readTimeout(60, TimeUnit.SECONDS);
+        okHttp3Client.connectTimeout(60, TimeUnit.SECONDS);
+
+        OkHttp3Downloader okHttp3Downloader = new OkHttp3Downloader(okHttp3Client.build());
+
+        picasso = new Picasso.Builder(activity)
+                .downloader(okHttp3Downloader)
+                .build();
     }
 
     @Override
     public CampaignListAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_campaign, viewGroup, false);
+
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(final ViewHolder viewHolder, int i) {
 
-        Campaign campaign = campaigns.get(i);
+        final Campaign campaign = campaigns.get(i);
 
         String name = campaign.getName();
         if(lastLocation != null){
-            name += " - " + this.getDistance(campaign, lastLocation);
+            name += " - " + HaversineAlgorithm.getDistance(campaign, lastLocation);
         }
 
         viewHolder.textView.setText(name);
-        viewHolder.viewPager.setAdapter(new CampaignImagePageAdapter(this.context, campaign.getImages()));
-        viewHolder.indicator.setViewPager(viewHolder.viewPager);
 
+        if(campaign.getImages() != null && campaign.getImages().size() > 0){
+            String imageUrl = ServiceBase.getUrl("images/" + campaign.getImages().get(0));
+            picasso.load(imageUrl).fit().centerCrop().into(viewHolder.imageView, new Callback() {
+                @Override
+                public void onSuccess() {
+                    viewHolder.progressBar.setVisibility(View.GONE);
+                }
+
+                @Override
+                public void onError() {
+                    viewHolder.progressBar.setVisibility(View.GONE);
+                }
+            });
+        } else {
+            viewHolder.progressBar.setVisibility(View.GONE);
+        }
+
+        View.OnClickListener onClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CampaignListAdapter.this.onCampaignClick(campaign);
+            }
+        };
+        viewHolder.itemView.setOnClickListener(onClickListener);
     }
 
     @Override
@@ -63,36 +119,27 @@ public class CampaignListAdapter  extends RecyclerView.Adapter<CampaignListAdapt
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         TextView textView;
-        ViewPager viewPager;
-        CircleIndicator indicator;
+        ImageView imageView;
+        ProgressBar progressBar;
 
         public ViewHolder(View view) {
             super(view);
 
-            textView = (TextView) view.findViewById(R.id.text_campaign_name);
-            viewPager = (ViewPager) view.findViewById(R.id.view_pager_campaign_image);
-            indicator = (CircleIndicator)  view.findViewById(R.id.indicator);
+            textView = view.findViewById(R.id.text_campaign_name);
+            imageView = view.findViewById(R.id.image_view_campaign);
+            progressBar = view.findViewById(R.id.progress_bar);
         }
     }
 
-    protected String getDistance(Campaign campaign, Location lastLocation){
-        List<Double> coordinates = campaign.getLocation().getCoordinates();
-        double longitude = coordinates.get(0);
-        double latitude = coordinates.get(1);
+    protected void onCampaignClick(Campaign campaign){
 
-        double distance = HaversineAlgorithm.HaversineInKM(lastLocation.getLatitude(),
-                lastLocation.getLongitude(),
-                latitude,
-                longitude);
+        Intent intent = new Intent(this.activity, CampaignDetailsActivity.class);
+        intent.putExtra("campaign", campaign);
 
-        NumberFormat formatter = new DecimalFormat("#0.00");
-        if(distance >= 0.1D){
-            return formatter.format(distance) + " km";
-        } else {
-            distance = distance * 1000;
-            return formatter.format(distance) + " m";
-        }
+        activity.startActivityForResult(intent, REQUEST_CODE_CAMPAIGN_DETAILS);
 
     }
+
+
 
 }

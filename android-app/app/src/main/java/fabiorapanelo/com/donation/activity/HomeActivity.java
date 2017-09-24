@@ -32,6 +32,7 @@ public class HomeActivity extends BaseActivity implements TabLayout.OnTabSelecte
     protected TabLayout bottomTabLayout;
 
     protected FragNavController mNavController;
+    protected String[] tabsName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +49,9 @@ public class HomeActivity extends BaseActivity implements TabLayout.OnTabSelecte
 
         bottomTabLayout.addOnTabSelectedListener(this);
 
+        tabsName = getResources().getStringArray(R.array.tabs);
+
+        updateToolbarTitle(0);
         mNavController.switchTab(0);
 
     }
@@ -89,7 +93,10 @@ public class HomeActivity extends BaseActivity implements TabLayout.OnTabSelecte
 
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
+
+        updateToolbarTitle(tab.getPosition());
         mNavController.switchTab(tab.getPosition());
+
     }
 
     @Override
@@ -101,7 +108,15 @@ public class HomeActivity extends BaseActivity implements TabLayout.OnTabSelecte
     public void onTabReselected(TabLayout.Tab tab) {
 
         mNavController.clearStack();
+        updateToolbarTitle(tab.getPosition());
         mNavController.switchTab(tab.getPosition());
 
+    }
+
+    public void updateToolbarTitle(int position) {
+
+        if(getSupportActionBar() != null){
+            getSupportActionBar().setTitle(tabsName[position]);
+        }
     }
 }

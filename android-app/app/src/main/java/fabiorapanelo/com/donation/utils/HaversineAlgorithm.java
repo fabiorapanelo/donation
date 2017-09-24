@@ -1,5 +1,13 @@
 package fabiorapanelo.com.donation.utils;
 
+import android.location.Location;
+
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.List;
+
+import fabiorapanelo.com.donation.model.Campaign;
+
 /**
  * Created by fabio on 23/09/2017.
  */
@@ -24,4 +32,23 @@ public class HaversineAlgorithm {
         return d;
     }
 
+    public static String getDistance(Campaign campaign, Location lastLocation){
+        List<Double> coordinates = campaign.getLocation().getCoordinates();
+        double longitude = coordinates.get(0);
+        double latitude = coordinates.get(1);
+
+        double distance = HaversineAlgorithm.HaversineInKM(lastLocation.getLatitude(),
+                lastLocation.getLongitude(),
+                latitude,
+                longitude);
+
+        NumberFormat formatter = new DecimalFormat("#0.00");
+        if(distance >= 0.1D){
+            return formatter.format(distance) + " km";
+        } else {
+            distance = distance * 1000;
+            return formatter.format(distance) + " m";
+        }
+
+    }
 }

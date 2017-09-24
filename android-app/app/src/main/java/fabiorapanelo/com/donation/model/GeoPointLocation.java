@@ -1,5 +1,6 @@
 package fabiorapanelo.com.donation.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,7 +8,7 @@ import java.util.List;
  * Created by fabio on 23/09/2017.
  */
 
-public class GeoPointLocation {
+public class GeoPointLocation implements Serializable{
 
     public String type = "Point";
     public List<Double> coordinates = new ArrayList<>();
