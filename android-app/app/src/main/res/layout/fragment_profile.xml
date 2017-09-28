@@ -2,19 +2,18 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:paddingLeft="24dp"
-    android:paddingRight="24dp"
-    android:paddingTop="8dp"
-    android:paddingBottom="8dp">
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
         android:focusable="true"
         android:focusableInTouchMode="true"
-        android:orientation="horizontal"
-        android:paddingBottom="8dp">
+        android:orientation="horizontal">
 
         <!-- Name -->
         <TextView
@@ -34,6 +33,13 @@
 
 
     </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:text="@string/my_campaigns"
+        android:textAlignment="center"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view_campaigns"

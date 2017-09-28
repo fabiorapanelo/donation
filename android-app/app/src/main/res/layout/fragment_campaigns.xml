@@ -2,11 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:paddingLeft="24dp"
-    android:paddingRight="24dp"
-    android:paddingTop="8dp"
-    android:paddingBottom="8dp">
+    android:orientation="vertical">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view_campaigns"

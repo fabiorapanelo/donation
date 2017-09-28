@@ -20,7 +20,6 @@ import fabiorapanelo.com.donation.fragment.CreateCampaignFragment;
 import fabiorapanelo.com.donation.fragment.FavoritesFragment;
 import fabiorapanelo.com.donation.fragment.ProfileFragment;
 import fabiorapanelo.com.donation.fragment.SearchFragment;
-import fabiorapanelo.com.donation.utils.Utils;
 
 //Inspiration: https://github.com/f22labs/InstaLikeFragmentTransaction/
 //Using: https://github.com/ncapdevi/FragNav
@@ -57,11 +56,11 @@ public class HomeActivity extends BaseActivity implements TabLayout.OnTabSelecte
     }
 
     protected void initTabs() {
-        this.addTab(R.drawable.tab_home);
-        this.addTab(R.drawable.tab_search);
-        this.addTab(R.drawable.tab_share);
-        this.addTab(R.drawable.tab_news);
-        this.addTab(R.drawable.tab_profile);
+        this.addTab(R.drawable.ic_home_white_24px);
+        this.addTab(R.drawable.ic_search_white_24px);
+        this.addTab(R.drawable.ic_add_box_white_24px);
+        this.addTab(R.drawable.ic_favorite_white_24px);
+        this.addTab(R.drawable.ic_person_white_24px);
     }
 
     protected void addTab(int iconId) {
@@ -71,7 +70,7 @@ public class HomeActivity extends BaseActivity implements TabLayout.OnTabSelecte
         View view = LayoutInflater.from(HomeActivity.this).inflate(R.layout.tab_item_bottom, null);
         ImageView icon = view.findViewById(R.id.tab_icon);
 
-        icon.setImageDrawable(Utils.setDrawableSelector(this, iconId, iconId));
+        icon.setImageResource(iconId);
 
         tab.setCustomView(view);
 

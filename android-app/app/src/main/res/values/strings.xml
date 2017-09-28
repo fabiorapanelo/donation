@@ -27,7 +27,7 @@
 
     <!-- Tab -->
     <string-array name="tabs">
-        <item name="tab_home">Página Inicial</item>
+        <item name="tab_home">Campanhas de doação</item>
         <item name="tab_search">Pesquisar</item>
         <item name="tab_share">Criar Campanha</item>
         <item name="tab_news">Favoritos</item>
@@ -43,6 +43,7 @@
 
     <!-- Profile -->
     <string name="button_editar">Editar</string>
+    <string name="my_campaigns">Minhas Campanhas</string>
 
 
     <!-- Pick Location -->

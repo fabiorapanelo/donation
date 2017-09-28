@@ -27,6 +27,13 @@
 
     <style name="AppTheme.Button.Colored" parent="Widget.AppCompat.Button.Colored">
         <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">14sp</item>
+
+    </style>
+
+    <style name="AppTheme.TextView">
+
+        <item name="android:textSize">18sp</item>
     </style>
 
 </resources>
