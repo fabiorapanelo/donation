@@ -10,10 +10,13 @@
     <!-- ChooseUserType -->
     <string name="title_choose_user_type">Escolha tipo do usuário</string>
 
-    <!-- DonationList -->
+    <!-- CampaignList -->
     <string name="title_donation_list">Doações perto de você</string>
     <string name="hint_search"></string>
     <string name="button_search">Pesquisar</string>
+    <string name="filter">Filtrar</string>
+    <string name="dialog_distance_title">Selecionar distância</string>
+    <string name="dialog_distance_btn">Selecionar</string>
 
     <!-- Register -->
     <string name="title_register">Cadastre-se</string>

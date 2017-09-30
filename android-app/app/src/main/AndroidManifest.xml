@@ -37,7 +37,8 @@
             android:screenOrientation="portrait"/>
 
         <activity android:name=".activity.HomeActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
 
         <activity
             android:name=".activity.PickLocationActivity"

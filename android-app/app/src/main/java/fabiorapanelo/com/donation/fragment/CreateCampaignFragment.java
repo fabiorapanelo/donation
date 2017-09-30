@@ -38,6 +38,8 @@ import fabiorapanelo.com.donation.model.Campaign;
 import fabiorapanelo.com.donation.model.GeoPointLocation;
 import fabiorapanelo.com.donation.model.ImageUpload;
 import fabiorapanelo.com.donation.model.User;
+import fabiorapanelo.com.donation.utils.HaversineAlgorithm;
+import fabiorapanelo.com.donation.utils.LocationUtils;
 import fabiorapanelo.com.donation.utils.PermissionUtils;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -352,7 +354,9 @@ public class CreateCampaignFragment extends BaseFragment implements
     protected void setLocation(double latitude, double longitude){
         mLatitude = latitude;
         mLongitude = longitude;
-        mTxtSelectedLocation.setText(mLatitude + ":" + mLongitude);
+        String locationName = LocationUtils.getLocationName(this.getActivity(), longitude, latitude);
+
+        mTxtSelectedLocation.setText(locationName);
         mLocationSelected = true;
     }
 

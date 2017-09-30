@@ -74,5 +74,13 @@
             android:padding="12dp"
             android:text="@string/button_register"/>
 
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:visibility="gone"/>
+
     </LinearLayout>
 </ScrollView>

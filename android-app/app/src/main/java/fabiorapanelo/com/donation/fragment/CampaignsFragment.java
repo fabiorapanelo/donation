@@ -50,8 +50,15 @@ public class CampaignsFragment extends BaseFragment {
     @Bind(R.id.recycler_view_campaigns)
     protected RecyclerView recyclerViewCampaigns;
 
-    public static CampaignsFragment newInstance() {
+    protected int distanceInKM;
+
+    public void setDistanceInKM(int distanceInKM){
+        this.distanceInKM = distanceInKM;
+    }
+
+    public static CampaignsFragment newInstance(int distanceInKM) {
         CampaignsFragment fragment = new CampaignsFragment();
+        fragment.setDistanceInKM(distanceInKM);
         return fragment;
     }
 
@@ -73,7 +80,7 @@ public class CampaignsFragment extends BaseFragment {
 
     private void findCampaigns(final Location location) {
 
-        Object object = cacheManager.get(CACHE_KEY_CAMPAING_SERVICE_FIND);
+        Object object = cacheManager.get(CACHE_KEY_CAMPAING_SERVICE_FIND + distanceInKM);
         if (object != null) {
 
             List<Campaign> campaigns = (List<Campaign>) object;
@@ -83,7 +90,7 @@ public class CampaignsFragment extends BaseFragment {
 
         } else {
 
-            campaignService.nearLocation(location.getLatitude(), location.getLongitude(), 200000, new Callback<ResponseBody>() {
+            campaignService.nearLocation(location.getLatitude(), location.getLongitude(), distanceInKM * 1000, new Callback<ResponseBody>() {
 
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -96,7 +103,7 @@ public class CampaignsFragment extends BaseFragment {
                             }.getType();
                             List<Campaign> campaigns = new Gson().fromJson(body, listType);
 
-                            cacheManager.put(CACHE_KEY_CAMPAING_SERVICE_FIND, campaigns, CACHE_TIMEOUT_CAMPAING_SERVICE_FIND);
+                            cacheManager.put(CACHE_KEY_CAMPAING_SERVICE_FIND + distanceInKM, campaigns, CACHE_TIMEOUT_CAMPAING_SERVICE_FIND);
                             CampaignListAdapter adapter = new CampaignListAdapter(
                                     CampaignsFragment.this.getActivity(), campaigns, location);
                             recyclerViewCampaigns.setAdapter(adapter);

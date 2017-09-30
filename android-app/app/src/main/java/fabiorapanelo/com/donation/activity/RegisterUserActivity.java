@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import org.apache.commons.lang3.StringUtils;
@@ -37,6 +38,9 @@ public class RegisterUserActivity extends BaseActivity {
     @Bind(R.id.btn_register)
     Button _registerButton;
 
+    @Bind(R.id.progress_bar)
+    ProgressBar progressBar;
+
     protected UserService userService;
 
     @Override
@@ -49,6 +53,8 @@ public class RegisterUserActivity extends BaseActivity {
         this.setupToolbar();
 
         userService = UserService.getInstance();
+
+        progressBar.setVisibility(View.GONE);
 
         _registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,13 +106,19 @@ public class RegisterUserActivity extends BaseActivity {
 
     protected void checkUsernameAndRegister(){
 
+        _registerButton.setEnabled(false);
+        progressBar.setVisibility(View.VISIBLE);
+
         String username = _usernameText.getText().toString();
 
         userService.findByUsername(username, new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, retrofit2.Response<User> response) {
+
                 if(response.isSuccessful()){
                     Toast.makeText(RegisterUserActivity.this, "Usuário já existe!", Toast.LENGTH_LONG).show();
+                    enableRegisterAndHideProgressBar();
+
                 } else {
                     //Return 404 - Not found if the user doesn't exists
                     register();
@@ -115,10 +127,16 @@ public class RegisterUserActivity extends BaseActivity {
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
-                //TODO: Handle this scenario
+                enableRegisterAndHideProgressBar();
+                Toast.makeText(RegisterUserActivity.this, "Criação de usuário falhou!", Toast.LENGTH_SHORT).show();
             }
         });
 
+    }
+
+    protected void enableRegisterAndHideProgressBar(){
+        _registerButton.setEnabled(true);
+        progressBar.setVisibility(View.GONE);
     }
 
     protected void register(){
@@ -138,6 +156,8 @@ public class RegisterUserActivity extends BaseActivity {
             @Override
             public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
 
+                enableRegisterAndHideProgressBar();
+
                 if(response.isSuccessful()){
                     finish();
                 } else {
@@ -148,6 +168,9 @@ public class RegisterUserActivity extends BaseActivity {
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                enableRegisterAndHideProgressBar();
+
                 _passwordText.setText("");
                 Toast.makeText(RegisterUserActivity.this, "Falha ao cadastrar o usuário!", Toast.LENGTH_LONG).show();
             }

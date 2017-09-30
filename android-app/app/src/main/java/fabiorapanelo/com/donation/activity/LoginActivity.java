@@ -69,6 +69,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void login(View view){
 
         _loginButton.setEnabled(false);
+        progressBar.setVisibility(View.VISIBLE);
 
         String username = _usernameText.getText().toString();
         String password = _passwordText.getText().toString();
@@ -76,8 +77,6 @@ public class LoginActivity extends AppCompatActivity {
         Credentials credentials = new Credentials();
         credentials.setUsername(username);
         credentials.setPassword(password);
-
-        progressBar.setVisibility(View.VISIBLE);
 
         userService.authenticate(credentials, new Callback<User>() {
             @Override

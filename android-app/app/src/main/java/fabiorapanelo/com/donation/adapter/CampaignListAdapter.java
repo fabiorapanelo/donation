@@ -3,6 +3,8 @@ package fabiorapanelo.com.donation.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
@@ -17,9 +19,11 @@ import com.jakewharton.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import fabiorapanelo.com.donation.R;
@@ -29,6 +33,7 @@ import fabiorapanelo.com.donation.activity.RegisterUserActivity;
 import fabiorapanelo.com.donation.model.Campaign;
 import fabiorapanelo.com.donation.services.ServiceBase;
 import fabiorapanelo.com.donation.utils.HaversineAlgorithm;
+import fabiorapanelo.com.donation.utils.LocationUtils;
 import me.relex.circleindicator.CircleIndicator;
 import okhttp3.logging.HttpLoggingInterceptor;
 
@@ -79,12 +84,16 @@ public class CampaignListAdapter  extends RecyclerView.Adapter<CampaignListAdapt
 
         final Campaign campaign = campaigns.get(i);
 
-        String name = campaign.getName();
-        if(lastLocation != null){
-            name += " - " + HaversineAlgorithm.getDistance(campaign, lastLocation);
-        }
-
+        String name = campaign.getName() + " - Por: User#" + campaign.getUserId();
         viewHolder.textView.setText(name);
+
+        double longitude = campaign.getLocation().getCoordinates().get(0);
+        double latitude = campaign.getLocation().getCoordinates().get(1);
+        String locationName = LocationUtils.getLocationName(this.activity, longitude, latitude);
+        if(lastLocation != null){
+            locationName += " - " + HaversineAlgorithm.getDistance(campaign, lastLocation);
+        }
+        viewHolder.textLocation.setText(locationName);
 
         if(campaign.getImages() != null && campaign.getImages().size() > 0){
             String imageUrl = ServiceBase.getUrl("images/" + campaign.getImages().get(0));
@@ -121,6 +130,7 @@ public class CampaignListAdapter  extends RecyclerView.Adapter<CampaignListAdapt
         TextView textView;
         ImageView imageView;
         ProgressBar progressBar;
+        TextView textLocation;
 
         public ViewHolder(View view) {
             super(view);
@@ -128,6 +138,7 @@ public class CampaignListAdapter  extends RecyclerView.Adapter<CampaignListAdapt
             textView = view.findViewById(R.id.text_campaign_name);
             imageView = view.findViewById(R.id.image_view_campaign);
             progressBar = view.findViewById(R.id.progress_bar);
+            textLocation = view.findViewById(R.id.text_location);
         }
     }
 
