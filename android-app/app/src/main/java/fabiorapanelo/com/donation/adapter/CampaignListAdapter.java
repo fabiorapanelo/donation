@@ -1,12 +1,10 @@
 package fabiorapanelo.com.donation.adapter;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.location.Address;
-import android.location.Geocoder;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
-import android.support.v4.view.ViewPager;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,26 +13,22 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.jakewharton.picasso.OkHttp3Downloader;
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.Target;
 
-import java.io.IOException;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.List;
-import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import fabiorapanelo.com.donation.R;
 import fabiorapanelo.com.donation.activity.CampaignDetailsActivity;
-import fabiorapanelo.com.donation.activity.LoginActivity;
-import fabiorapanelo.com.donation.activity.RegisterUserActivity;
 import fabiorapanelo.com.donation.model.Campaign;
 import fabiorapanelo.com.donation.services.ServiceBase;
 import fabiorapanelo.com.donation.utils.HaversineAlgorithm;
 import fabiorapanelo.com.donation.utils.LocationUtils;
-import me.relex.circleindicator.CircleIndicator;
 import okhttp3.logging.HttpLoggingInterceptor;
 
 /**
@@ -47,7 +41,6 @@ public class CampaignListAdapter  extends RecyclerView.Adapter<CampaignListAdapt
     private List<Campaign> campaigns;
     private Activity activity;
     private Location lastLocation;
-    private Picasso picasso;
 
     private static final int REQUEST_CODE_CAMPAIGN_DETAILS = 1;
 
@@ -55,21 +48,6 @@ public class CampaignListAdapter  extends RecyclerView.Adapter<CampaignListAdapt
         this.activity = activity;
         this.campaigns = campaigns;
         this.lastLocation = lastLocation;
-
-
-        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
-
-        okhttp3.OkHttpClient.Builder okHttp3Client = new okhttp3.OkHttpClient.Builder();
-        okHttp3Client.addInterceptor(logging);
-        okHttp3Client.readTimeout(60, TimeUnit.SECONDS);
-        okHttp3Client.connectTimeout(60, TimeUnit.SECONDS);
-
-        OkHttp3Downloader okHttp3Downloader = new OkHttp3Downloader(okHttp3Client.build());
-
-        picasso = new Picasso.Builder(activity)
-                .downloader(okHttp3Downloader)
-                .build();
     }
 
     @Override
@@ -96,18 +74,30 @@ public class CampaignListAdapter  extends RecyclerView.Adapter<CampaignListAdapt
         viewHolder.textLocation.setText(locationName);
 
         if(campaign.getImages() != null && campaign.getImages().size() > 0){
-            String imageUrl = ServiceBase.getUrl("images/" + campaign.getImages().get(0));
-            picasso.load(imageUrl).fit().centerCrop().into(viewHolder.imageView, new Callback() {
-                @Override
-                public void onSuccess() {
-                    viewHolder.progressBar.setVisibility(View.GONE);
-                }
 
-                @Override
-                public void onError() {
-                    viewHolder.progressBar.setVisibility(View.GONE);
-                }
-            });
+
+            String imageUrl = ServiceBase.getUrl("images/" + campaign.getImages().get(0));
+
+            RequestOptions options = new RequestOptions()
+                    .centerCrop();
+
+            Glide.with(this.activity)
+                .load(imageUrl)
+                .apply(options)
+                .listener(new RequestListener<Drawable>() {
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                        viewHolder.progressBar.setVisibility(View.GONE);
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                        viewHolder.progressBar.setVisibility(View.GONE);
+                        return false;
+                    }
+                })
+                .into(viewHolder.imageView);
         } else {
             viewHolder.progressBar.setVisibility(View.GONE);
         }
