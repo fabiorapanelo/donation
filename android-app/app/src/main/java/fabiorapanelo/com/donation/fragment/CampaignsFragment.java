@@ -99,8 +99,7 @@ public class CampaignsFragment extends BaseFragment {
                         try {
 
                             String body = response.body().string();
-                            Type listType = new TypeToken<ArrayList<Campaign>>() {
-                            }.getType();
+                            Type listType = new TypeToken<ArrayList<Campaign>>() {}.getType();
                             List<Campaign> campaigns = new Gson().fromJson(body, listType);
 
                             cacheManager.put(CACHE_KEY_CAMPAING_SERVICE_FIND + distanceInKM, campaigns, CACHE_TIMEOUT_CAMPAING_SERVICE_FIND);

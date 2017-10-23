@@ -11,17 +11,17 @@ import android.widget.TextView;
 import java.util.List;
 
 import fabiorapanelo.com.donation.R;
-import fabiorapanelo.com.donation.model.Donation;
+import fabiorapanelo.com.donation.model.Log;
 
 /**
  * Created by fabio on 15/07/2017.
  */
 
-public class DonationListAdapter  extends ArrayAdapter<Donation> {
+public class DonationListAdapter  extends ArrayAdapter<Log> {
 
     private LayoutInflater layoutInflater;
 
-    public DonationListAdapter(Activity activity, List<Donation> categories) {
+    public DonationListAdapter(Activity activity, List<Log> categories) {
         super(activity, R.layout.item_donation, categories);
         layoutInflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -32,9 +32,9 @@ public class DonationListAdapter  extends ArrayAdapter<Donation> {
         if(convertView == null){
             convertView = layoutInflater.inflate(R.layout.item_donation, null);
         }
-        Donation donation = getItem(position);
+        Log donation = getItem(position);
         TextView textView = (TextView) convertView.findViewById(R.id.text_donation_name);
-        textView.setText(donation.getName());
+        textView.setText("Dummy");
 
         return convertView;
 

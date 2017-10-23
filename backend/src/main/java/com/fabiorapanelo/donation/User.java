@@ -1,18 +1,14 @@
 package com.fabiorapanelo.donation;
 
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
@@ -27,8 +23,6 @@ public class User {
     private boolean verified;
 	private String password;
 	private String securePassword;
-	private List<Donation> myDonations;
-	private List<Donation> donationsForMe;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -93,25 +87,5 @@ public class User {
 
 	public void setSecurePassword(String securePassword) {
 		this.securePassword = securePassword;
-	}
-
-	@JsonIgnore
-	@OneToMany(mappedBy = "origin")
-	public List<Donation> getMyDonations() {
-		return myDonations;
-	}
-
-	public void setMyDonations(List<Donation> myDonations) {
-		this.myDonations = myDonations;
-	}
-
-	@JsonIgnore
-	@OneToMany(mappedBy = "destination")
-	public List<Donation> getDonationsForMe() {
-		return donationsForMe;
-	}
-
-	public void setDonationsForMe(List<Donation> donationsForMe) {
-		this.donationsForMe = donationsForMe;
 	}
 }

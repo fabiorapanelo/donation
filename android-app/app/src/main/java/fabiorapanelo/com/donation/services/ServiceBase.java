@@ -1,5 +1,8 @@
 package fabiorapanelo.com.donation.services;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -31,11 +34,16 @@ public abstract class ServiceBase {
         httpClient.readTimeout(60, TimeUnit.SECONDS);
         httpClient.connectTimeout(60, TimeUnit.SECONDS);
 
+        Gson gson = new GsonBuilder()
+                .create();
+
         retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .client(httpClient.build())
                 .build();
     }
+
+
 }
 

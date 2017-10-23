@@ -55,6 +55,11 @@
 
     <!-- Campaign Details -->
     <string name="title_activity_campaign_details">Detalhes da Campanha</string>
+    <plurals name="button_donate_messages">
+        <item quantity="one">Doar %1$s real</item>
+        <item quantity="other">Doar %1$s reais</item>
+    </plurals>
+    <string name="donate_success_message">Obrigado pela sua doação!</string>
 
     <!--    Permissions    -->
     <string name="permission_rationale_location">É necessário o acesso a sua localização atual</string>

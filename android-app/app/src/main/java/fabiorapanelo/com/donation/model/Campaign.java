@@ -5,17 +5,18 @@ import java.util.List;
 
 public class Campaign implements Serializable {
 
-    private Long id;
+    private String id;
     private String name;
     private String userId;
     private GeoPointLocation location;
     private List<String> images;
+    private List<Log> donations;
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -49,5 +50,13 @@ public class Campaign implements Serializable {
 
     public void setImages(List<String> images) {
         this.images = images;
+    }
+
+    public List<Log> getDonations() {
+        return donations;
+    }
+
+    public void setDonations(List<Log> donations) {
+        this.donations = donations;
     }
 }
