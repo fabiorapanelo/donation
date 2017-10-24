@@ -13,7 +13,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ncapdevi.fragnav.FragNavController;
 
@@ -23,8 +22,8 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import fabiorapanelo.com.donation.R;
+import fabiorapanelo.com.donation.fragment.AddFragment;
 import fabiorapanelo.com.donation.fragment.CampaignsFragment;
-import fabiorapanelo.com.donation.fragment.CreateCampaignFragment;
 import fabiorapanelo.com.donation.fragment.FavoritesFragment;
 import fabiorapanelo.com.donation.fragment.ProfileFragment;
 import fabiorapanelo.com.donation.fragment.SearchFragment;
@@ -99,7 +98,7 @@ public class HomeActivity extends BaseActivity implements TabLayout.OnTabSelecte
 
         fragments.add(CampaignsFragment.newInstance(currentDistanceInKM));
         fragments.add(SearchFragment.newInstance());
-        fragments.add(CreateCampaignFragment.newInstance());
+        fragments.add(AddFragment.newInstance());
         fragments.add(FavoritesFragment.newInstance());
         fragments.add(ProfileFragment.newInstance());
 

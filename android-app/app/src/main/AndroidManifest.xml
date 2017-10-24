@@ -15,15 +15,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAI9CT3vHIkTi5R7SR5bHE1LTwD1diazPA" />
+        <meta-data
+            android:name="com.google.android.gms.vision.DEPENDENCIES"
+            android:value="barcode"/>
 
         <activity
             android:name=".activity.LoginActivity"
-            android:theme="@style/AppTheme"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -33,23 +35,29 @@
         <activity
             android:name=".activity.RegisterUserActivity"
             android:label="@string/title_register"
-            android:theme="@style/AppTheme"
-            android:screenOrientation="portrait"/>
-
-        <activity android:name=".activity.HomeActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"/>
-
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".activity.HomeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.PickLocationActivity"
             android:label="@string/title_activity_pick_location"
-            android:theme="@style/AppTheme"
-            android:screenOrientation="portrait"/>
-
-        <activity android:name=".activity.CampaignDetailsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".activity.CampaignDetailsActivity"
             android:label="@string/title_activity_campaign_details"
-            android:screenOrientation="portrait"/>
-
+            android:screenOrientation="portrait" />
+        <activity android:name=".activity.CreateCampaignActivity"
+            android:label="@string/title_activity_create_campaign"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity android:name=".barcode.BarcodeCaptureActivity"
+            android:label="@string/title_activity_add_ticket"
+            android:screenOrientation="portrait">
+        </activity>
     </application>
 
 </manifest>

@@ -1,6 +1,7 @@
 package fabiorapanelo.com.donation.repositories;
 
 import fabiorapanelo.com.donation.model.Credentials;
+import fabiorapanelo.com.donation.model.Log;
 import fabiorapanelo.com.donation.model.User;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -40,7 +41,13 @@ public interface UserRepository {
     @GET("users/search/findOneByUsernameIgnoreCase")
     Call<User> findByUsername(@Query("name") String username);
 
-    @GET("users/{userId}/myCampaings")
-    Call<ResponseBody> findMyCampaigns(@Path("userId") Long userId);
+    @GET("users/{userId}/logs")
+    Call<ResponseBody> getLogs(@Path("userId") Long userId);
+
+    @GET("users/{userId}/balance")
+    Call<ResponseBody> getBalance(@Path("userId") Long userId);
+
+    @POST("users/{userId}/add-ticket")
+    Call<ResponseBody> addTicket(@Path("userId") Long userId, @Body Log ticket);
 
 }

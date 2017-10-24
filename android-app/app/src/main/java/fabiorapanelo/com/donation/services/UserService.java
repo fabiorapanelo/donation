@@ -60,4 +60,9 @@ public class UserService extends ServiceBase {
 
     }
 
+    public void getBalance(User user, final Callback<ResponseBody> callback){
+        Call<ResponseBody> call = userRepository.getBalance(user.getId());
+        call.enqueue(callback);
+    }
+
 }

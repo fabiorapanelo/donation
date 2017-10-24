@@ -1,8 +1,7 @@
-package fabiorapanelo.com.donation.fragment;
+package fabiorapanelo.com.donation.activity;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -14,9 +13,7 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -33,12 +30,10 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import fabiorapanelo.com.donation.R;
-import fabiorapanelo.com.donation.activity.PickLocationActivity;
 import fabiorapanelo.com.donation.model.Campaign;
 import fabiorapanelo.com.donation.model.GeoPointLocation;
 import fabiorapanelo.com.donation.model.ImageUpload;
 import fabiorapanelo.com.donation.model.User;
-import fabiorapanelo.com.donation.utils.HaversineAlgorithm;
 import fabiorapanelo.com.donation.utils.LocationUtils;
 import fabiorapanelo.com.donation.utils.PermissionUtils;
 import okhttp3.ResponseBody;
@@ -46,10 +41,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static android.app.Activity.RESULT_OK;
 import static fabiorapanelo.com.donation.services.UserService.CACHE_KEY_USER_SERVICE_FIND;
 
-public class CreateCampaignFragment extends BaseFragment implements
+/**
+ * Created by fabio on 24/10/2017.
+ */
+
+public class CreateCampaignActivity extends BaseActivity implements
         ActivityCompat.OnRequestPermissionsResultCallback {
 
     public static final int REQUEST_CODE_ADD_PHOTO1 = 1;
@@ -96,60 +94,52 @@ public class CreateCampaignFragment extends BaseFragment implements
     protected String image2;
     protected String image3;
 
-    public static CreateCampaignFragment newInstance() {
-        CreateCampaignFragment fragment = new CreateCampaignFragment();
-        return fragment;
-    }
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_create_campaign);
 
-        View view = inflater.inflate(R.layout.fragment_create_campaign, container, false);
+        ButterKnife.bind(this);
 
-        ButterKnife.bind(this, view);
-
-
+        this.setupToolbar();
 
         this.setupListeners();
         this.reloadOnCreateView();
-
-        return view;
     }
 
     protected void setupListeners(){
         createCampaign.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CreateCampaignFragment.this.createCampaign(view);
+                CreateCampaignActivity.this.createCampaign(view);
             }
         });
 
         mImageViewPhoto1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CreateCampaignFragment.this.uploadPhoto(REQUEST_CODE_ADD_PHOTO1);
+                CreateCampaignActivity.this.uploadPhoto(REQUEST_CODE_ADD_PHOTO1);
             }
         });
 
         mImageViewPhoto2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CreateCampaignFragment.this.uploadPhoto(REQUEST_CODE_ADD_PHOTO2);
+                CreateCampaignActivity.this.uploadPhoto(REQUEST_CODE_ADD_PHOTO2);
             }
         });
 
         mImageViewPhoto3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CreateCampaignFragment.this.uploadPhoto(REQUEST_CODE_ADD_PHOTO3);
+                CreateCampaignActivity.this.uploadPhoto(REQUEST_CODE_ADD_PHOTO3);
             }
         });
 
         mPickLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CreateCampaignFragment.this.pickLocation(view);
+                CreateCampaignActivity.this.pickLocation(view);
             }
         });
     }
@@ -177,25 +167,15 @@ public class CreateCampaignFragment extends BaseFragment implements
 
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-    }
-
     protected void uploadPhoto(int requestCode){
-        if (ContextCompat.checkSelfPermission(mActivity, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
 
             Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
             photoPickerIntent.setType("image/*");
             startActivityForResult(photoPickerIntent, requestCode);
 
         } else {
-            PermissionUtils.requestPermission(mActivity, requestCode, Manifest.permission.READ_EXTERNAL_STORAGE, false);
+            PermissionUtils.requestPermission(this, requestCode, Manifest.permission.READ_EXTERNAL_STORAGE, false);
         }
     }
 
@@ -215,7 +195,7 @@ public class CreateCampaignFragment extends BaseFragment implements
             if (PermissionUtils.isPermissionGranted(permissions, grantResults, Manifest.permission.READ_EXTERNAL_STORAGE)) {
                 uploadPhoto(requestCode);
             } else {
-                PermissionUtils.PermissionDeniedDialog.newInstance(true).show(mActivity.getSupportFragmentManager(), "dialog");
+                PermissionUtils.PermissionDeniedDialog.newInstance(true).show(this.getSupportFragmentManager(), "dialog");
             }
 
         }
@@ -223,7 +203,7 @@ public class CreateCampaignFragment extends BaseFragment implements
     }
 
     protected void pickLocation(View view){
-        Intent intent = new Intent(mActivity, PickLocationActivity.class);
+        Intent intent = new Intent(this, PickLocationActivity.class);
         startActivityForResult(intent, REQUEST_CODE_PICK_LOCATION);
     }
 
@@ -242,7 +222,7 @@ public class CreateCampaignFragment extends BaseFragment implements
             Uri selectedImage = data.getData();
 
             String[] filePathColumn = {MediaStore.Images.Media.DATA};
-            Cursor cursor = mActivity.getContentResolver().query(selectedImage, filePathColumn, null, null, null);
+            Cursor cursor = this.getContentResolver().query(selectedImage, filePathColumn, null, null, null);
             cursor.moveToFirst();
 
             int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
@@ -268,12 +248,12 @@ public class CreateCampaignFragment extends BaseFragment implements
     protected void createCampaign(View view){
 
         if(!mLocationSelected){
-            Toast.makeText(mActivity, "Localização deve ser selecionada!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Localização deve ser selecionada!", Toast.LENGTH_SHORT).show();
             return;
         }
 
         if(StringUtils.isEmpty(image1) && StringUtils.isEmpty(image2) && StringUtils.isEmpty(image3)){
-            Toast.makeText(mActivity, "Uma image deve ser selecionada!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Uma image deve ser selecionada!", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -324,28 +304,28 @@ public class CreateCampaignFragment extends BaseFragment implements
                                 mCampaignFieldsLayout.setVisibility(View.GONE);
                                 mCreateCampaignLayout.setVisibility(View.GONE);
 
-                                CreateCampaignFragment.this.resetFields();
+                                CreateCampaignActivity.this.resetFields();
                                 cacheManager.evict(CACHE_KEY_USER_SERVICE_FIND);
 
                             } else {
-                                Toast.makeText(mActivity, "Falha ao cadastrar campanha!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(CreateCampaignActivity.this, "Falha ao cadastrar campanha!", Toast.LENGTH_SHORT).show();
                             }
                         }
 
                         @Override
                         public void onFailure(Call<ResponseBody> call, Throwable t) {
-                            Toast.makeText(mActivity, "Falha ao cadastrar campanha!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(CreateCampaignActivity.this, "Falha ao cadastrar campanha!", Toast.LENGTH_SHORT).show();
                         }
                     });
 
                 } else {
-                    Toast.makeText(mActivity, "Falha ao enviar imagem!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CreateCampaignActivity.this, "Falha ao enviar imagem!", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ImageUpload> call, Throwable t) {
-                Toast.makeText(mActivity, "Falha ao enviar imagem!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(CreateCampaignActivity.this, "Falha ao enviar imagem!", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -354,7 +334,7 @@ public class CreateCampaignFragment extends BaseFragment implements
     protected void setLocation(double latitude, double longitude){
         mLatitude = latitude;
         mLongitude = longitude;
-        String locationName = LocationUtils.getLocationName(this.getActivity(), longitude, latitude);
+        String locationName = LocationUtils.getLocationName(this, longitude, latitude);
 
         mTxtSelectedLocation.setText(locationName);
         mLocationSelected = true;

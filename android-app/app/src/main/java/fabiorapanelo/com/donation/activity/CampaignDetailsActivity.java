@@ -10,6 +10,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.Date;
 
 import butterknife.Bind;
@@ -54,8 +55,11 @@ public class CampaignDetailsActivity extends BaseActivity {
     @Bind(R.id.donate_button_layout)
     protected LinearLayout mDonateButtonLayout;
 
+    @Bind(R.id.txt_user_balance)
+    protected  TextView txtUserBalance;
+
     protected Campaign campaign;
-    protected static final int DONATION_START_VALUE = 5;
+    protected static final int DONATION_START_VALUE = 0;
     protected static final String LOG_TYPE = "DONATION";
 
     @Override
@@ -98,7 +102,7 @@ public class CampaignDetailsActivity extends BaseActivity {
             }
         });
 
-        progressBar.setVisibility(View.INVISIBLE);
+        this.getBalance();
     }
 
     protected void donate(View view){
@@ -143,5 +147,39 @@ public class CampaignDetailsActivity extends BaseActivity {
     protected void setDonationText(int donationValue){
         String text = getResources().getQuantityString(R.plurals.button_donate_messages, donationValue, donationValue);
         btnDonate.setText(text);
+    }
+
+    protected void getBalance(){
+
+        btnDonate.setEnabled(false);
+        progressBar.setVisibility(View.VISIBLE);
+
+        userService.getBalance(user, new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                progressBar.setVisibility(View.INVISIBLE);
+                if(response.isSuccessful()){
+                    try {
+                        Integer balance = Integer.valueOf(response.body().string());
+                        if(balance > 0){
+                            btnDonate.setEnabled(true);
+                        }
+                        seekBarDonationValue.setMax(balance);
+                        txtUserBalance.setText(getResources().getQuantityString(R.plurals.text_user_balance, balance, balance));
+
+                    } catch (Exception e) {
+                        txtUserBalance.setText(getResources().getString(R.string.text_user_balance_unavailable));
+                    }
+                } else {
+                    txtUserBalance.setText(getResources().getString(R.string.text_user_balance_unavailable));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                progressBar.setVisibility(View.INVISIBLE);
+                txtUserBalance.setText(getResources().getString(R.string.text_user_balance_unavailable));
+            }
+        });
     }
 }

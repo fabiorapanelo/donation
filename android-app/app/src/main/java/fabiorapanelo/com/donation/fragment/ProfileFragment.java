@@ -1,6 +1,7 @@
 package fabiorapanelo.com.donation.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -26,6 +27,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import fabiorapanelo.com.donation.R;
+import fabiorapanelo.com.donation.activity.CreateCampaignActivity;
 import fabiorapanelo.com.donation.adapter.CampaignListAdapter;
 import fabiorapanelo.com.donation.model.Campaign;
 import okhttp3.ResponseBody;
@@ -38,6 +40,8 @@ import static fabiorapanelo.com.donation.services.UserService.CACHE_TIMEOUT_USER
 
 public class ProfileFragment extends BaseFragment {
 
+    public static final int REQUEST_CODE_CREATE_CAMPAIGN = 9002;
+
     @Bind(R.id.text_profile_name)
     protected TextView profileName;
 
@@ -46,6 +50,9 @@ public class ProfileFragment extends BaseFragment {
 
     @Bind(R.id.btn_edit_profile)
     protected Button editProfile;
+
+    @Bind(R.id.btn_create_campaign)
+    protected Button btnCreateCampaign;
 
     public static ProfileFragment newInstance() {
         ProfileFragment fragment = new ProfileFragment();
@@ -63,6 +70,13 @@ public class ProfileFragment extends BaseFragment {
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.getContext());
         recyclerViewCampaigns.setLayoutManager(layoutManager);
+
+        btnCreateCampaign.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                createCampaign(view);
+            }
+        });
 
         this.findMyCampaigns();
 
@@ -112,6 +126,11 @@ public class ProfileFragment extends BaseFragment {
             });
         }
 
+    }
+
+    protected void createCampaign(View view){
+        Intent intent = new Intent(this.getActivity(), CreateCampaignActivity.class);
+        startActivityForResult(intent, REQUEST_CODE_CREATE_CAMPAIGN);
     }
 
     @Override

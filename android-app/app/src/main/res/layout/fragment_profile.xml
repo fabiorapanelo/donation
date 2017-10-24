@@ -29,10 +29,17 @@
             android:layout_width="0dip"
             android:layout_height="match_parent"
             android:layout_weight="0.4"
-            android:text="@string/button_editar" />
+            android:text="@string/button_edit" />
 
 
     </LinearLayout>
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/btn_create_campaign"
+        style="@style/AppTheme.Button.Colored"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/profile_fragment_create_campaign" />
 
     <TextView
         android:layout_width="match_parent"
