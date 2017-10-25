@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0">
+
+        <TextView
+            android:id="@+id/txt_user_balance"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_gravity="left"
+            android:gravity="center_vertical"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btn_scan_ticket"
+            style="@style/AppTheme.Button.Colored"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/add_ticket_fragment_scan" />
+
+        <TextView
+            android:id="@+id/txt_ticket_quantity"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_gravity="left"
+            android:gravity="center_vertical"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+        <TextView
+            android:id="@+id/txt_ticket_id"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_gravity="left"
+            android:gravity="center_vertical"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_weight="1"
+        android:gravity="bottom">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/btn_cancel"
+                style="@style/AppTheme.Button.Colored"
+                android:layout_height="wrap_content"
+                android:layout_width="0dip"
+                android:layout_weight="0.5"
+                android:text="@string/add_ticket_fragment_cancel" />
+
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/btn_add_ticket"
+                style="@style/AppTheme.Button.Colored"
+                android:layout_height="wrap_content"
+                android:layout_width="0dip"
+                android:layout_weight="0.5"
+                android:text="@string/add_ticket_fragment_add_ticket" />
+
+        </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:visibility="invisible"/>
+
+    </LinearLayout>
+</LinearLayout>

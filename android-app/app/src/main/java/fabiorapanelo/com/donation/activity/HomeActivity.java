@@ -22,7 +22,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import fabiorapanelo.com.donation.R;
-import fabiorapanelo.com.donation.fragment.AddFragment;
+import fabiorapanelo.com.donation.fragment.AddTicketFragment;
 import fabiorapanelo.com.donation.fragment.CampaignsFragment;
 import fabiorapanelo.com.donation.fragment.FavoritesFragment;
 import fabiorapanelo.com.donation.fragment.ProfileFragment;
@@ -98,7 +98,7 @@ public class HomeActivity extends BaseActivity implements TabLayout.OnTabSelecte
 
         fragments.add(CampaignsFragment.newInstance(currentDistanceInKM));
         fragments.add(SearchFragment.newInstance());
-        fragments.add(AddFragment.newInstance());
+        fragments.add(AddTicketFragment.newInstance());
         fragments.add(FavoritesFragment.newInstance());
         fragments.add(ProfileFragment.newInstance());
 

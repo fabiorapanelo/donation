@@ -46,7 +46,9 @@
     <string name="title_activity_create_campaign">Criação de Campanha</string>
 
     <!-- Add Fragment -->
-    <string name="add_fragment_add_ticket">Adicionar Cupom</string>
+    <string name="add_ticket_fragment_scan">Scanear Cupom</string>
+    <string name="add_ticket_fragment_cancel">Cancelar</string>
+    <string name="add_ticket_fragment_add_ticket">Adicionar Cupom</string>
 
     <!-- Favorites -->
     <string name="favorites_not_available">Esta funcionalidade ainda não está disponível.</string>

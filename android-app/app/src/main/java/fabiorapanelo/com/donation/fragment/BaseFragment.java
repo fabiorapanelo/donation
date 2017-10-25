@@ -9,6 +9,7 @@ import fabiorapanelo.com.donation.database.UserDao;
 import fabiorapanelo.com.donation.model.User;
 import fabiorapanelo.com.donation.services.CampaignService;
 import fabiorapanelo.com.donation.services.ImageService;
+import fabiorapanelo.com.donation.services.TicketService;
 import fabiorapanelo.com.donation.services.UserService;
 
 /**
@@ -23,6 +24,7 @@ public class BaseFragment extends Fragment {
     protected CampaignService campaignService;
     protected ImageService imageService;
     protected UserService userService;
+    protected TicketService ticketService;
     protected CacheManager cacheManager;
 
     @Override
@@ -36,7 +38,9 @@ public class BaseFragment extends Fragment {
         campaignService = CampaignService.getInstance();
         imageService = ImageService.getInstance();
         userService = UserService.getInstance();
+        ticketService = TicketService.getInstance();
         cacheManager = CacheManager.getInstance();
+
 
     }
 

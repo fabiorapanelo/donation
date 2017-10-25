@@ -10,6 +10,7 @@ import fabiorapanelo.com.donation.model.User;
 import fabiorapanelo.com.donation.services.CampaignService;
 import fabiorapanelo.com.donation.services.DonationService;
 import fabiorapanelo.com.donation.services.ImageService;
+import fabiorapanelo.com.donation.services.TicketService;
 import fabiorapanelo.com.donation.services.UserService;
 
 /**
@@ -24,7 +25,7 @@ public class BaseActivity extends AppCompatActivity {
     protected ImageService imageService;
     protected UserService userService;
     protected DonationService donationService;
-
+    protected TicketService ticketService;
     protected CacheManager cacheManager;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +38,7 @@ public class BaseActivity extends AppCompatActivity {
         imageService = ImageService.getInstance();
         userService = UserService.getInstance();
         donationService = DonationService.getInstance();
+        ticketService = TicketService.getInstance();
         cacheManager = CacheManager.getInstance();
     }
 
