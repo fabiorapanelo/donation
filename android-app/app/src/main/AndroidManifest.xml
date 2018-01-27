@@ -20,7 +20,7 @@
             android:value="AIzaSyAI9CT3vHIkTi5R7SR5bHE1LTwD1diazPA" />
         <meta-data
             android:name="com.google.android.gms.vision.DEPENDENCIES"
-            android:value="barcode"/>
+            android:value="barcode" />
 
         <activity
             android:name=".activity.LoginActivity"
@@ -31,14 +31,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        <activity
+            android:name=".activity.HomeActivity"
+            android:label="@string/title_activity_home"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".activity.RegisterUserActivity"
             android:label="@string/title_register"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".activity.HomeActivity"
+            android:name=".activity.FragmentActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -50,14 +54,14 @@
             android:name=".activity.CampaignDetailsActivity"
             android:label="@string/title_activity_campaign_details"
             android:screenOrientation="portrait" />
-        <activity android:name=".activity.CreateCampaignActivity"
+        <activity
+            android:name=".activity.CreateCampaignActivity"
             android:label="@string/title_activity_create_campaign"
-            android:screenOrientation="portrait">
-        </activity>
-        <activity android:name=".barcode.BarcodeCaptureActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".barcode.BarcodeCaptureActivity"
             android:label="@string/title_activity_add_ticket"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

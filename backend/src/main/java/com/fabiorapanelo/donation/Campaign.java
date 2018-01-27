@@ -13,6 +13,7 @@ public class Campaign {
 
 	@Id
 	private String id;
+	
 	private String name;
 	private String userId;
 	

@@ -1,41 +1,13 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="fabiorapanelo.com.donation.fragment.SearchFragment">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
-    <LinearLayout
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view_campaigns"
+        android:scrollbars="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingBottom="8dp"
-        android:focusable="true"
-        android:focusableInTouchMode="true">
+        android:layout_height="match_parent"/>
 
-        <!-- Search text -->
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="0dip"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.6">
-
-            <EditText
-                android:id="@+id/input_search"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/hint_search"
-                android:inputType="text" />
-        </android.support.design.widget.TextInputLayout>
-
-        <!-- Search button -->
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/btn_search"
-            style="@style/AppTheme.Button.Colored"
-            android:layout_width="0dip"
-            android:layout_height="match_parent"
-            android:layout_weight="0.4"
-            android:text="@string/button_search" />
-
-
-    </LinearLayout>
-
-</FrameLayout>
+</LinearLayout>

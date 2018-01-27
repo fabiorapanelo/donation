@@ -52,7 +52,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_location_on_red_24px"/>
+                android:src="@drawable/ic_location_24px"/>
 
             <TextView
                 android:id="@+id/text_location"

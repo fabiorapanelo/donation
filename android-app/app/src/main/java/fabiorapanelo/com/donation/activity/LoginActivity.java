@@ -17,7 +17,6 @@ import fabiorapanelo.com.donation.database.UserDao;
 import fabiorapanelo.com.donation.model.Credentials;
 import fabiorapanelo.com.donation.model.User;
 import fabiorapanelo.com.donation.services.UserService;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 

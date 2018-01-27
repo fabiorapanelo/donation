@@ -16,7 +16,9 @@ import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -28,7 +30,6 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import fabiorapanelo.com.donation.R;
-import fabiorapanelo.com.donation.activity.PickLocationActivity;
 import fabiorapanelo.com.donation.adapter.CampaignListAdapter;
 import fabiorapanelo.com.donation.model.Campaign;
 import fabiorapanelo.com.donation.utils.PermissionUtils;
@@ -136,12 +137,13 @@ public class CampaignsFragment extends BaseFragment {
                     Manifest.permission.ACCESS_FINE_LOCATION, true);
         } else {
 
-            mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this.getActivity());
+
+            mFusedLocationClient = LocationServices.getFusedLocationProviderClient(activity);
             mFusedLocationClient.getLastLocation().addOnSuccessListener(activity, new OnSuccessListener<Location>() {
                 @Override
                 public void onSuccess(Location location) {
                     if (location != null) {
-                        CampaignsFragment.this.findCampaigns(location);
+                        findCampaigns(location);
                     }
                 }
             });

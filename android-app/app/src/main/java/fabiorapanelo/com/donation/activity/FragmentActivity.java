@@ -5,11 +5,14 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -24,21 +27,23 @@ import butterknife.ButterKnife;
 import fabiorapanelo.com.donation.R;
 import fabiorapanelo.com.donation.fragment.AddTicketFragment;
 import fabiorapanelo.com.donation.fragment.CampaignsFragment;
-import fabiorapanelo.com.donation.fragment.FavoritesFragment;
-import fabiorapanelo.com.donation.fragment.ProfileFragment;
+import fabiorapanelo.com.donation.fragment.UserInformationFragment;
 import fabiorapanelo.com.donation.fragment.SearchFragment;
 
 //Inspiration: https://github.com/f22labs/InstaLikeFragmentTransaction/
 //Using: https://github.com/ncapdevi/FragNav
 //Improvement to be done: https://github.com/roughike/BottomBar
 
-public class HomeActivity extends BaseActivity implements TabLayout.OnTabSelectedListener {
+public class FragmentActivity extends BaseActivity implements TabLayout.OnTabSelectedListener {
 
     @Bind(R.id.bottom_tab_layout)
     protected TabLayout bottomTabLayout;
 
     @Bind(R.id.my_toolbar)
     protected Toolbar mTopToolbar;
+
+    @Bind(R.id.edit_text_campaign_name2)
+    protected EditText editTextCampaignName;
 
     protected FragNavController mNavController;
     protected String[] tabsName;
@@ -49,7 +54,7 @@ public class HomeActivity extends BaseActivity implements TabLayout.OnTabSelecte
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.activity_fragment);
 
         ButterKnife.bind(this);
 
@@ -65,24 +70,36 @@ public class HomeActivity extends BaseActivity implements TabLayout.OnTabSelecte
 
         tabsName = getResources().getStringArray(R.array.tabs);
 
-        updateToolbarTitle(0);
+        updateToolbar(0);
+
+        editTextCampaignName.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    searchCampaigns();
+                    return true;
+                }
+                return false;
+            }
+        });
+
         mNavController.switchTab(0);
 
     }
 
     protected void initTabs() {
-        this.addTab(R.drawable.ic_home_white_24px);
+        this.addTab(R.drawable.ic_home_black_24dp);
         this.addTab(R.drawable.ic_search_white_24px);
-        this.addTab(R.drawable.ic_add_box_white_24px);
+        this.addTab(R.drawable.ic_add_box_black_24px);
         this.addTab(R.drawable.ic_favorite_white_24px);
-        this.addTab(R.drawable.ic_person_white_24px);
+        this.addTab(R.drawable.ic_person_black_24px);
     }
 
     protected void addTab(int iconId) {
 
         TabLayout.Tab tab = bottomTabLayout.newTab();
 
-        View view = LayoutInflater.from(HomeActivity.this).inflate(R.layout.tab_item_bottom, null);
+        View view = LayoutInflater.from(FragmentActivity.this).inflate(R.layout.tab_item_bottom, null);
         ImageView icon = view.findViewById(R.id.tab_icon);
 
         icon.setImageResource(iconId);
@@ -97,10 +114,10 @@ public class HomeActivity extends BaseActivity implements TabLayout.OnTabSelecte
         List<Fragment> fragments = new ArrayList<>(5);
 
         fragments.add(CampaignsFragment.newInstance(currentDistanceInKM));
-        fragments.add(SearchFragment.newInstance());
+        fragments.add(SearchFragment.newInstance(null));
         fragments.add(AddTicketFragment.newInstance());
-        fragments.add(FavoritesFragment.newInstance());
-        fragments.add(ProfileFragment.newInstance());
+        fragments.add(AddTicketFragment.newInstance());
+        fragments.add(UserInformationFragment.Factory.newInstance());
 
         return fragments;
     }
@@ -108,7 +125,7 @@ public class HomeActivity extends BaseActivity implements TabLayout.OnTabSelecte
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
 
-        updateToolbarTitle(tab.getPosition());
+        updateToolbar(tab.getPosition());
         mNavController.switchTab(tab.getPosition());
 
     }
@@ -122,16 +139,31 @@ public class HomeActivity extends BaseActivity implements TabLayout.OnTabSelecte
     public void onTabReselected(TabLayout.Tab tab) {
 
         mNavController.clearStack();
-        updateToolbarTitle(tab.getPosition());
+        updateToolbar(tab.getPosition());
         mNavController.switchTab(tab.getPosition());
 
     }
 
-    public void updateToolbarTitle(int position) {
+    public void updateToolbar(int position) {
 
         if(getSupportActionBar() != null){
             getSupportActionBar().setTitle(tabsName[position]);
         }
+
+        if(position == 1){
+            editTextCampaignName.setVisibility(View.VISIBLE);
+        } else {
+            editTextCampaignName.setVisibility(View.GONE);
+        }
+
+        if(mTopToolbar.getMenu().size() > 0){
+            if(position == 0){
+                mTopToolbar.getMenu().getItem(0).setVisible(true);
+            } else {
+                mTopToolbar.getMenu().getItem(0).setVisible(false);
+            }
+        }
+
     }
 
     @Override
@@ -180,7 +212,7 @@ public class HomeActivity extends BaseActivity implements TabLayout.OnTabSelecte
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                HomeActivity.this.tempDistanceInKM = seekBar.getProgress();
+                FragmentActivity.this.tempDistanceInKM = seekBar.getProgress();
                 currentDistance.setText("Distância: " + seekBar.getProgress() + "km");
             }
         });
@@ -192,15 +224,21 @@ public class HomeActivity extends BaseActivity implements TabLayout.OnTabSelecte
             @Override
             public void onClick(View v) {
 
-                HomeActivity.this.currentDistanceInKM = HomeActivity.this.tempDistanceInKM;
+                FragmentActivity.this.currentDistanceInKM = FragmentActivity.this.tempDistanceInKM;
 
-                Fragment fragment = CampaignsFragment.newInstance(HomeActivity.this.currentDistanceInKM);
-                HomeActivity.this.mNavController.replaceFragment(fragment);
+                Fragment fragment = CampaignsFragment.newInstance(FragmentActivity.this.currentDistanceInKM);
+                FragmentActivity.this.mNavController.replaceFragment(fragment);
                 dialog.dismiss();
             }
         });
 
         dialog.show();
+    }
+
+    protected void searchCampaigns(){
+        String campaignName = editTextCampaignName.getText().toString();
+        Fragment fragment = SearchFragment.newInstance(campaignName);
+        FragmentActivity.this.mNavController.replaceFragment(fragment);
     }
 
 

@@ -1,7 +1,10 @@
 package com.fabiorapanelo.donation;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.similarity.LevenshteinDistance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.BasicQuery;
@@ -48,6 +51,25 @@ public class CampaignResource {
 					"}" + 
 				"}"), Campaign.class);
 		
+	}
+	
+	@GetMapping("/campaigns/search-by-similar")
+	public final List<Campaign> searchBySimilarName(@RequestParam("name") String campaignName,
+			@RequestParam("limit") long limit) {
+
+		List<Campaign> campaigns = this.repository.findAll();
+
+		LevenshteinDistance levenshteinDistance = LevenshteinDistance.getDefaultInstance();
+
+		if (StringUtils.isEmpty(campaignName)) {
+			return campaigns.parallelStream().limit(limit).collect(Collectors.toList());
+		}
+
+		return campaigns.parallelStream().sorted((c1, c2) -> {
+			int distance1 = levenshteinDistance.apply(campaignName, c1.getName());
+			int distance2 = levenshteinDistance.apply(campaignName, c2.getName());
+			return Integer.compare(distance1, distance2);
+		}).limit(limit).collect(Collectors.toList());
 	}
 
 }

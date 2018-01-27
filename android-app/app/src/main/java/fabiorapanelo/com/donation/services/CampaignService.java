@@ -54,4 +54,11 @@ public class CampaignService extends ServiceBase {
         call.enqueue(callback);
 
     }
+
+    public void searchBySimilarName(String campaignName, long limit, final Callback<ResponseBody> callback){
+        Call<ResponseBody> call;
+        call = campaignRepository.searchBySimilarName(campaignName, limit);
+        call.enqueue(callback);
+    }
+
 }

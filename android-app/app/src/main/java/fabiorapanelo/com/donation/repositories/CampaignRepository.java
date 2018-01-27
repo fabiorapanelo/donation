@@ -41,4 +41,8 @@ public interface CampaignRepository {
     @Deprecated
     @DELETE("campaigns/{campaignId}")
     Call<ResponseBody> delete(@Path("campaignId") String campaignId);
+
+    @GET("campaigns/search-by-similar")
+    Call<ResponseBody> searchBySimilarName(@Query("name") String name,
+                                    @Query("limit") long limit);
 }

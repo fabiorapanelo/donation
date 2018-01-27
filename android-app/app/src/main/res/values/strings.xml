@@ -11,9 +11,7 @@
     <string name="title_choose_user_type">Escolha tipo do usuário</string>
 
     <!-- CampaignList -->
-    <string name="title_donation_list">Doações perto de você</string>
-    <string name="hint_search"></string>
-    <string name="button_search">Pesquisar</string>
+    <string name="hint_search">Pesquisar</string>
     <string name="filter">Filtrar</string>
     <string name="dialog_distance_title">Selecionar distância</string>
     <string name="dialog_distance_btn">Selecionar</string>
@@ -29,12 +27,21 @@
     <string name="button_confirm">Confirmar</string>
 
     <!-- Tab -->
+
+    <string name="nav_user_info">Suas informações</string>
+    <string name="nav_campaigns">Campanhas de doação</string>
+    <string name="nav_partners">Parceiros</string>
+    <string name="nav_add_ticket">Adicionar cupom</string>
+    <string name="nav_add_campaign">Criar campanha</string>
+    <string name="nav_manage">Permissao de usuários</string>
+
     <string-array name="tabs">
-        <item name="tab_home">Campanhas de doação</item>
-        <item name="tab_search">Pesquisar</item>
-        <item name="tab_add_ticket">Adicionar Cupom</item>
-        <item name="tab_favorites">Favoritos</item>
-        <item name="tab_profile">Perfil</item>
+        <item name="nav_user_info">@string/nav_user_info</item>
+        <item name="nav_campaigns">@string/nav_campaigns</item>
+        <item name="nav_partners">@string/nav_partners</item>
+        <item name="nav_add_ticket">@string/nav_add_ticket</item>
+        <item name="nav_add_campaign">@string/nav_add_campaign</item>
+        <item name="nav_manage">@string/nav_manage</item>
     </string-array>
 
     <!-- Create campaign -->
@@ -68,10 +75,9 @@
         <item quantity="one">Doar %1$s real</item>
         <item quantity="other">Doar %1$s reais</item>
     </plurals>
-    <string name="text_user_balance_unavailable">Saldo indisponível</string>
+    <string name="text_user_balance_unavailable">Indisponível</string>
     <plurals name="text_user_balance">
-        <item quantity="one">Seu saldo: %1$s real</item>
-        <item quantity="other">Seu saldo: %1$s reais</item>
+        <item quantity="other">R$ %1$s,00</item>
     </plurals>
     <string name="donate_success_message">Obrigado pela sua doação!</string>
 
@@ -95,5 +101,11 @@
     <string name="barcode_success">Barcode read successfully</string>
     <string name="barcode_failure">No barcode captured</string>
     <string name="barcode_error">"Error reading barcode: %1$s"</string>
+    <string name="title_activity_home">Doe+</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
 
 </resources>
