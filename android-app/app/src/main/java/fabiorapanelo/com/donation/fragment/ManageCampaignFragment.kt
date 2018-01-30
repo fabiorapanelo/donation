@@ -13,6 +13,7 @@ import fabiorapanelo.com.donation.R
 import fabiorapanelo.com.donation.activity.CreateCampaignActivity
 import fabiorapanelo.com.donation.adapter.CampaignListAdapter
 import fabiorapanelo.com.donation.model.Campaign
+import fabiorapanelo.com.donation.services.CampaignService
 import fabiorapanelo.com.donation.services.UserService
 import kotlinx.android.synthetic.main.fragment_manage_campaign.*
 import okhttp3.ResponseBody
@@ -45,7 +46,7 @@ class ManageCampaignFragment : BaseFragment() {
 
     private fun findMyCampaigns() {
 
-        val cacheObject = cacheManager.get(UserService.CACHE_KEY_USER_SERVICE_FIND)
+        val cacheObject = cacheManager.get(CampaignService.CACHE_KEY_CAMPAIGN_SERVICE_FIND_MY_CAMPAIGNS)
         if (cacheObject != null) {
 
             val campaigns = cacheObject as List<Campaign>
@@ -65,7 +66,8 @@ class ManageCampaignFragment : BaseFragment() {
                             }.type
                             val campaigns = Gson().fromJson<List<Campaign>>(body, listType)
 
-                            cacheManager.put(UserService.CACHE_KEY_USER_SERVICE_FIND, campaigns, UserService.CACHE_TIMEOUT_USER_SERVICE_FIND)
+                            cacheManager.put(CampaignService.CACHE_KEY_CAMPAIGN_SERVICE_FIND_MY_CAMPAIGNS, campaigns,
+                                    CampaignService.CACHE_TIMEOUT_CAMPAING_SERVICE_FIND)
 
                             val adapter = CampaignListAdapter(
                                     this@ManageCampaignFragment.activity, campaigns, null)

@@ -30,11 +30,11 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import fabiorapanelo.com.donation.R;
-import fabiorapanelo.com.donation.model.Campaign;
 import fabiorapanelo.com.donation.model.GeoPointLocation;
 import fabiorapanelo.com.donation.model.ImageUpload;
+import fabiorapanelo.com.donation.model.Partner;
 import fabiorapanelo.com.donation.model.User;
-import fabiorapanelo.com.donation.services.CampaignService;
+import fabiorapanelo.com.donation.services.PartnerService;
 import fabiorapanelo.com.donation.utils.LocationUtils;
 import fabiorapanelo.com.donation.utils.PermissionUtils;
 import okhttp3.ResponseBody;
@@ -46,7 +46,7 @@ import retrofit2.Response;
  * Created by fabio on 24/10/2017.
  */
 
-public class CreateCampaignActivity extends BaseActivity implements
+public class CreatePartnerActivity extends BaseActivity implements
         ActivityCompat.OnRequestPermissionsResultCallback {
 
     public static final int REQUEST_CODE_ADD_PHOTO1 = 1;
@@ -96,7 +96,7 @@ public class CreateCampaignActivity extends BaseActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_campaign);
+        setContentView(R.layout.activity_create_partner);
 
         ButterKnife.bind(this);
 
@@ -110,35 +110,35 @@ public class CreateCampaignActivity extends BaseActivity implements
         createCampaign.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CreateCampaignActivity.this.createCampaign(view);
+                CreatePartnerActivity.this.createPartner(view);
             }
         });
 
         mImageViewPhoto1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CreateCampaignActivity.this.uploadPhoto(REQUEST_CODE_ADD_PHOTO1);
+                CreatePartnerActivity.this.uploadPhoto(REQUEST_CODE_ADD_PHOTO1);
             }
         });
 
         mImageViewPhoto2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CreateCampaignActivity.this.uploadPhoto(REQUEST_CODE_ADD_PHOTO2);
+                CreatePartnerActivity.this.uploadPhoto(REQUEST_CODE_ADD_PHOTO2);
             }
         });
 
         mImageViewPhoto3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CreateCampaignActivity.this.uploadPhoto(REQUEST_CODE_ADD_PHOTO3);
+                CreatePartnerActivity.this.uploadPhoto(REQUEST_CODE_ADD_PHOTO3);
             }
         });
 
         mPickLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CreateCampaignActivity.this.pickLocation(view);
+                CreatePartnerActivity.this.pickLocation(view);
             }
         });
     }
@@ -244,7 +244,7 @@ public class CreateCampaignActivity extends BaseActivity implements
 
     }
 
-    protected void createCampaign(View view){
+    protected void createPartner(View view){
 
         if(!mLocationSelected){
             Toast.makeText(this, "Localização deve ser selecionada!", Toast.LENGTH_SHORT).show();
@@ -277,23 +277,23 @@ public class CreateCampaignActivity extends BaseActivity implements
 
                 if(response.isSuccessful()){
 
-                    Campaign campaign = new Campaign();
+                    Partner partner = new Partner();
 
                     String name = campaignName.getText().toString();
-                    campaign.setName(name);
+                    partner.setName(name);
 
                     GeoPointLocation location = new GeoPointLocation();
                     location.setType("Point");
                     location.getCoordinates().add(mLongitude);
                     location.getCoordinates().add(mLatitude);
-                    campaign.setLocation(location);
+                    partner.setLocation(location);
 
-                    campaign.setUserId(user.getId().toString());
+                    partner.setUserId(user.getId().toString());
 
                     ImageUpload imageUpload = response.body();
-                    campaign.setImages(imageUpload.getImages());
+                    partner.setImages(imageUpload.getImages());
 
-                    campaignService.save(campaign, new Callback<ResponseBody>() {
+                    partnerService.save(partner, new Callback<ResponseBody>() {
                         @Override
                         public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
 
@@ -303,28 +303,29 @@ public class CreateCampaignActivity extends BaseActivity implements
                                 mCampaignFieldsLayout.setVisibility(View.GONE);
                                 mCreateCampaignLayout.setVisibility(View.GONE);
 
-                                CreateCampaignActivity.this.resetFields();
-                                cacheManager.evict(CampaignService.CACHE_KEY_CAMPAING_SERVICE_FIND);
+                                CreatePartnerActivity.this.resetFields();
+                                cacheManager.evict(PartnerService.Factory.getCACHE_KEY_PARTNER_SERVICE_FIND());
+                                cacheManager.evict(PartnerService.Factory.getCACHE_KEY_PARTNER_SERVICE_FIND_MY_PARTNERS());
 
                             } else {
-                                Toast.makeText(CreateCampaignActivity.this, "Falha ao cadastrar campanha!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(CreatePartnerActivity.this, "Falha ao cadastrar parceiro!", Toast.LENGTH_SHORT).show();
                             }
                         }
 
                         @Override
                         public void onFailure(Call<ResponseBody> call, Throwable t) {
-                            Toast.makeText(CreateCampaignActivity.this, "Falha ao cadastrar campanha!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(CreatePartnerActivity.this, "Falha ao cadastrar parceiro!", Toast.LENGTH_SHORT).show();
                         }
                     });
 
                 } else {
-                    Toast.makeText(CreateCampaignActivity.this, "Falha ao enviar imagem!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CreatePartnerActivity.this, "Falha ao enviar imagem!", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ImageUpload> call, Throwable t) {
-                Toast.makeText(CreateCampaignActivity.this, "Falha ao enviar imagem!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(CreatePartnerActivity.this, "Falha ao enviar imagem!", Toast.LENGTH_SHORT).show();
             }
         });
 

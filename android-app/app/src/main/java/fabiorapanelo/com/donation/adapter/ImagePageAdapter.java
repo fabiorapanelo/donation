@@ -29,13 +29,13 @@ import fabiorapanelo.com.donation.services.ServiceBase;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 
-public class CampaignImagePageAdapter extends PagerAdapter {
+public class ImagePageAdapter extends PagerAdapter {
 
     private List<String> images;
     private LayoutInflater inflater;
     private Context context;
 
-    public CampaignImagePageAdapter(Context context, List<String> images) {
+    public ImagePageAdapter(Context context, List<String> images) {
         this.context = context;
         this.images=images;
         inflater = LayoutInflater.from(context);

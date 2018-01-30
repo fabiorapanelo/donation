@@ -81,10 +81,10 @@ public class CampaignsFragment extends BaseFragment {
 
     private void findCampaigns(final Location location) {
 
-        Object object = cacheManager.get(CACHE_KEY_CAMPAING_SERVICE_FIND + distanceInKM);
-        if (object != null) {
+        Object campaignsFromCache = cacheManager.get(CACHE_KEY_CAMPAING_SERVICE_FIND + distanceInKM);
+        if (campaignsFromCache != null) {
 
-            List<Campaign> campaigns = (List<Campaign>) object;
+            List<Campaign> campaigns = (List<Campaign>) campaignsFromCache;
 
             CampaignListAdapter adapter = new CampaignListAdapter(this.getActivity(), campaigns, location);
             recyclerViewCampaigns.setAdapter(adapter);

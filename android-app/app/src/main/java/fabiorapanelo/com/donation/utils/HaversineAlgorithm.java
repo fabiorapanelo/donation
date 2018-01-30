@@ -7,6 +7,7 @@ import java.text.NumberFormat;
 import java.util.List;
 
 import fabiorapanelo.com.donation.model.Campaign;
+import fabiorapanelo.com.donation.model.GeoPointLocation;
 
 /**
  * Created by fabio on 23/09/2017.
@@ -32,8 +33,8 @@ public class HaversineAlgorithm {
         return d;
     }
 
-    public static String getDistance(Campaign campaign, Location lastLocation){
-        List<Double> coordinates = campaign.getLocation().getCoordinates();
+    public static String getDistance(GeoPointLocation geoPointLocation, Location lastLocation){
+        List<Double> coordinates = geoPointLocation.getCoordinates();
         double longitude = coordinates.get(0);
         double latitude = coordinates.get(1);
 

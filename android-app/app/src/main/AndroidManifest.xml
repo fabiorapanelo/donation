@@ -59,6 +59,14 @@
             android:label="@string/title_activity_create_campaign"
             android:screenOrientation="portrait"></activity>
         <activity
+            android:name=".activity.PartnerDetailsActivity"
+            android:label="@string/title_activity_partner_details"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.CreatePartnerActivity"
+            android:label="@string/title_activity_create_partner"
+            android:screenOrientation="portrait"></activity>
+        <activity
             android:name=".barcode.BarcodeCaptureActivity"
             android:label="@string/title_activity_add_ticket"
             android:screenOrientation="portrait"></activity>

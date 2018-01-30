@@ -19,17 +19,19 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     var navItemIndex = 0
 
     private val INDEX_USER_INFORMATION = 0
-    private val INDEX_CAMPAIGN = 1
-    private val INDEX_PARTNER = 2
-    private val INDEX_ADD_TICKET = 3
-    private val INDEX_ADD_CAMPAIGN = 4
-    private val INDEX_USER_MANAGEMENT = 5
+    private val INDEX_ADD_TICKET = 1
+    private val INDEX_CAMPAIGN = 2
+    private val INDEX_MANAGE_CAMPAIGN = 3
+    private val INDEX_PARTNER = 4
+    private val INDEX_MANAGE_PARTNER = 5
+    private val INDEX_USER_MANAGEMENT = 6
 
     private val TAG_USER_INFORMATION = "USER_INFORMATION"
-    private val TAG_CAMPAIGN = "CAMPAIGN"
-    private val TAG_PARTNER = "PARTNER"
     private val TAG_ADD_TICKET = "ADD_TICKET"
-    private val TAG_ADD_CAMPAIGN = "ADD_CAMPAIGN"
+    private val TAG_CAMPAIGN = "CAMPAIGN"
+    private val TAG_MANAGE_CAMPAIGN = "MANAGER_CAMPAIGN"
+    private val TAG_PARTNER = "PARTNER"
+    private val TAG_MANAGE_PARTNER = "MANAGER_PARTNER"
     private val TAG_USER_MANAGEMENT = "USER_MANAGEMENT"
 
     var CURRENT_TAG = TAG_CAMPAIGN
@@ -53,9 +55,15 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 loadCurrentFragment()
             };
 
+            if(navItemIndex == INDEX_PARTNER){
+                navItemIndex = INDEX_MANAGE_PARTNER
+                CURRENT_TAG = TAG_MANAGE_PARTNER
+                loadCurrentFragment()
+            };
+
             if(navItemIndex == INDEX_CAMPAIGN){
-                navItemIndex = INDEX_ADD_CAMPAIGN;
-                CURRENT_TAG = TAG_ADD_CAMPAIGN;
+                navItemIndex = INDEX_MANAGE_CAMPAIGN;
+                CURRENT_TAG = TAG_MANAGE_CAMPAIGN;
                 loadCurrentFragment()
             };
         }
@@ -123,12 +131,13 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private fun getCurrentFragment(): Fragment {
         // home
         when (navItemIndex) {
-            0 -> return UserInformationFragment.newInstance()
-            1 -> return CampaignsFragment.newInstance(500)
-            2 -> return PartnersFragment.newInstance();
-            3 -> return AddTicketFragment.newInstance()
-            4 -> return ManageCampaignFragment.newInstance()
-            5 -> return UserManagementFragment.newInstance()
+            INDEX_USER_INFORMATION -> return UserInformationFragment.newInstance()
+            INDEX_ADD_TICKET -> return AddTicketFragment.newInstance()
+            INDEX_CAMPAIGN -> return CampaignsFragment.newInstance(500)
+            INDEX_MANAGE_CAMPAIGN -> return ManageCampaignFragment.newInstance()
+            INDEX_PARTNER -> return PartnersFragment.newInstance(500);
+            INDEX_MANAGE_PARTNER -> return ManagePartnerFragment.newInstance();
+            INDEX_USER_MANAGEMENT -> return UserManagementFragment.newInstance()
             else -> {
                 return UserInformationFragment.newInstance()
             }
@@ -161,28 +170,32 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.nav_user_info -> {
-                navItemIndex = INDEX_USER_INFORMATION;
-                CURRENT_TAG = TAG_USER_INFORMATION;
-            }
-            R.id.nav_campaigns -> {
-                navItemIndex = INDEX_CAMPAIGN;
-                CURRENT_TAG = TAG_CAMPAIGN
-            }
-            R.id.nav_partners -> {
-                navItemIndex = INDEX_PARTNER;
-                CURRENT_TAG = TAG_PARTNER;
+                navItemIndex = INDEX_USER_INFORMATION
+                CURRENT_TAG = TAG_USER_INFORMATION
             }
             R.id.nav_add_ticket -> {
-                navItemIndex = INDEX_ADD_TICKET;
-                CURRENT_TAG = TAG_ADD_TICKET;
+                navItemIndex = INDEX_ADD_TICKET
+                CURRENT_TAG = TAG_ADD_TICKET
+            }
+            R.id.nav_campaigns -> {
+                navItemIndex = INDEX_CAMPAIGN
+                CURRENT_TAG = TAG_CAMPAIGN
             }
             R.id.nav_add_campaign -> {
-                navItemIndex = INDEX_ADD_CAMPAIGN;
-                CURRENT_TAG = TAG_ADD_CAMPAIGN;
+                navItemIndex = INDEX_MANAGE_CAMPAIGN
+                CURRENT_TAG = TAG_MANAGE_CAMPAIGN
+            }
+            R.id.nav_partners -> {
+                navItemIndex = INDEX_PARTNER
+                CURRENT_TAG = TAG_PARTNER
+            }
+            R.id.nav_add_partner -> {
+                navItemIndex = INDEX_MANAGE_PARTNER
+                CURRENT_TAG = TAG_MANAGE_PARTNER
             }
             R.id.nav_manage -> {
-                navItemIndex = INDEX_USER_MANAGEMENT;
-                CURRENT_TAG = TAG_USER_MANAGEMENT;
+                navItemIndex = INDEX_USER_MANAGEMENT
+                CURRENT_TAG = TAG_USER_MANAGEMENT
             }
         }
 
@@ -202,6 +215,10 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 fab.show();
             }
             INDEX_CAMPAIGN -> {
+                fab.setImageResource(R.drawable.ic_add_white_24dp)
+                fab.show();
+            }
+            INDEX_PARTNER -> {
                 fab.setImageResource(R.drawable.ic_add_white_24dp)
                 fab.show();
             }

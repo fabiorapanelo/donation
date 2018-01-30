@@ -14,9 +14,6 @@ import retrofit2.Callback;
 
 public class UserService extends ServiceBase {
 
-    public static final String CACHE_KEY_USER_SERVICE_FIND = "CampaingService.findMyCampaigns";
-    public static final int CACHE_TIMEOUT_USER_SERVICE_FIND = 30;
-
     protected UserRepository userRepository;
 
     private static UserService instance = new UserService();

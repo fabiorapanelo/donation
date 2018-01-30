@@ -10,13 +10,12 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.IOException;
 import java.util.Date;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import fabiorapanelo.com.donation.R;
-import fabiorapanelo.com.donation.adapter.CampaignImagePageAdapter;
+import fabiorapanelo.com.donation.adapter.ImagePageAdapter;
 import fabiorapanelo.com.donation.model.Campaign;
 import fabiorapanelo.com.donation.model.Log;
 import me.relex.circleindicator.CircleIndicator;
@@ -75,7 +74,7 @@ public class CampaignDetailsActivity extends BaseActivity {
         this.setupToolbar();
 
         textCampaignName.setText(campaign.getName());
-        viewPager.setAdapter(new CampaignImagePageAdapter(this, campaign.getImages()));
+        viewPager.setAdapter(new ImagePageAdapter(this, campaign.getImages()));
         indicator.setViewPager(viewPager);
 
         btnDonate.setOnClickListener(new View.OnClickListener() {

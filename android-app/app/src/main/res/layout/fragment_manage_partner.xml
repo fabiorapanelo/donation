@@ -11,17 +11,17 @@
         style="@style/AppTheme.Button.Colored"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/create_campaign" />
+        android:text="@string/my_partners" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:text="@string/my_campaigns"
+        android:text="@string/my_partners"
         android:textAlignment="center"/>
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view_campaigns"
+        android:id="@+id/recycler_view_partners"
         android:scrollbars="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

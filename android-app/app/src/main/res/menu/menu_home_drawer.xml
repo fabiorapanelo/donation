@@ -9,21 +9,25 @@
             android:icon="@drawable/ic_person_black_24px"
             android:title="@string/nav_user_info" />
         <item
+            android:id="@+id/nav_add_ticket"
+            android:icon="@drawable/ic_loyalty_black_24dp"
+            android:title="@string/nav_add_ticket" />
+        <item
             android:id="@+id/nav_campaigns"
             android:icon="@drawable/ic_list_black_24dp"
             android:title="@string/nav_campaigns" />
+        <item
+            android:id="@+id/nav_add_campaign"
+            android:icon="@drawable/ic_add_box_black_24px"
+            android:title="@string/nav_add_campaign" />
         <item
             android:id="@+id/nav_partners"
             android:icon="@drawable/ic_store_black_24dp"
             android:title="@string/nav_partners" />
         <item
-            android:id="@+id/nav_add_ticket"
-            android:icon="@drawable/ic_loyalty_black_24dp"
-            android:title="@string/nav_add_ticket" />
-        <item
-            android:id="@+id/nav_add_campaign"
-            android:icon="@drawable/ic_add_box_black_24px"
-            android:title="@string/nav_add_campaign" />
+            android:id="@+id/nav_add_partner"
+            android:icon="@drawable/ic_store_black_24dp"
+            android:title="@string/nav_add_partner" />
         <item
             android:id="@+id/nav_manage"
             android:icon="@drawable/ic_menu_manage"

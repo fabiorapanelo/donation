@@ -27,20 +27,21 @@
     <string name="button_confirm">Confirmar</string>
 
     <!-- Tab -->
-
     <string name="nav_user_info">Suas informações</string>
-    <string name="nav_campaigns">Campanhas de doação</string>
-    <string name="nav_partners">Parceiros</string>
     <string name="nav_add_ticket">Adicionar cupom</string>
+    <string name="nav_campaigns">Campanhas de doação</string>
     <string name="nav_add_campaign">Criar campanha</string>
+    <string name="nav_partners">Parceiros</string>
+    <string name="nav_add_partner">Adicionar Parceiro</string>
     <string name="nav_manage">Permissao de usuários</string>
 
     <string-array name="tabs">
         <item name="nav_user_info">@string/nav_user_info</item>
-        <item name="nav_campaigns">@string/nav_campaigns</item>
-        <item name="nav_partners">@string/nav_partners</item>
         <item name="nav_add_ticket">@string/nav_add_ticket</item>
+        <item name="nav_campaigns">@string/nav_campaigns</item>
         <item name="nav_add_campaign">@string/nav_add_campaign</item>
+        <item name="nav_partners">@string/nav_partners</item>
+        <item name="nav_add_partner">@string/nav_add_partner</item>
         <item name="nav_manage">@string/nav_manage</item>
     </string-array>
 
@@ -48,26 +49,30 @@
     <string name="hint_campaign_name">Nome da campanha</string>
     <string name="hint_latitude">Latitude</string>
     <string name="hint_longitude">Longitude</string>
+    <string name="label_location">Localização:</string>
+    <string name="location_not_selected">Nenhum local selecionado!</string>
     <string name="button_create_campaign">Criar campanha</string>
     <string name="create_campaign_success_message">Sua campanha foi criada com sucesso!</string>
     <string name="title_activity_create_campaign">Criação de Campanha</string>
 
-    <!-- Add Fragment -->
+    <!-- Create partner -->
+    <string name="hint_partner_name">Nome da campanha</string>
+    <string name="button_create_partner">Criar parceiro</string>
+    <string name="create_partner_success_message">O parceiro foi criado com sucesso!</string>
+    <string name="title_activity_create_partner">Criação de Parceiro</string>
+
+    <!-- Add Ticket Fragment -->
     <string name="add_ticket_fragment_scan">Scanear Cupom</string>
     <string name="add_ticket_fragment_cancel">Cancelar</string>
     <string name="add_ticket_fragment_add_ticket">Adicionar Cupom</string>
 
-    <!-- Favorites -->
-    <string name="favorites_not_available">Esta funcionalidade ainda não está disponível.</string>
-
-    <!-- Profile -->
-    <string name="button_edit">Editar</string>
-    <string name="my_campaigns">Minhas Campanhas</string>
-    <string name="profile_fragment_create_campaign">Criar Campanha</string>
-
     <!-- Pick Location -->
     <string name="title_activity_pick_location">Selecionar Localização</string>
     <string name="btn_pick_location">Selecionar</string>
+
+    <!-- Manage Campaigns -->
+    <string name="my_campaigns">Minhas Campanhas</string>
+    <string name="create_campaign">Criar Campanha</string>
 
     <!-- Campaign Details -->
     <string name="title_activity_campaign_details">Detalhes da Campanha</string>
@@ -105,6 +110,13 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <!-- Manage Partners -->
+    <string name="my_partners">Meus Parceiros</string>
+    <string name="create_partner">Criar Parceiro</string>
+
+    <!-- Partner Details -->
+    <string name="title_activity_partner_details">Detalhes do Parceiro</string>
 
     <string name="action_settings">Settings</string>
 

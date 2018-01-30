@@ -19,7 +19,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="@string/create_campaign_success_message"
+            android:text="@string/create_partner_success_message"
             android:textAlignment="center"/>
 
 
@@ -40,7 +40,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text"
-                android:hint="@string/hint_campaign_name" />
+                android:hint="@string/hint_partner_name" />
         </android.support.design.widget.TextInputLayout>
 
         <TextView
@@ -119,7 +119,7 @@
             style="@style/AppTheme.Button.Colored"
             android:layout_width="fill_parent"
             android:layout_height="64dp"
-            android:text="@string/button_create_campaign"/>
+            android:text="@string/button_create_partner"/>
 
     </LinearLayout>
 

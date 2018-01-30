@@ -13,6 +13,7 @@ import retrofit2.http.Query;
 
 public class CampaignService extends ServiceBase {
 
+    public static final String CACHE_KEY_CAMPAIGN_SERVICE_FIND_MY_CAMPAIGNS = "CampaingService.findMyCampaigns";
     public static final String CACHE_KEY_CAMPAING_SERVICE_FIND = "CampaingService.find";
     public static final int CACHE_TIMEOUT_CAMPAING_SERVICE_FIND = 30;
 
