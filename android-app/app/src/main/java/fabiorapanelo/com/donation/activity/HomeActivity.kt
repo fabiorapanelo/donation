@@ -153,6 +153,14 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.home, menu)
+        val item = menu.getItem(0);
+        when (navItemIndex) {
+            INDEX_CAMPAIGN -> item.isVisible = true
+            INDEX_PARTNER -> item.isVisible = true
+            else -> {
+                item.isVisible = false
+            }
+        }
         return true
     }
 
@@ -161,9 +169,29 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         when (item.itemId) {
-            R.id.action_settings -> return true
+            R.id.action_search -> {
+                onSearchRequested();
+                return true
+            }
             else -> return super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun onSearchRequested(): Boolean {
+        when (navItemIndex) {
+            INDEX_CAMPAIGN -> {
+                val appData = Bundle()
+                appData.putString(SearchActivity.SEARCH_TYPE, SearchActivity.SEARCH_CAMPAIGN);
+                startSearch(null, false, appData, false)
+            }
+            INDEX_PARTNER -> {
+                val appData = Bundle()
+                appData.putString(SearchActivity.SEARCH_TYPE, SearchActivity.SEARCH_PARTNER);
+                startSearch(null, false, appData, false)
+            }
+        }
+
+        return true
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {

@@ -11,7 +11,7 @@
         style="@style/AppTheme.Button.Colored"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/my_partners" />
+        android:text="@string/create_partner" />
 
     <TextView
         android:layout_width="match_parent"

@@ -118,6 +118,11 @@
     <!-- Partner Details -->
     <string name="title_activity_partner_details">Detalhes do Parceiro</string>
 
-    <string name="action_settings">Settings</string>
+    <!-- Generic Items -->
+    <string name="action_search">Pesquisar</string>
+    <string name="search_hint">Pesquisar</string>
+
+    <!-- SearchActivity -->
+    <string name="title_activity_search">Pesquisa</string>
 
 </resources>
