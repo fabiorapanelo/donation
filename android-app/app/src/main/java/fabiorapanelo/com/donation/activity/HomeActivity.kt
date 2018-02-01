@@ -54,7 +54,6 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 val partnersFragment = supportFragmentManager.findFragmentByTag(CURRENT_TAG) as PartnersFragment;
 
                 val intent = Intent(this, MapActivity::class.java)
-                intent.putExtra("lastLocation", partnersFragment.lastLocation)
                 intent.putExtra("items", partnersFragment.partners as Serializable)
                 intent.putExtra("itemType", CURRENT_TAG)
                 startActivity(intent)
@@ -64,7 +63,6 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 val campaignFragment = supportFragmentManager.findFragmentByTag(CURRENT_TAG) as CampaignsFragment;
 
                 val intent = Intent(this, MapActivity::class.java)
-                intent.putExtra("lastLocation", campaignFragment.lastLocation)
                 intent.putExtra("items", campaignFragment.campaigns as Serializable)
                 intent.putExtra("itemType", CURRENT_TAG)
                 startActivity(intent)

@@ -85,7 +85,7 @@
                     android:layout_height="wrap_content"
                     android:textAlignment="center"
                     android:textSize="40sp"
-                    android:text="20"
+                    android:text="0"
                     android:layout_marginBottom="8dp"/>
 
                 <ProgressBar

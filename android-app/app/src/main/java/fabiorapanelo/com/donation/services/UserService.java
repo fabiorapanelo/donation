@@ -3,6 +3,7 @@ package fabiorapanelo.com.donation.services;
 
 import fabiorapanelo.com.donation.model.Credentials;
 import fabiorapanelo.com.donation.model.User;
+import fabiorapanelo.com.donation.model.UserInfo;
 import fabiorapanelo.com.donation.repositories.UserRepository;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -57,8 +58,8 @@ public class UserService extends ServiceBase {
 
     }
 
-    public void getBalance(User user, final Callback<ResponseBody> callback){
-        Call<ResponseBody> call = userRepository.getBalance(user.getId());
+    public void getBalance(User user, final Callback<UserInfo> callback){
+        Call<UserInfo> call = userRepository.getBalance(user.getId());
         call.enqueue(callback);
     }
 

@@ -3,6 +3,7 @@ package fabiorapanelo.com.donation.repositories;
 import fabiorapanelo.com.donation.model.Credentials;
 import fabiorapanelo.com.donation.model.Log;
 import fabiorapanelo.com.donation.model.User;
+import fabiorapanelo.com.donation.model.UserInfo;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -45,7 +46,7 @@ public interface UserRepository {
     Call<ResponseBody> getLogs(@Path("userId") Long userId);
 
     @GET("users/{userId}/balance")
-    Call<ResponseBody> getBalance(@Path("userId") Long userId);
+    Call<UserInfo> getBalance(@Path("userId") Long userId);
 
     @POST("users/{userId}/add-ticket")
     Call<ResponseBody> addTicket(@Path("userId") Long userId, @Body Log ticket);

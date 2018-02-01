@@ -21,6 +21,7 @@ import butterknife.ButterKnife;
 import fabiorapanelo.com.donation.R;
 import fabiorapanelo.com.donation.barcode.BarcodeCaptureActivity;
 import fabiorapanelo.com.donation.model.Ticket;
+import fabiorapanelo.com.donation.model.UserInfo;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -192,13 +193,13 @@ public class AddTicketFragment extends BaseFragment {
 
         progressBar.setVisibility(View.VISIBLE);
 
-        userService.getBalance(user, new Callback<ResponseBody>() {
+        userService.getBalance(user, new Callback<UserInfo>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            public void onResponse(Call<UserInfo> call, Response<UserInfo> response) {
                 progressBar.setVisibility(View.INVISIBLE);
                 if(response.isSuccessful()){
                     try {
-                        Integer balance = Integer.valueOf(response.body().string());
+                        Integer balance = response.body().getBalance();
                         txtUserBalance.setText(getResources().getQuantityString(R.plurals.text_user_balance, balance, balance));
 
                     } catch (Exception e) {
@@ -210,7 +211,7 @@ public class AddTicketFragment extends BaseFragment {
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(Call<UserInfo> call, Throwable t) {
                 progressBar.setVisibility(View.INVISIBLE);
                 txtUserBalance.setText(getResources().getString(R.string.text_user_balance_unavailable));
             }

@@ -15,6 +15,7 @@ import fabiorapanelo.com.donation.model.Partner
 import java.io.Serializable
 import com.google.android.gms.maps.CameraUpdate
 import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.LatLngBounds
 
 
 /**
@@ -24,7 +25,6 @@ import com.google.android.gms.maps.model.CameraPosition
 class MapActivity: BaseActivity(), OnMapReadyCallback {
 
     var items: Serializable? = null
-    var lastLocation: Location? = null
     var itemType: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,7 +34,6 @@ class MapActivity: BaseActivity(), OnMapReadyCallback {
         setupToolbar()
 
         items = intent.getSerializableExtra("items");
-        lastLocation = intent.getParcelableExtra("lastLocation") as Location
         itemType = intent.getStringExtra("itemType")
 
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
@@ -43,6 +42,8 @@ class MapActivity: BaseActivity(), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
 
+        var latlngbounds = LatLngBounds.builder();
+
         if(itemType == HomeActivity.TAG_CAMPAIGN){
             val campaigns = items as List<Campaign>
 
@@ -50,6 +51,7 @@ class MapActivity: BaseActivity(), OnMapReadyCallback {
                 if(campaign?.location?.coordinates != null){
                     val latlng = LatLng(campaign!!.location!!.coordinates[1], campaign!!.location!!.coordinates[0])
                     googleMap.addMarker(MarkerOptions().position(latlng).title(campaign.name));
+                    latlngbounds.include(latlng)
                 }
             }
 
@@ -59,17 +61,13 @@ class MapActivity: BaseActivity(), OnMapReadyCallback {
                 if(partner?.location?.coordinates != null){
                     val latlng = LatLng(partner!!.location!!.coordinates[1], partner!!.location!!.coordinates[0])
                     googleMap.addMarker(MarkerOptions().position(latlng).title(partner.name));
+                    latlngbounds.include(latlng)
                 }
             }
         }
 
-        if(lastLocation != null){
-            val latlng = LatLng(lastLocation!!.latitude, lastLocation!!.longitude)
-            val cameraPosition = CameraPosition.Builder()
-                    .target(latlng)
-                    .zoom(12f)
-                    .build()
-            googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-        }
+        googleMap.setMaxZoomPreference(17f)
+        googleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(latlngbounds.build(), 200));
+
     }
 }

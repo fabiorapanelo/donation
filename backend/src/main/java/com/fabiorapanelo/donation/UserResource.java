@@ -16,23 +16,29 @@ public class UserResource {
 	private MongoTemplate mongoTemplate;
 	
 	@GetMapping("/users/{userId}/balance")
-	public Integer getBalance(@PathVariable("userId") String userId) {				
+	public UserInfo getBalance(@PathVariable("userId") String userId) {				
+		
+		UserInfo userInfo = new UserInfo();
 		
 		List<Log> logs = this.getUserLogs(userId);
 		
-		int total = 0;
+		int balance = 0;
+		int numberDonations = 0;
 		
 		for(Log log: logs){
 			if(log.getUserFrom().equals(log.getUserTo())){
 				//User from and to is the same - scenario shouldn't happen
 			} else if(userId.equals(log.getUserFrom())){
-				total = total - log.getQuantity();
+				balance = balance - log.getQuantity();
+				numberDonations++;
 			} else {
-				total = total + log.getQuantity();
+				balance = balance + log.getQuantity();
 			}
 		}
+		userInfo.setBalance(balance);
+		userInfo.setNumberDonations(numberDonations);
 		
-		return total;
+		return userInfo;
 	}
 	
 	@GetMapping("/users/{userId}/logs")

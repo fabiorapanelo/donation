@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import fabiorapanelo.com.donation.R
+import fabiorapanelo.com.donation.model.UserInfo
 import kotlinx.android.synthetic.main.fragment_user_information.*
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -31,28 +32,36 @@ class UserInformationFragment : BaseFragment() {
 
     protected fun getBalance() {
 
-        progress_bar.setVisibility(View.VISIBLE)
+        progress_bar.visibility = View.VISIBLE
+        progress_bar_number_donations.visibility = View.VISIBLE
 
-        userService.getBalance(user, object : Callback<ResponseBody> {
-            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                progress_bar.setVisibility(View.INVISIBLE)
+        userService.getBalance(user, object : Callback<UserInfo> {
+            override fun onResponse(call: Call<UserInfo>, response: Response<UserInfo>) {
+                progress_bar.visibility = View.INVISIBLE
+                progress_bar_number_donations.visibility = View.INVISIBLE
+
                 if (response.isSuccessful) {
                     try {
-                        val balance = Integer.valueOf(response.body()!!.string())
-                        text_view_user_balance.setText(resources.getQuantityString(R.plurals.text_user_balance, balance!!, balance))
+                        val balance = response.body()!!.balance
+                        text_view_user_balance.text = resources.getQuantityString(R.plurals.text_user_balance, balance!!, balance)
+                        val numberDonations = response.body()!!.numberDonations
+                        text_view_number_donations.text = numberDonations.toString()
 
                     } catch (e: Exception) {
-                        text_view_user_balance.setText(resources.getString(R.string.text_user_balance_unavailable))
+                        text_view_user_balance.text = resources.getString(R.string.text_user_balance_unavailable)
+                        text_view_number_donations.text = resources.getString(R.string.text_user_balance_unavailable)
                     }
-
                 } else {
-                    text_view_user_balance.setText(resources.getString(R.string.text_user_balance_unavailable))
+                    text_view_user_balance.text = resources.getString(R.string.text_user_balance_unavailable)
+                    text_view_number_donations.text = resources.getString(R.string.text_user_balance_unavailable)
                 }
             }
 
-            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                progress_bar.setVisibility(View.INVISIBLE)
-                text_view_user_balance.setText(resources.getString(R.string.text_user_balance_unavailable))
+            override fun onFailure(call: Call<UserInfo>, t: Throwable) {
+                progress_bar.visibility = View.INVISIBLE
+                progress_bar_number_donations.visibility = View.INVISIBLE
+                text_view_user_balance.text = resources.getString(R.string.text_user_balance_unavailable)
+                text_view_number_donations.text = resources.getString(R.string.text_user_balance_unavailable)
             }
         })
     }
