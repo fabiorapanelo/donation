@@ -17,6 +17,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import fabiorapanelo.com.donation.R
 import fabiorapanelo.com.donation.adapter.PartnerListAdapter
+import fabiorapanelo.com.donation.model.Campaign
 import fabiorapanelo.com.donation.model.Partner
 import fabiorapanelo.com.donation.services.PartnerService
 import fabiorapanelo.com.donation.utils.PermissionUtils
@@ -35,6 +36,9 @@ class PartnersFragment : BaseFragment() {
 
     protected var distanceInKM: Int = 0
 
+    var lastLocation: Location? = null
+    var partners: List<Partner>? = null
+
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         return inflater!!.inflate(R.layout.fragment_partners, container, false)
@@ -48,10 +52,12 @@ class PartnersFragment : BaseFragment() {
 
     private fun findPartners(location: Location?) {
 
+        lastLocation = location
+
         val partnersFromCache = cacheManager.get(PartnerService.Factory.CACHE_KEY_PARTNER_SERVICE_FIND + distanceInKM)
         if (partnersFromCache != null) {
 
-            val partners = partnersFromCache as List<Partner>
+            partners = partnersFromCache as List<Partner>
 
             val adapter = PartnerListAdapter(this.activity, partners, location)
             recycler_view_partners.adapter = adapter
@@ -69,7 +75,7 @@ class PartnersFragment : BaseFragment() {
                             val listType = object : TypeToken<ArrayList<Partner>>() {
 
                             }.type
-                            val partners = Gson().fromJson<List<Partner>>(body, listType)
+                            partners = Gson().fromJson<List<Partner>>(body, listType)
 
                             cacheManager.put(PartnerService.Factory.CACHE_KEY_PARTNER_SERVICE_FIND + distanceInKM,
                                     partners, PartnerService.CACHE_TIMEOUT_PARTNER_SERVICE_FIND)

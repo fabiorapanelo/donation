@@ -125,4 +125,7 @@
     <!-- SearchActivity -->
     <string name="title_activity_search">Pesquisa</string>
 
+    <!-- MapActivity -->
+    <string name="title_activity_map">Mapa</string>
+
 </resources>

@@ -53,6 +53,9 @@ public class CampaignsFragment extends BaseFragment {
 
     protected int distanceInKM;
 
+    protected Location lastLocation;
+    protected List<Campaign> campaigns;
+
     public void setDistanceInKM(int distanceInKM){
         this.distanceInKM = distanceInKM;
     }
@@ -81,10 +84,12 @@ public class CampaignsFragment extends BaseFragment {
 
     private void findCampaigns(final Location location) {
 
+        lastLocation = location;
+
         Object campaignsFromCache = cacheManager.get(CACHE_KEY_CAMPAING_SERVICE_FIND + distanceInKM);
         if (campaignsFromCache != null) {
 
-            List<Campaign> campaigns = (List<Campaign>) campaignsFromCache;
+            campaigns = (List<Campaign>) campaignsFromCache;
 
             CampaignListAdapter adapter = new CampaignListAdapter(this.getActivity(), campaigns, location);
             recyclerViewCampaigns.setAdapter(adapter);
@@ -101,7 +106,7 @@ public class CampaignsFragment extends BaseFragment {
 
                             String body = response.body().string();
                             Type listType = new TypeToken<ArrayList<Campaign>>() {}.getType();
-                            List<Campaign> campaigns = new Gson().fromJson(body, listType);
+                            campaigns = new Gson().fromJson(body, listType);
 
                             cacheManager.put(CACHE_KEY_CAMPAING_SERVICE_FIND + distanceInKM, campaigns, CACHE_TIMEOUT_CAMPAING_SERVICE_FIND);
                             CampaignListAdapter adapter = new CampaignListAdapter(
@@ -173,5 +178,13 @@ public class CampaignsFragment extends BaseFragment {
      */
     private void showMissingPermissionError() {
         PermissionUtils.PermissionDeniedDialog.newInstance(true).show(getFragmentManager(), "dialog");
+    }
+
+    public Location getLastLocation() {
+        return lastLocation;
+    }
+
+    public List<Campaign> getCampaigns() {
+        return campaigns;
     }
 }

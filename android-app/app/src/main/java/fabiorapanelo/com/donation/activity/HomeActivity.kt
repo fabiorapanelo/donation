@@ -1,5 +1,6 @@
 package fabiorapanelo.com.donation.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.support.design.widget.NavigationView
@@ -9,30 +10,16 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import fabiorapanelo.com.donation.R
 import fabiorapanelo.com.donation.fragment.*
 import kotlinx.android.synthetic.main.activity_home.*
+import java.io.Serializable
 
 class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     // tags used to attach the fragments
     var navItemIndex = 0
-
-    private val INDEX_USER_INFORMATION = 0
-    private val INDEX_ADD_TICKET = 1
-    private val INDEX_CAMPAIGN = 2
-    private val INDEX_MANAGE_CAMPAIGN = 3
-    private val INDEX_PARTNER = 4
-    private val INDEX_MANAGE_PARTNER = 5
-    private val INDEX_USER_MANAGEMENT = 6
-
-    private val TAG_USER_INFORMATION = "USER_INFORMATION"
-    private val TAG_ADD_TICKET = "ADD_TICKET"
-    private val TAG_CAMPAIGN = "CAMPAIGN"
-    private val TAG_MANAGE_CAMPAIGN = "MANAGER_CAMPAIGN"
-    private val TAG_PARTNER = "PARTNER"
-    private val TAG_MANAGE_PARTNER = "MANAGER_PARTNER"
-    private val TAG_USER_MANAGEMENT = "USER_MANAGEMENT"
 
     var CURRENT_TAG = TAG_CAMPAIGN
 
@@ -48,13 +35,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         mHandler = Handler()
 
-        fab.setOnClickListener { view ->
-            if(navItemIndex == INDEX_USER_INFORMATION){
-                navItemIndex = INDEX_ADD_TICKET
-                CURRENT_TAG = TAG_ADD_TICKET
-                loadCurrentFragment()
-            };
-
+        fab_follow.setOnClickListener { view ->
             if(navItemIndex == INDEX_PARTNER){
                 navItemIndex = INDEX_MANAGE_PARTNER
                 CURRENT_TAG = TAG_MANAGE_PARTNER
@@ -64,6 +45,34 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             if(navItemIndex == INDEX_CAMPAIGN){
                 navItemIndex = INDEX_MANAGE_CAMPAIGN;
                 CURRENT_TAG = TAG_MANAGE_CAMPAIGN;
+                loadCurrentFragment()
+            };
+        }
+
+        fab.setOnClickListener { view ->
+            if(navItemIndex == INDEX_PARTNER){
+                val partnersFragment = supportFragmentManager.findFragmentByTag(CURRENT_TAG) as PartnersFragment;
+
+                val intent = Intent(this, MapActivity::class.java)
+                intent.putExtra("lastLocation", partnersFragment.lastLocation)
+                intent.putExtra("items", partnersFragment.partners as Serializable)
+                intent.putExtra("itemType", CURRENT_TAG)
+                startActivity(intent)
+            };
+
+            if(navItemIndex == INDEX_CAMPAIGN){
+                val campaignFragment = supportFragmentManager.findFragmentByTag(CURRENT_TAG) as CampaignsFragment;
+
+                val intent = Intent(this, MapActivity::class.java)
+                intent.putExtra("lastLocation", campaignFragment.lastLocation)
+                intent.putExtra("items", campaignFragment.campaigns as Serializable)
+                intent.putExtra("itemType", CURRENT_TAG)
+                startActivity(intent)
+            };
+
+            if(navItemIndex == INDEX_USER_INFORMATION){
+                navItemIndex = INDEX_ADD_TICKET
+                CURRENT_TAG = TAG_ADD_TICKET
                 loadCurrentFragment()
             };
         }
@@ -233,23 +242,49 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return true
     }
 
-    // show or hide the fab
     private fun toggleFab() {
-        fab.hide();
+        fab.visibility = View.GONE
+        fab_invisible.visibility = View.GONE
+        fab_follow.visibility = View.GONE
 
         when (navItemIndex) {
             INDEX_USER_INFORMATION -> {
                 fab.setImageResource(R.drawable.ic_loyalty_white_24dp)
-                fab.show();
+                fab.visibility = View.VISIBLE
             }
             INDEX_CAMPAIGN -> {
-                fab.setImageResource(R.drawable.ic_add_white_24dp)
-                fab.show();
+                fab.setImageResource(R.drawable.ic_map_white_24dp)
+                fab.visibility = View.VISIBLE
+
+                fab_invisible.visibility = View.INVISIBLE
+                fab_follow.setImageResource(R.drawable.ic_add_white_24dp)
+                fab_follow.visibility = View.VISIBLE
             }
             INDEX_PARTNER -> {
-                fab.setImageResource(R.drawable.ic_add_white_24dp)
-                fab.show();
+                fab.setImageResource(R.drawable.ic_map_white_24dp)
+                fab.visibility = View.VISIBLE
+                fab_invisible.visibility = View.INVISIBLE
+                fab_follow.setImageResource(R.drawable.ic_add_white_24dp)
+                fab_follow.visibility = View.VISIBLE
             }
         }
+    }
+
+    companion object Factory {
+        var INDEX_USER_INFORMATION = 0
+        var INDEX_ADD_TICKET = 1
+        var INDEX_CAMPAIGN = 2
+        var INDEX_MANAGE_CAMPAIGN = 3
+        var INDEX_PARTNER = 4
+        var INDEX_MANAGE_PARTNER = 5
+        var INDEX_USER_MANAGEMENT = 6
+
+        var TAG_USER_INFORMATION = "USER_INFORMATION"
+        var TAG_ADD_TICKET = "ADD_TICKET"
+        var TAG_CAMPAIGN = "CAMPAIGN"
+        var TAG_MANAGE_CAMPAIGN = "MANAGER_CAMPAIGN"
+        var TAG_PARTNER = "PARTNER"
+        var TAG_MANAGE_PARTNER = "MANAGER_PARTNER"
+        var TAG_USER_MANAGEMENT = "USER_MANAGEMENT"
     }
 }

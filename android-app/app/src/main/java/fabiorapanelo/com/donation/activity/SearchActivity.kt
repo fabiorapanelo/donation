@@ -35,6 +35,8 @@ class SearchActivity : BaseActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search_campaign)
 
+        setupToolbar()
+
         val layoutManager = LinearLayoutManager(this)
         recycler_view_search.layoutManager = layoutManager
 
