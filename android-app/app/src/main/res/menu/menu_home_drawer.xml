@@ -32,9 +32,17 @@
             android:id="@+id/nav_manage"
             android:icon="@drawable/ic_menu_manage"
             android:title="@string/nav_manage" />
+        <item
+            android:id="@+id/nav_generate_ticket"
+            android:icon="@drawable/ic_qrcode_scan"
+            android:title="@string/nav_generate_ticket" />
+        <item
+            android:id="@+id/nav_exit"
+            android:icon="@drawable/ic_exit_to_app_black_24dp"
+            android:title="@string/nav_exit" />
     </group>
 
-    <item android:title="Communicate">
+    <!--item android:title="Communicate">
         <menu>
             <item
                 android:id="@+id/nav_share"
@@ -45,6 +53,6 @@
                 android:icon="@drawable/ic_menu_send"
                 android:title="Send" />
         </menu>
-    </item>
+    </item-->
 
 </menu>

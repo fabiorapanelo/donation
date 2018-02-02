@@ -1,5 +1,6 @@
 package fabiorapanelo.com.donation.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -37,6 +38,8 @@ public class LoginActivity extends AppCompatActivity {
     protected UserService userService;
 
     protected UserDao userDao;
+
+    protected static final int REQUEST_LOGIN = 10;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,9 +87,8 @@ public class LoginActivity extends AppCompatActivity {
                 if(response.isSuccessful()){
                     User user = response.body();
                     userDao.save(user);
-
                     Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                    startActivity(intent);
+                    startActivityForResult(intent, REQUEST_LOGIN);
                 } else {
                     _passwordText.setText("");
                     Toast.makeText(LoginActivity.this, "Authenticação Falhou!", Toast.LENGTH_LONG).show();
@@ -110,4 +112,12 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if(requestCode == REQUEST_LOGIN && resultCode == Activity.RESULT_OK){
+            _passwordText.setText("");
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 }

@@ -34,6 +34,8 @@
     <string name="nav_partners">Parceiros</string>
     <string name="nav_add_partner">Adicionar Parceiro</string>
     <string name="nav_manage">Permissao de usuários</string>
+    <string name="nav_generate_ticket">Gerar cupom</string>
+    <string name="nav_exit">Sair</string>
 
     <string-array name="tabs">
         <item name="nav_user_info">@string/nav_user_info</item>
@@ -43,6 +45,8 @@
         <item name="nav_partners">@string/nav_partners</item>
         <item name="nav_add_partner">@string/nav_add_partner</item>
         <item name="nav_manage">@string/nav_manage</item>
+        <item name="nav_generate_ticket">@string/nav_generate_ticket</item>
+        <item name="nav_exit">@string/nav_exit</item>
     </string-array>
 
     <!-- Create campaign -->

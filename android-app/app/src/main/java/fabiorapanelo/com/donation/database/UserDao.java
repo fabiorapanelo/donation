@@ -35,6 +35,10 @@ public class UserDao {
         donationDbHelper = new DonationDbHelper(context);
     }
 
+    public void delete(){
+        SQLiteDatabase db = donationDbHelper.getWritableDatabase();
+        db.delete(TABLE_NAME, null, null);
+    }
     public void save(User user){
 
         SQLiteDatabase db = donationDbHelper.getWritableDatabase();

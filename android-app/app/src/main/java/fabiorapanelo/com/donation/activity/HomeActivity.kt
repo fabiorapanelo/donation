@@ -1,5 +1,6 @@
 package fabiorapanelo.com.donation.activity
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -7,16 +8,16 @@ import android.support.design.widget.NavigationView
 import android.support.v4.app.Fragment
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
-import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.TextView
 import fabiorapanelo.com.donation.R
 import fabiorapanelo.com.donation.fragment.*
 import kotlinx.android.synthetic.main.activity_home.*
 import java.io.Serializable
 
-class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     // tags used to attach the fragments
     var navItemIndex = 0
@@ -87,6 +88,11 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             CURRENT_TAG = TAG_USER_INFORMATION;
             loadCurrentFragment();
         }
+
+        val textName = nav_view.getHeaderView(0).findViewById<TextView>(R.id.text_name);
+        textName.text = user.name
+        val textUsername = nav_view.getHeaderView(0).findViewById<TextView>(R.id.text_username);
+        textUsername.text = user.username
     }
 
     /***
@@ -144,6 +150,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             INDEX_MANAGE_CAMPAIGN -> return ManageCampaignFragment.newInstance()
             INDEX_PARTNER -> return PartnersFragment.newInstance(500);
             INDEX_MANAGE_PARTNER -> return ManagePartnerFragment.newInstance();
+            INDEX_GENERATE_TICKET -> return GenerateTicketFragment.newInstance()
             INDEX_USER_MANAGEMENT -> return UserManagementFragment.newInstance()
             else -> {
                 return UserInformationFragment.newInstance()
@@ -202,7 +209,14 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        // Handle navigation view item clicks here.
+
+        if(item.itemId == R.id.nav_exit){
+            userDao.delete()
+            setResult(Activity.RESULT_OK)
+            finish()
+            return true;
+        }
+
         when (item.itemId) {
             R.id.nav_user_info -> {
                 navItemIndex = INDEX_USER_INFORMATION
@@ -231,6 +245,11 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.nav_manage -> {
                 navItemIndex = INDEX_USER_MANAGEMENT
                 CURRENT_TAG = TAG_USER_MANAGEMENT
+            }
+
+            R.id.nav_generate_ticket -> {
+                navItemIndex = INDEX_GENERATE_TICKET
+                CURRENT_TAG = TAG_GENERATE_TICKET
             }
         }
 
@@ -276,6 +295,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         var INDEX_PARTNER = 4
         var INDEX_MANAGE_PARTNER = 5
         var INDEX_USER_MANAGEMENT = 6
+        var INDEX_GENERATE_TICKET = 7
 
         var TAG_USER_INFORMATION = "USER_INFORMATION"
         var TAG_ADD_TICKET = "ADD_TICKET"
@@ -284,5 +304,11 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         var TAG_PARTNER = "PARTNER"
         var TAG_MANAGE_PARTNER = "MANAGER_PARTNER"
         var TAG_USER_MANAGEMENT = "USER_MANAGEMENT"
+        var TAG_GENERATE_TICKET = "GENERATE_TICKET"
+
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
     }
 }
