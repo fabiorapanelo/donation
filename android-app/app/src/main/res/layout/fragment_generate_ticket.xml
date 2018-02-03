@@ -1,0 +1,52 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="fabiorapanelo.com.donation.fragment.ManageCampaignFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp">
+            <EditText android:id="@+id/edit_text_quantity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:text="10"
+                android:hint="Quantidade"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btn_generate_ticket"
+            style="@style/AppTheme.Button.Colored"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_size"
+            android:text="Gerar cupom"/>
+
+        <ImageView
+            android:id="@+id/image_view_qr_code"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="24dp"/>
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btn_share_qr_code"
+            style="@style/AppTheme.Button.Colored"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_size"
+            android:visibility="invisible"
+            android:text="Compartilhar cupom"/>
+
+    </LinearLayout>
+
+
+
+</FrameLayout>

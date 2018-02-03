@@ -20,6 +20,7 @@ import fabiorapanelo.com.donation.model.Campaign
 import fabiorapanelo.com.donation.model.Log
 import fabiorapanelo.com.donation.model.User
 import fabiorapanelo.com.donation.model.UserInfo
+import kotlinx.android.synthetic.main.activity_campaign_details.*
 import me.relex.circleindicator.CircleIndicator
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -31,33 +32,6 @@ import retrofit2.Response
  */
 
 class CampaignDetailsActivity : BaseActivity() {
-
-    @Bind(R.id.text_campaign_name)
-    var textCampaignName: TextView? = null
-
-    @Bind(R.id.view_pager_campaign_image)
-    var viewPager: ViewPager? = null
-
-    @Bind(R.id.indicator)
-    var indicator: CircleIndicator? = null
-
-    @Bind(R.id.btn_donate)
-    var btnDonate: Button? = null
-
-    @Bind(R.id.seek_bar_donation_value)
-    var seekBarDonationValue: SeekBar? = null
-
-    @Bind(R.id.progress_bar)
-    internal var progressBar: ProgressBar? = null
-
-    @Bind(R.id.donate_message_layout)
-    var mDonateMessageLayout: LinearLayout? = null
-
-    @Bind(R.id.donate_button_layout)
-    var mDonateButtonLayout: LinearLayout? = null
-
-    @Bind(R.id.txt_user_balance)
-    var txtUserBalance: TextView? = null
 
     protected var campaign: Campaign? = null
 
@@ -72,16 +46,16 @@ class CampaignDetailsActivity : BaseActivity() {
 
         this.setupToolbar()
 
-        textCampaignName!!.text = campaign!!.name
-        viewPager!!.adapter = ImagePageAdapter(this, campaign!!.images)
-        indicator!!.setViewPager(viewPager)
+        text_campaign_name!!.text = campaign!!.name
+        view_pager_campaign_image.adapter = ImagePageAdapter(this, campaign!!.images)
+        indicator.setViewPager(view_pager_campaign_image)
 
-        btnDonate!!.setOnClickListener { view -> donate(view) }
+        btn_donate.setOnClickListener { view -> donate(view) }
 
-        seekBarDonationValue!!.progress = DONATION_START_VALUE
+        seek_bar_donation_value.progress = DONATION_START_VALUE
         setDonationText(DONATION_START_VALUE)
 
-        seekBarDonationValue!!.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+        seek_bar_donation_value.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, i: Int, b: Boolean) {}
 
             override fun onStartTrackingTouch(seekBar: SeekBar) {}
@@ -96,10 +70,10 @@ class CampaignDetailsActivity : BaseActivity() {
 
     protected fun donate(view: View) {
 
-        btnDonate!!.isEnabled = false
-        progressBar!!.visibility = View.VISIBLE
+        btn_donate.isEnabled = false
+        progress_bar.visibility = View.VISIBLE
 
-        val donationValue = seekBarDonationValue!!.progress
+        val donationValue = seek_bar_donation_value.progress
 
         val donation = Log()
         donation.date = Date().time
@@ -113,18 +87,18 @@ class CampaignDetailsActivity : BaseActivity() {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
 
                 if (response.isSuccessful) {
-                    mDonateMessageLayout!!.visibility = View.VISIBLE
-                    mDonateButtonLayout!!.visibility = View.GONE
+                    donate_message_layout.visibility = View.VISIBLE
+                    donate_button_layout.visibility = View.GONE
                 } else {
                     Toast.makeText(this@CampaignDetailsActivity, "Falha ao realizar doação!", Toast.LENGTH_LONG).show()
                 }
-                btnDonate!!.isEnabled = true
-                progressBar!!.visibility = View.INVISIBLE
+                btn_donate.isEnabled = true
+                progress_bar.visibility = View.INVISIBLE
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                btnDonate!!.isEnabled = true
-                progressBar!!.visibility = View.INVISIBLE
+                btn_donate.isEnabled = true
+                progress_bar.visibility = View.INVISIBLE
                 Toast.makeText(this@CampaignDetailsActivity, "Falha ao realizar doação!", Toast.LENGTH_LONG).show()
             }
         })
@@ -133,38 +107,38 @@ class CampaignDetailsActivity : BaseActivity() {
 
     protected fun setDonationText(donationValue: Int) {
         val text = resources.getQuantityString(R.plurals.button_donate_messages, donationValue, donationValue)
-        btnDonate!!.text = text
+        btn_donate.text = text
     }
 
     protected fun getBalance() {
 
-        btnDonate!!.isEnabled = false
-        progressBar!!.visibility = View.VISIBLE
+        btn_donate.isEnabled = false
+        progress_bar.visibility = View.VISIBLE
 
         userService.getBalance(user, object : Callback<UserInfo> {
             override fun onResponse(call: Call<UserInfo>, response: Response<UserInfo>) {
-                progressBar!!.visibility = View.INVISIBLE
+                progress_bar.visibility = View.INVISIBLE
                 if (response.isSuccessful) {
                     try {
                         val balance = response.body()!!.balance
                         if (balance > 0) {
-                            btnDonate!!.isEnabled = true
+                            btn_donate.isEnabled = true
                         }
-                        seekBarDonationValue!!.max = balance!!
-                        txtUserBalance!!.text = resources.getQuantityString(R.plurals.text_user_balance, balance, balance)
+                        seek_bar_donation_value.max = balance!!
+                        txt_user_balance.text = resources.getQuantityString(R.plurals.text_user_balance, balance, balance)
 
                     } catch (e: Exception) {
-                        txtUserBalance!!.text = resources.getString(R.string.text_user_balance_unavailable)
+                        txt_user_balance.text = resources.getString(R.string.text_user_balance_unavailable)
                     }
 
                 } else {
-                    txtUserBalance!!.text = resources.getString(R.string.text_user_balance_unavailable)
+                    txt_user_balance.text = resources.getString(R.string.text_user_balance_unavailable)
                 }
             }
 
             override fun onFailure(call: Call<UserInfo>, t: Throwable) {
-                progressBar!!.visibility = View.INVISIBLE
-                txtUserBalance!!.text = resources.getString(R.string.text_user_balance_unavailable)
+                progress_bar.visibility = View.INVISIBLE
+                txt_user_balance.text = resources.getString(R.string.text_user_balance_unavailable)
             }
         })
     }
