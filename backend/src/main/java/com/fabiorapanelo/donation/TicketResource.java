@@ -36,7 +36,7 @@ public class TicketResource {
 	public final ResponseEntity<Void> consume(@PathVariable("ticketId") String ticketId, @PathVariable("userId") String userId) {
 		
 		Ticket ticket = this.ticketRepository.findOne(ticketId);
-		User user = this.userRepository.findOne(Long.valueOf(userId));
+		User user = this.userRepository.findOne(userId);
 		
 		if(ticket != null && user != null && "NEW".equals(ticket.getStatus())){
 			

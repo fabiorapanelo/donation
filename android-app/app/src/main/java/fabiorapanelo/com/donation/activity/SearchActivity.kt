@@ -1,19 +1,17 @@
 package fabiorapanelo.com.donation.activity
 
-import android.os.Bundle
-import fabiorapanelo.com.donation.R
 import android.app.SearchManager
 import android.content.Intent
-import android.location.Location
+import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.widget.Toast
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import fabiorapanelo.com.donation.R
 import fabiorapanelo.com.donation.adapter.CampaignListAdapter
 import fabiorapanelo.com.donation.adapter.PartnerListAdapter
 import fabiorapanelo.com.donation.model.Campaign
 import fabiorapanelo.com.donation.model.Partner
-import fabiorapanelo.com.donation.services.PartnerService
 import kotlinx.android.synthetic.main.activity_search_campaign.*
 import okhttp3.ResponseBody
 import org.apache.commons.lang3.StringUtils
@@ -21,7 +19,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.IOException
-import java.util.ArrayList
+import java.util.*
 
 
 /**
@@ -49,7 +47,7 @@ class SearchActivity : BaseActivity(){
 
             if(searchType == SearchActivity.SEARCH_CAMPAIGN){
                 this.searchCampaigns(query)
-            } else {
+            } else if(searchType == SearchActivity.SEARCH_PARTNER){
                 this.searchPartners(query)
             }
         }

@@ -54,21 +54,11 @@
                 android:hint="@string/hint_password"/>
         </android.support.design.widget.TextInputLayout>
 
-        <!-- UserType -->
-        <CheckBox android:id="@+id/input_receive_donations"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="text"
-            android:hint="@string/hint_user_type"
-            android:textSize="18sp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="8dp"/>
-
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/btn_register"
             style="@style/AppTheme.Button.Colored"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/button_size"
             android:layout_marginTop="24dp"
             android:layout_marginBottom="24dp"
             android:padding="12dp"

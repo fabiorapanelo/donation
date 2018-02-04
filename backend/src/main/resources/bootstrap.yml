@@ -1,13 +1,7 @@
 spring:
   application:
     name: donation-backend
-  jpa:
-    show-sql: true
-    generate-ddl: true
 ---
 
 spring:
   profiles: container
-  jpa:
-    show-sql: false
-    generate-ddl: false

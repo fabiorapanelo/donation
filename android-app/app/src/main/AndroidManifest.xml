@@ -90,6 +90,10 @@
             android:name=".activity.MapActivity"
             android:label="@string/title_activity_map"
             android:screenOrientation="portrait"></activity>
+
+        <activity android:name=".activity.EditUserRolesActivity"
+            android:label="@string/title_activity_edit_user_roles"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

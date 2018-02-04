@@ -10,7 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DonationDbHelper  extends SQLiteOpenHelper {
     // If you change the database schema, you must increment the database version.
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 2;
 
     public static final String DATABASE_NAME = "donation.db";
 
@@ -24,6 +24,8 @@ public class DonationDbHelper  extends SQLiteOpenHelper {
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
+        db.execSQL(UserDao.SQL_DROP_TABLE_USER);
+        db.execSQL(UserDao.SQL_CREATE_USER);
     }
 
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {

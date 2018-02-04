@@ -32,9 +32,6 @@ public class RegisterUserActivity extends BaseActivity {
     @Bind(R.id.input_password)
     EditText _passwordText;
 
-    @Bind(R.id.input_receive_donations)
-    CheckBox _receiveDonationsCheckbox;
-
     @Bind(R.id.btn_register)
     Button _registerButton;
 
@@ -52,7 +49,7 @@ public class RegisterUserActivity extends BaseActivity {
 
         this.setupToolbar();
 
-        userService = UserService.getInstance();
+        userService = UserService.Factory.getInstance();
 
         progressBar.setVisibility(View.GONE);
 
@@ -61,12 +58,7 @@ public class RegisterUserActivity extends BaseActivity {
             public void onClick(View view) {
 
             if(isValid()){
-                boolean receiveDonations = _receiveDonationsCheckbox.isChecked();
-                if(receiveDonations){
-                    displayDialog();
-                } else {
-                    checkUsernameAndRegister();
-                }
+                checkUsernameAndRegister();
             } else {
                 Toast.makeText(RegisterUserActivity.this, "Preencha os campos acima", Toast.LENGTH_SHORT).show();
             }
@@ -85,23 +77,6 @@ public class RegisterUserActivity extends BaseActivity {
                 StringUtils.isNotEmpty(username) &&
                 StringUtils.isNotEmpty(password));
 
-    }
-
-    protected void displayDialog(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(R.string.message_receive_donations).setTitle(R.string.title_receive_donations);
-        builder.setPositiveButton(R.string.button_confirm, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                checkUsernameAndRegister();
-            }
-        });
-        builder.setNegativeButton(R.string.button_cancel, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                _receiveDonationsCheckbox.setChecked(false);
-            }
-        });
-        AlertDialog dialog = builder.create();
-        dialog.show();
     }
 
     protected void checkUsernameAndRegister(){
@@ -144,13 +119,11 @@ public class RegisterUserActivity extends BaseActivity {
         String name = _nameText.getText().toString();
         String username = _usernameText.getText().toString();
         String password = _passwordText.getText().toString();
-        boolean receiveDonations = _receiveDonationsCheckbox.isChecked();
 
         User user = new User();
         user.setName(name);
         user.setUsername(username);
         user.setPassword(password);
-        user.setReceiveDonations(receiveDonations);
 
         userService.save(user, new Callback<ResponseBody>() {
             @Override

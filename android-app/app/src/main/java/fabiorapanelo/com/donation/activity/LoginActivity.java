@@ -46,7 +46,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        userService = UserService.getInstance();
+        userService = UserService.Factory.getInstance();
         userDao = new UserDao(this);
 
         ButterKnife.bind(this);

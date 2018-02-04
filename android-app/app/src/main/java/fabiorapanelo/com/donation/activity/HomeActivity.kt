@@ -169,7 +169,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         menuInflater.inflate(R.menu.home, menu)
         val item = menu.getItem(0);
         when (navItemIndex) {
-            INDEX_CAMPAIGN -> item.isVisible = true
+            INDEX_CAMPAIGN,
             INDEX_PARTNER -> item.isVisible = true
             else -> {
                 item.isVisible = false
@@ -306,9 +306,5 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         var TAG_USER_MANAGEMENT = "USER_MANAGEMENT"
         var TAG_GENERATE_TICKET = "GENERATE_TICKET"
 
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
     }
 }

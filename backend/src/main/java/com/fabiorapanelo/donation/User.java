@@ -1,36 +1,29 @@
 package com.fabiorapanelo.donation;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
+
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
-@Entity
-@EntityListeners(EncryptPasswordListener.class)
+@Document(collection = "user")
 public class User {
 
-	private Long id;
+	@Id
+	private String id;
 	private String name;
 	private String username;
-	private boolean receiveDonations;
-    private boolean verified;
+	private String[] roles;
 	private String password;
 	private String securePassword;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
@@ -43,8 +36,6 @@ public class User {
 		this.name = name;
 	}
 
-	@NotNull
-	@Column(unique=true)
 	public String getUsername() {
 		return username;
 	}
@@ -52,25 +43,16 @@ public class User {
 	public void setUsername(String username) {
 		this.username = username;
 	}
-
-	public boolean isReceiveDonations() {
-		return receiveDonations;
+	
+	public String[] getRoles() {
+		return roles;
 	}
 
-	public void setReceiveDonations(boolean receiveDonations) {
-		this.receiveDonations = receiveDonations;
-	}
-
-	public boolean isVerified() {
-		return verified;
-	}
-
-	public void setVerified(boolean verified) {
-		this.verified = verified;
+	public void setRoles(String[] roles) {
+		this.roles = roles;
 	}
 
 	@JsonProperty(access = Access.WRITE_ONLY)
-	@Transient
 	public String getPassword() {
 		return password;
 	}
@@ -80,7 +62,6 @@ public class User {
 	}
 
 	@JsonProperty(access = Access.WRITE_ONLY)
-	@NotNull
 	public String getSecurePassword() {
 		return securePassword;
 	}

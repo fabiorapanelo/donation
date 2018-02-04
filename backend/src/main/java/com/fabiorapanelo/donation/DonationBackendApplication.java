@@ -16,4 +16,9 @@ public class DonationBackendApplication {
     public GeoJsonModule geoJsonModule(){
         return new GeoJsonModule();
     }
+	
+	@Bean
+	public EncryptPasswordListener encryptPasswordListener(){
+		return new EncryptPasswordListener();
+	}
 }

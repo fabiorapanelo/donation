@@ -38,7 +38,7 @@ public class BaseActivity extends AppCompatActivity {
 
         campaignService = CampaignService.getInstance();
         imageService = ImageService.getInstance();
-        userService = UserService.getInstance();
+        userService = UserService.Factory.getInstance();
         donationService = DonationService.getInstance();
         ticketService = TicketService.getInstance();
         partnerService = PartnerService.Factory.getInstance();

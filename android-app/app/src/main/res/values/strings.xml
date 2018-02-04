@@ -19,7 +19,6 @@
     <!-- Register -->
     <string name="title_register">Cadastre-se</string>
     <string name="hint_name">Nome</string>
-    <string name="hint_user_type">Desejo receber doações</string>
     <string name="button_register">Cadastrar</string>
     <string name="title_receive_donations">Receber doações</string>
     <string name="message_receive_donations">Para receber doações será necessário confirmar suas informações</string>
@@ -131,5 +130,16 @@
 
     <!-- MapActivity -->
     <string name="title_activity_map">Mapa</string>
+
+    <!-- EditUserRolesActivity -->
+    <string name="title_activity_edit_user_roles">Permissões do usuário</string>
+
+    <string-array name="roles">
+        <item name="admin">admin</item>
+        <item name="create_campaign">create_campaign</item>
+        <item name="create_partner">create_partner</item>
+        <item name="add_ticket">add_ticket</item>
+        <item name="edit_role">edit_role</item>
+    </string-array>
 
 </resources>

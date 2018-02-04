@@ -20,13 +20,14 @@ public class UserDao {
 
     protected DonationDbHelper donationDbHelper;
 
-    public static final String TABLE_NAME = "USER_ID";
+    public static final String TABLE_NAME = "USER";
     public static final String FIELD_USER_ID = "USER_ID";
     public static final String FIELD_NAME = "NAME";
     public static final String FIELD_USERNAME = "USERNAME";
 
+    public static final String SQL_DROP_TABLE_USER = "DROP TABLE IF EXISTS USER";
     public static final String SQL_CREATE_USER =
-            "CREATE TABLE " + TABLE_NAME + " ( " + FIELD_USER_ID +" INTEGER PRIMARY KEY," +
+            "CREATE TABLE " + TABLE_NAME + " ( " + FIELD_USER_ID +" TEXT PRIMARY KEY," +
                     FIELD_NAME + " TEXT," +
                     FIELD_USERNAME + " TEXT)";
 
@@ -73,7 +74,7 @@ public class UserDao {
         User user = null;
         if(cursor.moveToNext()) {
             user = new User();
-            user.setId(cursor.getLong(0));
+            user.setId(cursor.getString(0));
             user.setName(cursor.getString(1));
             user.setUsername(cursor.getString(2));
         }
