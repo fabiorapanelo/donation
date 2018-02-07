@@ -13,4 +13,17 @@ class User: Serializable {
     var username: String? = null
     var password: String? = null
     var roles: Array<String>? = null
+
+
+    fun hasPermission(role: String): Boolean{
+        if(roles == null){
+            return false
+        }
+        for(r in roles!!){
+            if(r == role || r == "admin"){
+                return true;
+            }
+        }
+        return false;
+    }
 }

@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
+import fabiorapanelo.com.donation.cache.CacheManager;
 import fabiorapanelo.com.donation.model.User;
 
 import static java.security.AccessController.getContext;
@@ -18,7 +19,11 @@ import static java.security.AccessController.getContext;
 
 public class UserDao {
 
+    CacheManager cacheManager = CacheManager.getInstance();
+
     protected DonationDbHelper donationDbHelper;
+
+    public static final String CACHE_KEY_USER = "donation.user";
 
     public static final String TABLE_NAME = "USER";
     public static final String FIELD_USER_ID = "USER_ID";
@@ -40,22 +45,32 @@ public class UserDao {
         SQLiteDatabase db = donationDbHelper.getWritableDatabase();
         db.delete(TABLE_NAME, null, null);
     }
-    public void save(User user){
 
-        SQLiteDatabase db = donationDbHelper.getWritableDatabase();
+    public void save(User user, boolean remember){
 
-        ContentValues values = new ContentValues();
-        values.put(FIELD_USER_ID, user.getId());
-        values.put(FIELD_NAME, user.getName());
-        values.put(FIELD_USERNAME, user.getUsername());
+        cacheManager.put(CACHE_KEY_USER, user);
 
-        //Delete previous user and save new one
-        db.delete(TABLE_NAME, null, null);
-        db.insert(TABLE_NAME, null, values);
+        if(remember){
+            SQLiteDatabase db = donationDbHelper.getWritableDatabase();
+
+            ContentValues values = new ContentValues();
+            values.put(FIELD_USER_ID, user.getId());
+            values.put(FIELD_NAME, user.getName());
+            values.put(FIELD_USERNAME, user.getUsername());
+
+            delete();
+            db.insert(TABLE_NAME, null, values);
+        }
 
     }
 
     public User find(){
+        return (User) cacheManager.get(CACHE_KEY_USER);
+    }
+
+    public User readFromDB(){
+
+        User user = null;
 
         SQLiteDatabase db = donationDbHelper.getWritableDatabase();
 
@@ -71,7 +86,6 @@ public class UserDao {
             null        // The sort order
         );
 
-        User user = null;
         if(cursor.moveToNext()) {
             user = new User();
             user.setId(cursor.getString(0));

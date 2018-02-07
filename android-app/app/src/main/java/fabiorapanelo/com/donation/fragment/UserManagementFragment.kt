@@ -8,8 +8,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import fabiorapanelo.com.donation.R
 import fabiorapanelo.com.donation.adapter.RoleSelectorAdapter
+import fabiorapanelo.com.donation.model.RoleHolder
 import fabiorapanelo.com.donation.model.User
 import kotlinx.android.synthetic.main.fragment_user_management.*
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -17,7 +19,7 @@ import java.io.IOException
 
 class UserManagementFragment : BaseFragment() {
 
-    private var roles: Array<String>? = null
+    private var roles: MutableList<RoleHolder>? = null;
     var edit_user: User? = null
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
@@ -28,12 +30,31 @@ class UserManagementFragment : BaseFragment() {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
 
-        roles = resources.getStringArray(R.array.roles)
-
         btn_search_user.setOnClickListener { _ ->
 
             val name = edit_text_username.text.toString();
             searchUser(name)
+        }
+
+        btn_save_roles.setOnClickListener { _ ->
+
+            var selectedRoles = roles!!.filter { r -> r.granted }
+                    .map { r -> r.name }
+                    .toTypedArray();
+            edit_user!!.roles = selectedRoles;
+
+            userService.save(edit_user!!, object : Callback<ResponseBody> {
+                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                    if (response.isSuccessful) {
+                        Toast.makeText(this@UserManagementFragment.activity, "Salvo com sucesso!", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(this@UserManagementFragment.activity, "Falha ao salvar as permissões!", Toast.LENGTH_LONG).show()
+                    }
+                }
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    Toast.makeText(this@UserManagementFragment.activity, "Falha ao salvar as permissões!", Toast.LENGTH_LONG).show()
+                }
+            })
         }
 
         super.onViewCreated(view, savedInstanceState)
@@ -71,12 +92,20 @@ class UserManagementFragment : BaseFragment() {
     }
 
     fun displayRoles(user: User){
+
+        roles = ArrayList<RoleHolder>();
+
+        var roles_array = resources.getStringArray(R.array.roles)
+        for(role in roles_array){
+            val granted = user.roles != null && user.roles!!.contains(role)
+            roles!!.add(RoleHolder(role, granted))
+        }
+
         val layoutManager = LinearLayoutManager(this.activity)
         recycler_view_roles.layoutManager = layoutManager
 
         val adapter = RoleSelectorAdapter(this.activity, roles!!)
         recycler_view_roles.adapter = adapter
-
     }
 
     companion object {

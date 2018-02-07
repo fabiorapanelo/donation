@@ -124,6 +124,9 @@ public class RegisterUserActivity extends BaseActivity {
         user.setName(name);
         user.setUsername(username);
         user.setPassword(password);
+        user.setRoles(new String[]{
+                "login", "add_ticket"
+        });
 
         userService.save(user, new Callback<ResponseBody>() {
             @Override

@@ -86,9 +86,16 @@ public class LoginActivity extends AppCompatActivity {
 
                 if(response.isSuccessful()){
                     User user = response.body();
-                    userDao.save(user);
-                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                    startActivityForResult(intent, REQUEST_LOGIN);
+
+                    if(user.hasPermission("login")){
+                        userDao.save(user, false);
+                        Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                        startActivityForResult(intent, REQUEST_LOGIN);
+                    } else {
+                        _passwordText.setText("");
+                        Toast.makeText(LoginActivity.this, "Authenticação Falhou!", Toast.LENGTH_LONG).show();
+                    }
+
                 } else {
                     _passwordText.setText("");
                     Toast.makeText(LoginActivity.this, "Authenticação Falhou!", Toast.LENGTH_LONG).show();

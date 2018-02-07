@@ -8,8 +8,12 @@ import org.apache.commons.text.similarity.LevenshteinDistance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.BasicQuery;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,7 +24,38 @@ public class UserResource {
 	private MongoTemplate mongoTemplate;
 	
 	@Autowired
-	private UserRepository repository;
+	private UserRepository userRepository;
+	
+	@PostMapping("/users")
+	public ResponseEntity<User> save(@RequestBody User user){
+		
+		if(StringUtils.isEmpty(user.getName()) || 
+				StringUtils.isEmpty(user.getPassword()) ||
+				StringUtils.isEmpty(user.getUsername())){
+			return new ResponseEntity<User>(HttpStatus.BAD_REQUEST);
+		}
+		
+		User savedUser = userRepository.save(user);
+		return new ResponseEntity<User>(savedUser, HttpStatus.OK);
+	}
+	
+	@PostMapping("/users/{userId}")
+	public ResponseEntity<User> update(@PathVariable("userId") String userId, @RequestBody User user){
+		
+		User userDB = userRepository.findOne(userId);
+		
+		if(userDB == null){
+			return new ResponseEntity<User>(HttpStatus.BAD_REQUEST);
+		}
+		
+		userDB.setName(user.getName());
+		userDB.setPassword(user.getPassword());
+		userDB.setRoles(user.getRoles());
+		
+		User savedUser = userRepository.save(userDB);
+		return new ResponseEntity<User>(savedUser, HttpStatus.OK);
+	}
+	
 	
 	@GetMapping("/users/{userId}/balance")
 	public UserInfo getBalance(@PathVariable("userId") String userId) {				
@@ -62,7 +97,7 @@ public class UserResource {
 	public final List<User> searchBySimilarName(@RequestParam("name") String name,
 			@RequestParam("limit") long limit) {
 
-		List<User> users = this.repository.findAll();
+		List<User> users = this.userRepository.findAll();
 
 		LevenshteinDistance levenshteinDistance = LevenshteinDistance.getDefaultInstance();
 

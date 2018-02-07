@@ -135,11 +135,13 @@
     <string name="title_activity_edit_user_roles">Permissões do usuário</string>
 
     <string-array name="roles">
+        <item name="login">login</item>
         <item name="admin">admin</item>
         <item name="create_campaign">create_campaign</item>
         <item name="create_partner">create_partner</item>
         <item name="add_ticket">add_ticket</item>
         <item name="edit_role">edit_role</item>
+        <item name="generate_ticket">generate_ticket</item>
     </string-array>
 
 </resources>

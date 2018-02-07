@@ -90,6 +90,13 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         }
 
         val textName = nav_view.getHeaderView(0).findViewById<TextView>(R.id.text_name);
+
+        nav_view.menu.findItem(R.id.nav_add_ticket).isVisible = user.hasPermission("add_ticket")
+        nav_view.menu.findItem(R.id.nav_add_campaign).isVisible = user.hasPermission("create_campaign")
+        nav_view.menu.findItem(R.id.nav_add_partner).isVisible = user.hasPermission("create_partner")
+        nav_view.menu.findItem(R.id.nav_manage).isVisible = user.hasPermission("edit_role")
+        nav_view.menu.findItem(R.id.nav_generate_ticket).isVisible = user.hasPermission("generate_ticket")
+
         textName.text = user.name
         val textUsername = nav_view.getHeaderView(0).findViewById<TextView>(R.id.text_username);
         textUsername.text = user.username
@@ -266,23 +273,31 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
         when (navItemIndex) {
             INDEX_USER_INFORMATION -> {
-                fab.setImageResource(R.drawable.ic_loyalty_white_24dp)
-                fab.visibility = View.VISIBLE
+
+                if(user.hasPermission("add_ticket")){
+                    fab.setImageResource(R.drawable.ic_loyalty_white_24dp)
+                    fab.visibility = View.VISIBLE
+                }
             }
             INDEX_CAMPAIGN -> {
                 fab.setImageResource(R.drawable.ic_map_white_24dp)
                 fab.visibility = View.VISIBLE
 
-                fab_invisible.visibility = View.INVISIBLE
-                fab_follow.setImageResource(R.drawable.ic_add_white_24dp)
-                fab_follow.visibility = View.VISIBLE
+                if(user.hasPermission("create_campaign")){
+                    fab_invisible.visibility = View.INVISIBLE
+                    fab_follow.setImageResource(R.drawable.ic_add_white_24dp)
+                    fab_follow.visibility = View.VISIBLE
+                }
             }
             INDEX_PARTNER -> {
                 fab.setImageResource(R.drawable.ic_map_white_24dp)
                 fab.visibility = View.VISIBLE
-                fab_invisible.visibility = View.INVISIBLE
-                fab_follow.setImageResource(R.drawable.ic_add_white_24dp)
-                fab_follow.visibility = View.VISIBLE
+
+                if(user.hasPermission("create_partner")){
+                    fab_invisible.visibility = View.INVISIBLE
+                    fab_follow.setImageResource(R.drawable.ic_add_white_24dp)
+                    fab_follow.visibility = View.VISIBLE
+                }
             }
         }
     }

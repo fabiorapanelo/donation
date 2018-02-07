@@ -33,7 +33,7 @@ interface UserRepository {
     @GET("users/{userId}")
     fun find(@Path("userId") userId: String): Call<User>
 
-    @PUT("users/{userId}")
+    @POST("users/{userId}")
     fun update(@Path("userId") userId: String, @Body user: User): Call<ResponseBody>
 
     @DELETE("users/{userId}")

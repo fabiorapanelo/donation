@@ -15,11 +15,7 @@ import retrofit2.Callback
 
 class UserService private constructor() : ServiceBase() {
 
-    protected var userRepository: UserRepository
-
-    init {
-        userRepository = retrofit.create(UserRepository::class.java)
-    }
+    protected var userRepository: UserRepository = retrofit.create(UserRepository::class.java)
 
     fun authenticate(credentials: Credentials, callback: Callback<User>) {
         val authenticate = userRepository.authenticate(credentials)
