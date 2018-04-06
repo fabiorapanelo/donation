@@ -39,12 +39,12 @@ class PartnersFragment : BaseFragment() {
     var lastLocation: Location? = null
     var partners: List<Partner>? = null
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         return inflater!!.inflate(R.layout.fragment_partners, container, false)
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val layoutManager = LinearLayoutManager(this.context)
         recycler_view_partners.layoutManager = layoutManager
         this.enableMyLocation()

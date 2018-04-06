@@ -1,5 +1,6 @@
 package fabiorapanelo.com.donation.fragment
 
+import android.app.Activity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
@@ -22,13 +23,13 @@ class UserManagementFragment : BaseFragment() {
     private var roles: MutableList<RoleHolder>? = null;
     var edit_user: User? = null
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         return inflater!!.inflate(R.layout.fragment_user_management, container, false)
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         btn_search_user.setOnClickListener { _ ->
 
@@ -104,7 +105,7 @@ class UserManagementFragment : BaseFragment() {
         val layoutManager = LinearLayoutManager(this.activity)
         recycler_view_roles.layoutManager = layoutManager
 
-        val adapter = RoleSelectorAdapter(this.activity, roles!!)
+        val adapter = RoleSelectorAdapter(this.activity as Activity, roles!!)
         recycler_view_roles.adapter = adapter
     }
 

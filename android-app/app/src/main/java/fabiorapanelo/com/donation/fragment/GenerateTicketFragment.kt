@@ -34,13 +34,13 @@ class GenerateTicketFragment : BaseFragment() {
 
     var bitmapQRCode: Bitmap? = null
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         return inflater!!.inflate(R.layout.fragment_generate_ticket, container, false)
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         btn_generate_ticket.setOnClickListener { view ->
             val quantity = Integer.valueOf(edit_text_quantity.text.toString())
@@ -122,7 +122,7 @@ class GenerateTicketFragment : BaseFragment() {
             i.type = "image/*"
             val stream = ByteArrayOutputStream()
 
-            var uri = saveImageIntoDisk(this.activity, bitmapQRCode!!)
+            var uri = saveImageIntoDisk(activity, bitmapQRCode!!)
 
             i.putExtra(Intent.EXTRA_STREAM, uri)
             try {
