@@ -1,10 +1,12 @@
 package fabiorapanelo.com.donation.model;
 
+import java.io.Serializable;
+
 /**
  * Created by fabio on 24/10/2017.
  */
 
-public class Ticket {
+public class Ticket implements Serializable {
 
     private String id;
     private String status;

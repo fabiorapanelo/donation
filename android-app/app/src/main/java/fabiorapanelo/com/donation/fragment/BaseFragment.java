@@ -40,7 +40,7 @@ public class BaseFragment extends Fragment {
         campaignService = CampaignService.getInstance();
         imageService = ImageService.getInstance();
         userService = UserService.Factory.getInstance();
-        ticketService = TicketService.getInstance();
+        ticketService = TicketService.Factory.getInstance();
         partnerService = PartnerService.Factory.getInstance();
         cacheManager = CacheManager.getInstance();
 

@@ -62,7 +62,7 @@ public class CampaignListAdapter  extends RecyclerView.Adapter<CampaignListAdapt
 
         final Campaign campaign = campaigns.get(i);
 
-        String name = campaign.getName() + " - Por: User#" + campaign.getUserId();
+        String name = campaign.getName();
         viewHolder.textView.setText(name);
 
         double longitude = campaign.getLocation().getCoordinates().get(0);

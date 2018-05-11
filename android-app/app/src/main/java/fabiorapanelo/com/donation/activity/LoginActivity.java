@@ -27,8 +27,10 @@ public class LoginActivity extends AppCompatActivity {
     EditText _usernameText;
     @Bind(R.id.input_password)
     EditText _passwordText;
+
     @Bind(R.id.btn_login)
     Button _loginButton;
+
     @Bind(R.id.link_signup)
     TextView _signupLink;
 
@@ -50,9 +52,9 @@ public class LoginActivity extends AppCompatActivity {
         userDao = new UserDao(this);
 
         ButterKnife.bind(this);
-
         progressBar.setVisibility(View.GONE);
 
+        _loginButton = this.findViewById(R.id.btn_login);
         _loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

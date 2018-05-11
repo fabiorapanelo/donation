@@ -10,12 +10,10 @@ public class Campaign implements Serializable {
     private String userId;
     private GeoPointLocation location;
     private List<String> images;
-    private List<Log> donations;
 
     public String getId() {
         return id;
     }
-
     public void setId(String id) {
         this.id = id;
     }
@@ -23,7 +21,6 @@ public class Campaign implements Serializable {
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
@@ -31,7 +28,6 @@ public class Campaign implements Serializable {
     public String getUserId() {
         return userId;
     }
-
     public void setUserId(String userId) {
         this.userId = userId;
     }
@@ -39,7 +35,6 @@ public class Campaign implements Serializable {
     public GeoPointLocation getLocation() {
         return location;
     }
-
     public void setLocation(GeoPointLocation location) {
         this.location = location;
     }
@@ -47,16 +42,7 @@ public class Campaign implements Serializable {
     public List<String> getImages() {
         return images;
     }
-
     public void setImages(List<String> images) {
         this.images = images;
-    }
-
-    public List<Log> getDonations() {
-        return donations;
-    }
-
-    public void setDonations(List<Log> donations) {
-        this.donations = donations;
     }
 }

@@ -59,7 +59,7 @@
     <string name="title_activity_create_campaign">Criação de Campanha</string>
 
     <!-- Create partner -->
-    <string name="hint_partner_name">Nome da campanha</string>
+    <string name="hint_partner_name">Nome do parceiro</string>
     <string name="button_create_partner">Criar parceiro</string>
     <string name="create_partner_success_message">O parceiro foi criado com sucesso!</string>
     <string name="title_activity_create_partner">Criação de Parceiro</string>

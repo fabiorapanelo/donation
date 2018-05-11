@@ -8,4 +8,7 @@ public interface CampaignRepository extends MongoRepository<Campaign, String> {
 
 	List<Campaign> findByUserId(String userId);
 
+	
+	
 }
+

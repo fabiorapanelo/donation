@@ -62,7 +62,7 @@ public class PartnerListAdapter extends RecyclerView.Adapter<PartnerListAdapter.
 
         final Partner partner = partners.get(i);
 
-        String name = partner.getName() + " - Por: User#" + partner.getUserId();
+        String name = partner.getName();
         viewHolder.textView.setText(name);
 
         double longitude = partner.getLocation().getCoordinates().get(0);

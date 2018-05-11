@@ -40,7 +40,7 @@ public class BaseActivity extends AppCompatActivity {
         imageService = ImageService.getInstance();
         userService = UserService.Factory.getInstance();
         donationService = DonationService.getInstance();
-        ticketService = TicketService.getInstance();
+        ticketService = TicketService.Factory.getInstance();
         partnerService = PartnerService.Factory.getInstance();
         cacheManager = CacheManager.getInstance();
     }

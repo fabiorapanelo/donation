@@ -36,7 +36,8 @@ class MapActivity: BaseActivity(), OnMapReadyCallback {
         items = intent.getSerializableExtra("items");
         itemType = intent.getStringExtra("itemType")
 
-        val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
+        val mapFragment = supportFragmentManager.findFragmentById(R.id.map)
+                as SupportMapFragment
         mapFragment.getMapAsync(this);
     }
 
@@ -46,28 +47,28 @@ class MapActivity: BaseActivity(), OnMapReadyCallback {
 
         if(itemType == HomeActivity.TAG_CAMPAIGN){
             val campaigns = items as List<Campaign>
-
             for(campaign in campaigns){
                 if(campaign?.location?.coordinates != null){
-                    val latlng = LatLng(campaign!!.location!!.coordinates[1], campaign!!.location!!.coordinates[0])
+                    val location = campaign!!.location!!;
+                    val latlng = LatLng(location.coordinates[1], location.coordinates[0])
                     googleMap.addMarker(MarkerOptions().position(latlng).title(campaign.name));
                     latlngbounds.include(latlng)
                 }
             }
-
         } else if(itemType == HomeActivity.TAG_PARTNER){
             val partners = items as List<Partner>
             for(partner in partners){
                 if(partner?.location?.coordinates != null){
-                    val latlng = LatLng(partner!!.location!!.coordinates[1], partner!!.location!!.coordinates[0])
+                    val location = partner!!.location!!;
+                    val latlng = LatLng(location.coordinates[1], location.coordinates[0])
                     googleMap.addMarker(MarkerOptions().position(latlng).title(partner.name));
                     latlngbounds.include(latlng)
                 }
             }
         }
-
         googleMap.setMaxZoomPreference(17f)
         googleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(latlngbounds.build(), 200));
 
     }
 }
+

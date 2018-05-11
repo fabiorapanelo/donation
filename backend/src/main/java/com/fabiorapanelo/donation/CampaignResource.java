@@ -21,9 +21,6 @@ public class CampaignResource {
 
 	@Autowired
 	private CampaignRepository repository;
-
-	@Autowired
-	private MongoTemplate mongoTemplate;
 	
 	@PostMapping("/campaigns")
 	public final ResponseEntity<Void> createCampaign(@RequestBody Campaign campaignMongo) {
@@ -32,9 +29,12 @@ public class CampaignResource {
 	}
 	
 	@GetMapping("/campaigns/search-by-user/{userId}")
-	public final List<Campaign> getLocations(@PathVariable("userId") String userId) {				
+	public final List<Campaign> searchByUser(@PathVariable("userId") String userId) {				
 		return this.repository.findByUserId(userId);
 	}
+	
+	@Autowired
+	private MongoTemplate mongoTemplate;
 	
 	@GetMapping("/campaigns/near-location")
 	public final List<Campaign> getLocations(@RequestParam("lat") double latitude,

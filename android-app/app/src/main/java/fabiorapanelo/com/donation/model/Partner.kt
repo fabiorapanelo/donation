@@ -10,3 +10,4 @@ class Partner : Serializable {
     var location: GeoPointLocation? = null
     var images: List<String>? = null
 }
+
